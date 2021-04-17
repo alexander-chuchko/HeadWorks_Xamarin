@@ -5,12 +5,10 @@ using Prism.Unity;
 using ProfileBook.Dialogs;
 using ProfileBook.Service;
 using ProfileBook.Service.Authorization;
-using ProfileBook.Service.CameraAndImage;
 using ProfileBook.Service.Profile;
 using ProfileBook.Service.Repository;
 using ProfileBook.Service.Settings;
 using ProfileBook.Service.User;
-using ProfileBook.Service.UserDialog;
 using ProfileBook.Services.Repository;
 using ProfileBook.View;
 using ProfileBook.ViewModel;
@@ -47,13 +45,10 @@ namespace ProfileBook
             //Services
             containerRegistry.RegisterPopupNavigationService();
             containerRegistry.RegisterPopupDialogService();
-
             containerRegistry.RegisterInstance<IRepository>(Container.Resolve<Repository>());
             containerRegistry.RegisterInstance<IUserService>(Container.Resolve<UserService>());
             containerRegistry.RegisterInstance<IProfileService>(Container.Resolve<ProfileService>());
             containerRegistry.RegisterInstance<IAuthenticationService>(Container.Resolve<AuthenticationService>());
-            containerRegistry.RegisterInstance<IDialog>(Container.Resolve<Dialog>());
-            //containerRegistry.RegisterInstance<ICameraAndImage>(Container.Resolve<СameraAndImage>());
             containerRegistry.RegisterInstance<ISettingsManager>(Container.Resolve<SettingsManager>());
             containerRegistry.RegisterInstance<IAuthorization>(Container.Resolve<Authorization>());
 
