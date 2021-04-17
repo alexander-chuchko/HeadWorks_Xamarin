@@ -20,7 +20,7 @@ namespace ProfileBook
     { 
         public App():this(null)
         {
-            //MainPage = new ProfileBook.MainPage();  ///new NavigationPage(new ProfileBook.MainPage()); // ProfileBook.View.SignUpView(); // MainPage();
+            
         }
         public App(IPlatformInitializer initializer):base(initializer)
         {
