@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ProfileBook.View.SignUp"
+             xmlns:local="clr-namespace:ProfileBook.Converter"
+             xmlns:prism="clr-namespace:Prism.Unity;assembly=Prism.Unity.Forms"
+             Title="{Binding TitlePage}">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:MultiTriggerConverter x:Key="dataHasBeenEntered"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <Grid RowDefinitions="0.75*, 0.25*" BackgroundColor="Bisque">
+            <Grid Grid.Row="0">
+                <StackLayout VerticalOptions="Center"  Padding="30">
+                    <Entry x:Name="LoginSignUP"
+                       Placeholder="Login"
+                       Text="{Binding Path=Login}"
+                       ClearButtonVisibility="WhileEditing"
+                       ></Entry>
+                    <Entry x:Name="PasswordSignUp"
+                       Placeholder="Password"
+                       IsPassword="True"
+                       Text="{Binding Path= Password}"
+                       ClearButtonVisibility="WhileEditing"
+                       ></Entry>
+                    <Entry x:Name="ConfirmPasswordSignUp"
+                       Placeholder="Confirm Password"
+                       IsPassword="True"
+                       Text="{Binding Path=ConfirmPassword}"
+                       ClearButtonVisibility="WhileEditing"
+                       ></Entry>
+                </StackLayout>
+            </Grid>
+            <Grid Grid.Row="1">
+                <StackLayout VerticalOptions="Start"  Padding="30">
+                    <Button Text="SIGN UP"
+                        TextColor="Black"
+                        BackgroundColor="Orange"
+                        CornerRadius="5"
+                        FontSize="18"
+                        BorderWidth="3"
+                        BorderColor="Black"
+                        IsEnabled="{Binding Path=IsEnabled}"
+                        Command="{Binding Path= SignUpCommand}">
+                        <Button.Triggers>
+                            <MultiTrigger TargetType="Button">
+                                <MultiTrigger.Conditions>
+                                    <BindingCondition 
+                                    Binding="{Binding Source={x:Reference LoginSignUP},
+                                    Path=Text.Length,
+                                    Converter={StaticResource dataHasBeenEntered}}"
+                                    Value="true"/>
+                                    <BindingCondition
+                                    Binding="{Binding Source={x:Reference PasswordSignUp}, Path=Text.Length, 
+                                    Converter={StaticResource dataHasBeenEntered}}"
+                                    Value="true"/>
+                                    <BindingCondition
+                                    Binding="{Binding Source={x:Reference ConfirmPasswordSignUp},
+                                    Path=Text.Length, 
+                                    Converter={StaticResource dataHasBeenEntered}}"
+                                    Value="true"/>
+                                </MultiTrigger.Conditions>
+                                <Setter Property="IsEnabled" Value="True"/>
+                            </MultiTrigger>
+                        </Button.Triggers>
+                    </Button>
+                </StackLayout>
+            </Grid>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

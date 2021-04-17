@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ProfileBook.View.AddEditProfilePage"
+             xmlns:local="clr-namespace:ProfileBook;assembly=ProfileBook"
+             xmlns:local1="clr-namespace:ProfileBook.Converter"
+             Title="{Binding TitlePage}">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local1:TriggerConverter x:Key="dataHasBeenEntered"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem IconImageSource="ic_save.png" Priority="1" Order="Primary" Command="{Binding NavigationCommand}"/>
+    </ContentPage.ToolbarItems>
+    <Grid Padding="30" BackgroundColor="Bisque">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="2*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Image  Grid.Row="0" Grid.Column="0" x:Name="resultImage" Source="{Binding PathPicture, Mode=TwoWay}">
+            <Image.GestureRecognizers>
+                <TapGestureRecognizer  NumberOfTapsRequired="1" Command="{Binding Path= TapCommand}">
+                </TapGestureRecognizer>
+            </Image.GestureRecognizers>
+        </Image>
+        <Entry Grid.Row="1" 
+               Placeholder="NickName"
+               Grid.Column="0"
+               Text="{Binding Path= NickName}">
+        </Entry>
+        <Entry Grid.Row="2" 
+               Placeholder="Name" 
+               Grid.Column="0" 
+               Text="{Binding Path= Name}">
+        </Entry>
+        <Editor Placeholder="Description"
+                MaxLength="120"
+                Grid.Row="3"
+                BackgroundColor="Azure"
+                Grid.Column="0"
+                Text="{Binding Path= Description}">
+        </Editor>
+    </Grid>
+</ContentPage>

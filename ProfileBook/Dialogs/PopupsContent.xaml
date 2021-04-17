@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<StackLayout HorizontalOptions="Center" VerticalOptions="Center"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             xmlns:prism="http://prismlibrary.com"
+             prism:DialogLayout.RelativeWidthRequest="0.75"
+             prism:DialogLayout.RelativeHeightRequest="0.75"
+             prism:DialogLayout.CloseOnBackgroundTapped="True"
+             x:Class="ProfileBook.Dialogs.PopupsContent">
+    <StackLayout.GestureRecognizers>
+            <TapGestureRecognizer  NumberOfTapsRequired="1" Command="{Binding CloseCommand}"></TapGestureRecognizer>
+        </StackLayout.GestureRecognizers>
+    <Image Source="{Binding PathImage}" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"></Image>
+</StackLayout>

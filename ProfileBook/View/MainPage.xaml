@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ProfileBook.MainPage"
+             xmlns:local="clr-namespace:ProfileBook.Converter"
+             xmlns:prism="clr-namespace:Prism.Unity;assembly=Prism.Unity.Forms"
+             Title="{Binding TitlePage}">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:MultiTriggerConverter x:Key="dataHasBeenEntered"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <Grid RowDefinitions="0.75*,0.25*" BackgroundColor="Bisque">
+        <Grid Grid.Row="0">
+            <StackLayout VerticalOptions="Center"  Padding="30">
+            <Entry x:Name="LoginSignIn"
+                   Placeholder="Login"
+                   Text="{Binding Path= Login}"
+                   ClearButtonVisibility="WhileEditing">
+            </Entry>
+            <Entry x:Name="PasswordSignIn"
+                   Placeholder="Password" 
+                   IsPassword="True"
+                   Text="{Binding Path= Password}"
+                   ClearButtonVisibility="WhileEditing">
+            </Entry>
+            </StackLayout>
+        </Grid>
+        <Grid Grid.Row="1">
+            <StackLayout VerticalOptions="Start"  Padding="30">
+                <Button x:Name="Button1" 
+                    Text="SIGN IN" 
+                    TextColor="Black" 
+                    BackgroundColor="Orange" 
+                    CornerRadius="5"  
+                    FontSize="18"  
+                    BorderWidth="3" 
+                    BorderColor="Black"
+                    IsEnabled="{Binding Path=IsEnabled}"
+                    Command="{Binding Path=NavigateToListView}">
+                    <Button.Triggers>
+                        <MultiTrigger TargetType="Button">
+                            <MultiTrigger.Conditions>
+                                <BindingCondition 
+                                Binding="{Binding Source={x:Reference LoginSignIn},
+                                Path=Text.Length, 
+                                Converter={StaticResource dataHasBeenEntered}}"
+                                Value="true"/>
+                                <BindingCondition 
+                                Binding="{Binding Source={x:Reference PasswordSignIn},
+                                Path=Text.Length, 
+                                Converter={StaticResource dataHasBeenEntered}}"
+                                Value="true"/>
+                            </MultiTrigger.Conditions>
+                            <Setter Property="IsEnabled" Value="True"/>
+                        </MultiTrigger>
+                    </Button.Triggers>
+                </Button>
+                <Label x:Name="LabelSingUp" 
+                   HorizontalTextAlignment="Center"
+                   Margin="10">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="SING UP" TextColor="Blue" FontSize="18">
+                                <Span.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Path=NavigationToSingUp}">
+                                    </TapGestureRecognizer>
+                                </Span.GestureRecognizers>
+                            </Span>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+            </StackLayout>
+        </Grid>
+        
+    </Grid>
+</ContentPage>

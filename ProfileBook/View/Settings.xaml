@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ProfileBook.View.Settings"
+             Title="{Binding TitlePage}"
+             BackgroundColor="{AppThemeBinding Light=Green, Dark=Red}">
+    <ContentPage.Content>
+        <Grid RowDefinitions="auto, auto, auto, auto" Padding="20" BackgroundColor="Bisque">
+            <Grid Grid.Row="0" Padding="15">
+                <StackLayout>
+                    <Label Text="Select sorting option:"
+                           TextColor="Blue"
+                           FontSize="22"/>
+                    <RadioButton Content="By the Name" IsChecked="{Binding IsCheckedName}"/>
+                    <RadioButton Content="By the NickName" IsChecked="{Binding IsCheckedNickName}"/>
+                    <RadioButton Content="By date added to the database" IsChecked="{Binding IsCheckedDataAddedToTheDB}"/>
+                </StackLayout>
+            </Grid>
+            <Grid  Grid.Row="1" ColumnDefinitions="*,150" Padding="15"  BackgroundColor="Azure" >
+                <Label Text="Enable dark theme:"
+                           FontSize="22"
+                           TextColor="Blue"
+                           Grid.Column="0"/>
+                <CheckBox Grid.Column="1"
+                          IsChecked="{Binding IsCheckedTheme}"
+                          ></CheckBox>
+            </Grid>
+            <Grid Grid.Row="2" Padding="15">
+                <Label Text="Change the language"
+                       Grid.Column="0"
+                       FontSize="22"
+                       BackgroundColor="Aquamarine"
+                       TextColor="{AppThemeBinding Light=Blue, Dark=Red }"
+                       ></Label>
+            </Grid>
+            <Grid Grid.Row="3" Padding="15">
+                <Button Text="Save"
+                        BackgroundColor="Bisque"
+                        TextColor="Red" FontSize="22"
+                        VerticalOptions="End"
+                        Command="{Binding Path=SaveCommand}"
+                        Grid.Column="0"
+                        BorderColor="OrangeRed"
+                        BorderWidth="2"
+                        Margin="5"/>
+                <Button Grid.Column="1" 
+                        Text="Cancel" 
+                        BackgroundColor="Bisque"
+                        TextColor="Red"
+                        FontSize="22"
+                        BorderColor="OrangeRed"
+                        BorderWidth="2"
+                        Margin="5"
+                        Command="{Binding Path=CancelCommand}"/>
+            </Grid>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

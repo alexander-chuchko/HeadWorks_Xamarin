@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ProfileBook.View.MainList"
+             xmlns:local="clr-namespace:ProfileBook.ViewModel"
+             xmlns:prism="clr-namespace:Prism.Unity;assembly=Prism.Unity.Forms"
+             Title="{Binding TitlePage, Mode=TwoWay}">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem IconImageSource="ic_exit_to_app.png" Priority="1" Order="Primary" Command="{Binding NavigationToSingIn}"/>
+        <ToolbarItem IconImageSource="ic_settings.png" Priority="2" Order="Primary" Command="{Binding NavigationToSettingsView}"/>
+    </ContentPage.ToolbarItems>
+    <Grid RowDefinitions="Auto" BackgroundColor="Bisque">
+        <ListView x:Name="MyListView" 
+                  Margin="15" 
+                  Grid.Row="1" 
+                  ItemsSource="{Binding ProfileList}"
+                  SelectedItem="{Binding Path=ProfileModel}"
+                  HasUnevenRows="True" 
+                  IsVisible="{Binding IsVisableListView}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <ViewCell.ContextActions>
+                            <MenuItem Text="EDIT" Command="{Binding Path=BindingContext.UpdateCommand, Source={x:Reference Name=MyListView}}" CommandParameter="{Binding .}"/>
+                            <MenuItem Text="DELETE" Command="{Binding Path=BindingContext.RemoveCommand, Source={x:Reference Name=MyListView}}" CommandParameter="{Binding .}"/>
+                        </ViewCell.ContextActions>
+                        <ViewCell.View>
+                            <StackLayout Orientation="Horizontal">
+                                <Image Source="{Binding ImageSource}"
+                                       WidthRequest="80"
+                                       HeightRequest="80"
+                                       Margin="10"/>
+                                <StackLayout Orientation="Vertical"  Margin="10">
+                                    <Label TextColor="Black"
+                                           Text="{Binding NickName}"/>
+                                    <Label TextColor="Black"
+                                           Text="{Binding Name}"/>
+                                    <Label TextColor="Black"
+                                           Text="{Binding MomentOfRegistration}"/>
+                            </StackLayout>
+                            </StackLayout>
+                        </ViewCell.View>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <Label IsVisible="{Binding IsVisableLabel}" 
+               HorizontalOptions="CenterAndExpand"  
+               VerticalOptions="CenterAndExpand"
+               Grid.Row="1" 
+               FontSize="28" 
+               TextColor="Brown" 
+               Text="No profiles added."/>
+        <Button Grid.Row="1"
+                Text="ADD" 
+                BorderColor="CadetBlue" 
+                BorderWidth="3" 
+                FontAttributes="Bold" 
+                BackgroundColor="Gray" 
+                BorderRadius="40" 
+                TextColor="Pink"
+                FontSize="20"
+                HorizontalOptions="End" 
+                WidthRequest="80" 
+                HeightRequest="80" 
+                Margin="0,0,20,22" 
+                VerticalOptions="End"
+                Command="{Binding Path=NavigationToAddProfileUser}"/>
+    </Grid>
+</ContentPage>
