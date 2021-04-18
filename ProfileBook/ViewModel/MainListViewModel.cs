@@ -19,12 +19,12 @@ namespace ProfileBook.ViewModel
     {
         #region---PrivateFields---
         private string _titlePage;
-        private bool _isVisableLabel;
+        private bool _isVisibleLabel;
         private IDialogService _dialogService;
         private IProfileService _profileService;
         private IAuthorization _authorization;
         private ObservableCollection<ProfileModel> profilelList;
-        private bool _isVisableListView;
+        private bool _isVisibleListView;
         private ProfileModel _profileModel;
         private string _nameCheckedButton;
         #endregion
@@ -59,13 +59,13 @@ namespace ProfileBook.ViewModel
         }
         public bool IsVisableListView
         {
-            get => _isVisableListView;
-            set => SetProperty(ref _isVisableListView, value);
+            get => _isVisibleListView;
+            set => SetProperty(ref _isVisibleListView, value);
         }
         public bool IsVisableLabel
         {
-            get => _isVisableLabel;
-            set => SetProperty(ref _isVisableLabel, value);
+            get => _isVisibleLabel;
+            set => SetProperty(ref _isVisibleLabel, value);
         }
         public string TitlePage
         {
