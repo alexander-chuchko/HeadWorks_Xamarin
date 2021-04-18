@@ -4,7 +4,7 @@ using Xamarin.Forms.Xaml;
 namespace ProfileBook.Styles
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class LightTheme : ResourceDictionary
+    public partial class LightTheme: ResourceDictionary
     {
         public LightTheme()
         {

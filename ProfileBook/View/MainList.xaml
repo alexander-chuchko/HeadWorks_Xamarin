@@ -9,7 +9,7 @@
         <ToolbarItem IconImageSource="ic_exit_to_app.png" Priority="1" Order="Primary" Command="{Binding NavigationToSingIn}"/>
         <ToolbarItem IconImageSource="ic_settings.png" Priority="2" Order="Primary" Command="{Binding NavigationToSettingsView}"/>
     </ContentPage.ToolbarItems>
-    <Grid RowDefinitions="Auto" BackgroundColor="Bisque">
+    <Grid RowDefinitions="Auto">
         <ListView x:Name="MyListView" 
                   Margin="15" 
                   Grid.Row="1" 

@@ -60,18 +60,46 @@ namespace ProfileBook.ViewModel
             }
             await _navigationService.NavigateAsync(($"/{ nameof(NavigationPage)}/{ nameof(MainList)}"));
         }
+        public enum Theme
+        {
+            Light,
+            Dark
+        }
+
+        [System.Obsolete]
+        public void SetTheme(Theme theme)
+        {
+            Device.BeginInvokeOnMainThread(() =>
+            {
+                switch (theme)
+                {
+                    case Theme.Dark:
+                        Application.Current.Resources.MergedWith = typeof(DarkTheme);
+                        break;
+                    case Theme.Light:
+                        Application.Current.Resources.MergedWith = typeof(LightTheme);
+                        break;
+                    default:
+                        break;
+                }
+            });
+        }
+
+        [System.Obsolete]
         public void ExecuteChangedSettingsColor()
         {
             OSAppTheme currentTheme = Application.Current.RequestedTheme;
+            SetTheme(Theme.Dark);
             if (true)
             {
+                Application.Current.UserAppTheme = OSAppTheme.Dark;
                 if (false)
                 {
                     //Application.Current.UserAppTheme= OSAppTheme.Light;
                 }
                 else
                 {
-                    Application.Current.Resources = new DarkTheme();
+                   // Application.Current.Resources = new DarkTheme();
                     //Application.Current.UserAppTheme = OSAppTheme.Dark;
                 }
                 //SetTheme(Application.Current.RequestedTheme);

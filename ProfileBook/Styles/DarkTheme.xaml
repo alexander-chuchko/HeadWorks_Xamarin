@@ -10,19 +10,5 @@
     <Color x:Key="SecondaryTextColor">White</Color>
     <Color x:Key="TertiaryTextColor">WhiteSmoke</Color>
     <Color x:Key="TransparentColor">Transparent</Color>
-    <Style x:Key="Title" TargetType="Label">
-        <Setter Property="TextColor" Value="{StaticResource TextPrimaryColor}"/>
-        <Setter Property="FontAttributes" Value="Bold"/>
-        <Setter Property="FontSize" Value="Large"/>
-    </Style>
-            <Style x:Key="ButtonStyle"
-               TargetType="Button">
-            <Setter Property="BackgroundColor"
-                    Value="{StaticResource NavigationBarColor }" />
-            <Setter Property="TextColor"
-                    Value="{StaticResource PageBackgroundColor}" />
-        </Style>
-    <Style x:Key="NavigationPage" TargetType="NavigationPage">
-        <Setter Property="NavigationPage.BackgroundColor" Value="{StaticResource NavigationBarColor}"></Setter>
-    </Style>
+    <Color x:Key="GridColor">Gray</Color>
 </ResourceDictionary>

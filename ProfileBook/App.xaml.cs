@@ -39,6 +39,7 @@ namespace ProfileBook
         {
             
         }
+        
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
             #region ---Service---

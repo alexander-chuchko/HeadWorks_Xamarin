@@ -3,27 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="ProfileBook.View.Settings"
              Title="{Binding TitlePage}">
-    <ContentPage.Resources>
-        <!-- Light colors -->
-        <Color x:Key="LightPrimaryColor">WhiteSmoke</Color>
-        <Color x:Key="LightSecondaryColor">Black</Color>
-        <!-- Dark colors -->
-        <Color x:Key="DarkPrimaryColor">Teal</Color>
-        <Color x:Key="DarkSecondaryColor">White</Color>
-        <Style TargetType="Grid" x:Key="Gr">
-            <Setter Property="BackgroundColor" Value="{AppThemeBinding Light=Red, Dark=Orange}"/>
-        </Style>
-        <Style x:Key="ButtonStyle"
-               TargetType="Button">
-            <Setter Property="BackgroundColor"
-                    Value="{AppThemeBinding Light={StaticResource LightPrimaryColor}, Dark={StaticResource DarkPrimaryColor}}" />
-            <Setter Property="TextColor"
-                    Value="{AppThemeBinding Light={StaticResource LightSecondaryColor}, Dark={StaticResource DarkSecondaryColor}}" />
-        </Style>
-    </ContentPage.Resources>
     <ContentPage.Content>
-        <Grid RowDefinitions="auto, auto, auto, auto" Padding="20" 
-              BackgroundColor="{AppThemeBinding Light=Orange, Dark={StaticResource DarkSecondaryColor}}" >
+        <Grid RowDefinitions="auto, auto, auto, auto" Padding="20">
             <Grid Grid.Row="0" Padding="15">
                 <StackLayout>
                     <Label Text="Select sorting option:"
@@ -66,8 +47,7 @@
                         BorderColor="OrangeRed"
                         BorderWidth="2"
                         Margin="5"
-                        Command="{Binding Path=CancelCommand}"
-                        Style="{StaticResource ButtonStyle}"/>
+                        Command="{Binding Path=CancelCommand}"/>
             </Grid>
         </Grid>
     </ContentPage.Content>

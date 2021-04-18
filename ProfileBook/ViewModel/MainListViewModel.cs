@@ -23,7 +23,7 @@ namespace ProfileBook.ViewModel
         private IDialogService _dialogService;
         private IProfileService _profileService;
         private IAuthorization _authorization;
-        private ObservableCollection<ProfileModel> profilelList;
+        private ObservableCollection<ProfileModel> _profilelList;
         private bool _isVisibleListView;
         private ProfileModel _profileModel;
         private string _nameCheckedButton;
@@ -74,8 +74,10 @@ namespace ProfileBook.ViewModel
         }
         public ObservableCollection<ProfileModel> ProfileList
         {
-            get => profilelList;
-            set => SetProperty(ref profilelList, value);
+            set { _profilelList = value; }
+            get { return _profilelList; }
+            //get => profilelList;
+            //set => SetProperty(ref profilelList, value);
         }
         #endregion
         #region---Methods---
