@@ -2,10 +2,28 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="ProfileBook.View.Settings"
-             Title="{Binding TitlePage}"
-             BackgroundColor="{AppThemeBinding Light=Green, Dark=Red}">
+             Title="{Binding TitlePage}">
+    <ContentPage.Resources>
+        <!-- Light colors -->
+        <Color x:Key="LightPrimaryColor">WhiteSmoke</Color>
+        <Color x:Key="LightSecondaryColor">Black</Color>
+        <!-- Dark colors -->
+        <Color x:Key="DarkPrimaryColor">Teal</Color>
+        <Color x:Key="DarkSecondaryColor">White</Color>
+        <Style TargetType="Grid" x:Key="Gr">
+            <Setter Property="BackgroundColor" Value="{AppThemeBinding Light=Red, Dark=Orange}"/>
+        </Style>
+        <Style x:Key="ButtonStyle"
+               TargetType="Button">
+            <Setter Property="BackgroundColor"
+                    Value="{AppThemeBinding Light={StaticResource LightPrimaryColor}, Dark={StaticResource DarkPrimaryColor}}" />
+            <Setter Property="TextColor"
+                    Value="{AppThemeBinding Light={StaticResource LightSecondaryColor}, Dark={StaticResource DarkSecondaryColor}}" />
+        </Style>
+    </ContentPage.Resources>
     <ContentPage.Content>
-        <Grid RowDefinitions="auto, auto, auto, auto" Padding="20" BackgroundColor="Bisque">
+        <Grid RowDefinitions="auto, auto, auto, auto" Padding="20" 
+              BackgroundColor="{AppThemeBinding Light=Orange, Dark={StaticResource DarkSecondaryColor}}" >
             <Grid Grid.Row="0" Padding="15">
                 <StackLayout>
                     <Label Text="Select sorting option:"
@@ -14,6 +32,7 @@
                     <RadioButton Content="By the Name" IsChecked="{Binding IsCheckedName}"/>
                     <RadioButton Content="By the NickName" IsChecked="{Binding IsCheckedNickName}"/>
                     <RadioButton Content="By date added to the database" IsChecked="{Binding IsCheckedDataAddedToTheDB}"/>
+                    <RadioButton Content="By date added to the database" IsChecked="{Binding IsCheckedTheme}"/>
                 </StackLayout>
             </Grid>
             <Grid  Grid.Row="1" ColumnDefinitions="*,150" Padding="15"  BackgroundColor="Azure" >
@@ -30,12 +49,10 @@
                        Grid.Column="0"
                        FontSize="22"
                        BackgroundColor="Aquamarine"
-                       TextColor="{AppThemeBinding Light=Blue, Dark=Red }"
                        ></Label>
             </Grid>
             <Grid Grid.Row="3" Padding="15">
                 <Button Text="Save"
-                        BackgroundColor="Bisque"
                         TextColor="Red" FontSize="22"
                         VerticalOptions="End"
                         Command="{Binding Path=SaveCommand}"
@@ -45,13 +62,12 @@
                         Margin="5"/>
                 <Button Grid.Column="1" 
                         Text="Cancel" 
-                        BackgroundColor="Bisque"
-                        TextColor="Red"
                         FontSize="22"
                         BorderColor="OrangeRed"
                         BorderWidth="2"
                         Margin="5"
-                        Command="{Binding Path=CancelCommand}"/>
+                        Command="{Binding Path=CancelCommand}"
+                        Style="{StaticResource ButtonStyle}"/>
             </Grid>
         </Grid>
     </ContentPage.Content>

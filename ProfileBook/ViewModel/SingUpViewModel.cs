@@ -13,33 +13,32 @@ namespace ProfileBook.ViewModel
 {
     class SingUpViewModel: BaseViewModel
     {
-        //fields of class
+        #region---PrivateFields---
         private string _titlePage;
         private string _login;
         private string _password;
         private string _confirmPasword;
         private bool _isEnabled;
-
-        public ICommand SignUpCommand { get; set; }
-        public ICommand CommandGoBack { get; set; }
-        //private INavigationService _navigationService;
         private IAuthenticationService _authenticationService;
         private IUserService _userService;
         private ObservableCollection<UserModel> _userList;
         private UserModel _userModel;
+        #endregion
         public SingUpViewModel(INavigationService navigationService, IAuthenticationService authenticationService, IUserService userService): base(navigationService)
         {
             IsEnabled = false;
             Login = string.Empty;
             Password = string.Empty;
             ConfirmPassword = string.Empty;
-            //_navigationService = navigationService;
             _authenticationService = authenticationService;
             _userService = userService;
             SignUpCommand = new DelegateCommand(Execute, CanExecute).ObservesProperty(() => IsEnabled);
             CommandGoBack = new DelegateCommand(ExecuteGoBack);
             TitlePage = ($"{ nameof(SignUp)}");  
         }
+        #region---PublicProperties---
+        public ICommand SignUpCommand { get; set; }
+        public ICommand CommandGoBack { get; set; }
         public string TitlePage
         {
             get => _titlePage;
@@ -75,6 +74,8 @@ namespace ProfileBook.ViewModel
             set { _userModel = value; }
             get { return _userModel; }
         }
+        #endregion
+        #region---Methods---
         public async void ExecuteGoBack()
         {
             var parametr = new NavigationParameters();
@@ -94,61 +95,78 @@ namespace ProfileBook.ViewModel
             CreateUserModel();
             _userService.InsertUserModel(UserModel);
         }
+        //Authentication methods
+        private bool IsValidLogin()
+        {
+            var validationResult = true;
+            if (!Validation.IsValidatedLogin(Login))
+            {
+                validationResult = false;
+                ListOfMessages.ShowRequirementsToLogin();
+            }  
+            return validationResult;
+        }
+        private bool IsLinesMatch()
+        {
+            var comparisonResult = true; ;
+            if(!Validation.CompareStrings(Password, ConfirmPassword))
+            {
+                comparisonResult = false;
+                ListOfMessages.ShowRequirementsForPasswordAndConfirmPassword();
+            }
+            return comparisonResult;
+        }
+        private bool IsValidPassword()
+        {
+            var validationResult = true;
+            if (!Validation.IsValidatedPassword(Password))
+            {
+                validationResult = false;
+                ListOfMessages.ShowRequirementsToLogin();
+            }
+            return validationResult;
+        }
+        private bool IsLoginUnique()
+        {
+            var resultAuthentication = true;
+            if(!_authenticationService.IsLoginUniqe(UserList, Login))
+            {
+                resultAuthentication = false;
+                ListOfMessages.ShowThisLoginIsAlreadyTaken(); 
+            }
+            return resultAuthentication;
+        }
+        private void ClearFields()
+        {
+            Login = string.Empty;
+            Password = string.Empty;
+            ConfirmPassword = string.Empty;
+        }
         public void Execute()
         {
-            var executionResult = false;
-            if (Validation.IsValidatedLogin(Login))
+            if(IsValidLogin()&& IsLinesMatch()&& IsValidPassword()&& IsLoginUnique())
             {
-                if(Validation.CompareStrings(Password, ConfirmPassword))
-                {
-                    if(Validation.IsValidatedPassword(Password))
-                    {
-                        if(_authenticationService.IsLoginUniqe(UserList, Login))
-                        {
-                            executionResult = true;
-                            AddUserModel();
-                            ExecuteGoBack(); 
-                        }
-                        else
-                        {
-                            ListOfMessages.ShowThisLoginIsAlreadyTaken();
-                        }
-                    }
-                    else
-                    {
-                        ListOfMessages.ShowRequirementsToPassword();
-                    }
-                }
-                else
-                {
-                    ListOfMessages.ShowRequirementsForPasswordAndConfirmPassword();
-                }
+                AddUserModel();
+                ExecuteGoBack();
             }
             else
             {
-                ListOfMessages.ShowRequirementsToLogin();
-            }
-            if(!executionResult)
-            {
-                Login = string.Empty;
-                Password = string.Empty;
-                ConfirmPassword = string.Empty;
+                ClearFields();
             }
         }
         public bool CanExecute()
         {
             return IsEnabled;
         }
-        //Метод срабатывает при переходе на страницу View
-        #region---Overrides---
+        #endregion
+        #region---OverloadedMethods---
         public override async Task InitializeAsync(INavigationParameters parameters)
         {
-            //Написать проверку
-            //Get a profileList from the repository
-            //var userList = await _repository.GetAllAsync<UserModel>();
             var userList = await _userService.GetAllUserModel();
-            //Set a profilelist in the ProfileList
-            UserList = new ObservableCollection<UserModel>(userList);
+            if(userList!=null)
+            {
+                UserList = new ObservableCollection<UserModel>(userList);
+            }
         }
         #endregion
     }

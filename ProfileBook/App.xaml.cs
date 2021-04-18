@@ -17,7 +17,7 @@ using Xamarin.Forms;
 namespace ProfileBook
 {
     public partial class App : PrismApplication
-    { 
+    {
         public App():this(null)
         {
             
@@ -63,10 +63,7 @@ namespace ProfileBook
             containerRegistry.RegisterForNavigation<MainList, MainListViewModel>();
             containerRegistry.RegisterForNavigation<AddEditProfilePage, AddEditProfilePageViewModel>();
             containerRegistry.RegisterForNavigation<Settings, SettingsViewModel>();
-            containerRegistry.RegisterForNavigation<PopupImage, PopupImageViewModel>();
             containerRegistry.RegisterDialog<PopupsContent, PopupsContentViewModel>();
-
-            containerRegistry.RegisterForNavigation<ShowPicture, ShowImageViewModel>();
         }
         protected override async void OnInitialized()
         {

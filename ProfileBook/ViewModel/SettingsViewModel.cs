@@ -2,6 +2,7 @@
 using Prism.Mvvm;
 using Prism.Navigation;
 using ProfileBook.Service.Authorization;
+using ProfileBook.Styles;
 using ProfileBook.View;
 using System.ComponentModel;
 using System.Windows.Input;
@@ -12,14 +13,14 @@ namespace ProfileBook.ViewModel
     public class SettingsViewModel: BindableBase
     {
         private IAuthorization _authorization;
-        INavigationService _navigationService;
+        private INavigationService _navigationService;
         private bool _isCheckedName;
         private bool _isCheckedNickName;
         private bool _isCheckedDataAddedToTheDB;
         private bool _isCheckedTheme;
         private string _titlePage;
         private bool _isVisibleButton;
-        public ICommand Command { get; set; }
+        public ICommand ThemeCommand { get; set; }
         public ICommand SaveCommand { get; set; }
         public ICommand CancelCommand { get; set; }
         public SettingsViewModel(INavigationService navigationService, IAuthorization authorization)
@@ -27,7 +28,7 @@ namespace ProfileBook.ViewModel
             TitlePage = ($"{ nameof(Settings)}");
             _authorization = authorization;
             _navigationService = navigationService;
-            Command = new Command(ExecuteChangedSettingsColor);
+            ThemeCommand = new Command(ExecuteChangedSettingsColor);
             SaveCommand = new Command(SaveSettings);
             CancelCommand = new Command(CancelSettings);
             IsCheckedName = _authorization.IsSortByName();
@@ -64,7 +65,34 @@ namespace ProfileBook.ViewModel
             OSAppTheme currentTheme = Application.Current.RequestedTheme;
             if (true)
             {
-                Application.Current.UserAppTheme = OSAppTheme.Dark;
+                if (false)
+                {
+                    //Application.Current.UserAppTheme= OSAppTheme.Light;
+                }
+                else
+                {
+                    Application.Current.Resources = new DarkTheme();
+                    //Application.Current.UserAppTheme = OSAppTheme.Dark;
+                }
+                //SetTheme(Application.Current.RequestedTheme);
+
+                //Application.Current.RequestedThemeChanged += (s, a) => { SetTheme(a.RequestedTheme); };
+                //Application.Current.UserAppTheme = OSAppTheme.Dark//Application.Current.UserAppTheme = OSAppTheme.Dark;
+            }
+        }
+        private void SetTheme(OSAppTheme appTheme)
+        {
+            switch (appTheme)
+            {
+                case OSAppTheme.Dark:
+                    Application.Current.Resources = new DarkTheme();
+                    break;
+                case OSAppTheme.Light:
+                    Application.Current.Resources = new LightTheme();
+                    break;
+                case OSAppTheme.Unspecified:
+                    Application.Current.Resources = new LightTheme();
+                    break;
             }
         }
         public bool IsVisibleButton
@@ -100,7 +128,10 @@ namespace ProfileBook.ViewModel
         protected override void OnPropertyChanged(PropertyChangedEventArgs args)
         {
             base.OnPropertyChanged(args);
-
+            if(args.PropertyName == nameof(IsCheckedTheme))
+            {
+                ExecuteChangedSettingsColor();
+            }
         }
     }
 }

@@ -11,38 +11,42 @@ using Prism.Services.Dialogs;
 using ProfileBook.Service.Profile;
 using Acr.UserDialogs;
 using ProfileBook.Service.Authorization;
+using ProfileBook.Extension;
 
 namespace ProfileBook.ViewModel
 {
     public class MainListViewModel:BaseViewModel
     {
+        #region---PrivateFields---
         private string _titlePage;
         private bool _isVisableLabel;
-        private IDialogService _diulogService;
+        private IDialogService _dialogService;
         private IProfileService _profileService;
         private IAuthorization _authorization;
         private ObservableCollection<ProfileModel> profilelList;
         private bool _isVisableListView;
         private ProfileModel _profileModel;
         private string _nameCheckedButton;
-        public ICommand NavigationToSettingsView { get; set; }
-        public ICommand NavigationToAddProfileUser { get; set; }
-        public ICommand NavigationToSingIn { get; set; }
-        public ICommand RemoveCommand { protected set; get; }
-        public ICommand UpdateCommand { protected set; get; }
+        #endregion
         public MainListViewModel(INavigationService navigationService, IDialogService diulogService, IProfileService profileService, IAuthorization authorization):base(navigationService)
         {
             TitlePage = ($"{ nameof(MainList)}");
             _authorization = authorization;
             _profileService = profileService;
-            _diulogService = diulogService;
+            _dialogService = diulogService;
             NavigationToSettingsView = new Command(ExecuteGoToSettingsPage);
             NavigationToAddProfileUser = new Command(ExecuteGoToAddProfileUser);
             RemoveCommand = new Command(RemoveModel);
             UpdateCommand = new Command(UpdateModel);
             NavigationToSingIn = new Command(ExecuteGoBack);
+            ProfileList = new ObservableCollection<ProfileModel>();
         }
         #region---PublicProperties---
+        public ICommand NavigationToSettingsView { get; set; }
+        public ICommand NavigationToAddProfileUser { get; set; }
+        public ICommand NavigationToSingIn { get; set; }
+        public ICommand RemoveCommand { protected set; get; }
+        public ICommand UpdateCommand { protected set; get; }
         public string NameIsChecked
         {
             set => SetProperty(ref _nameCheckedButton, value);
@@ -74,8 +78,7 @@ namespace ProfileBook.ViewModel
             set => SetProperty(ref profilelList, value);
         }
         #endregion
-
-        #region---PrivateMethods---
+        #region---Methods---
         private async void ExecuteGoToAddProfileUser()
         {
             await _navigationService.NavigateAsync(($"{ nameof(AddEditProfilePage)}"));
@@ -128,13 +131,13 @@ namespace ProfileBook.ViewModel
         #endregion
         public void OnShowDialogExecuted()
         {
-            _diulogService.ShowDialog("PopupsContent", new DialogParameters
+            _dialogService.ShowDialog("PopupsContent", new DialogParameters
             {
                 {"message", ProfileModel.ImageSource}
             });
         }
         #endregion
-        #region ---Overriding---
+        #region---OverloadedMethods---
         public override async Task InitializeAsync(INavigationParameters parameters)
         {
             var listOfUsers = await _profileService.GetAllProfileModel();
@@ -150,19 +153,23 @@ namespace ProfileBook.ViewModel
                 var resultsOfSelectingProfilesById = listOfUsers.Where(x => x.UserId == _authorization.GetIdCurrentUser());
                 if(_authorization.IsSortByName())
                 {
-                    ProfileList = new ObservableCollection<ProfileModel>(resultsOfSelectingProfilesById.OrderBy(x => x.Name).ToList());
+                    ProfileList.AddRange(resultsOfSelectingProfilesById.OrderBy(x => x.Name).ToList());
+                    //ProfileList = new ObservableCollection<ProfileModel>(resultsOfSelectingProfilesById.OrderBy(x => x.Name).ToList());
                 }
                 else if(_authorization.IsSortByNickName())
                 {
-                    ProfileList= new ObservableCollection<ProfileModel>(resultsOfSelectingProfilesById.OrderBy(x => x.NickName).ToList());
+                    ProfileList.AddRange(resultsOfSelectingProfilesById.OrderBy(x => x.NickName).ToList());
+                    //ProfileList= new ObservableCollection<ProfileModel>(resultsOfSelectingProfilesById.OrderBy(x => x.NickName).ToList());
                 }
                 else if(_authorization.IsSortByDateAddedToDatabase())
                 {
-                    ProfileList= new ObservableCollection<ProfileModel>(resultsOfSelectingProfilesById.OrderBy(x => x.MomentOfRegistration).ToList());
+                    ProfileList.AddRange(resultsOfSelectingProfilesById.OrderBy(x => x.MomentOfRegistration).ToList());
+                    //ProfileList= new ObservableCollection<ProfileModel>(resultsOfSelectingProfilesById.OrderBy(x => x.MomentOfRegistration).ToList());
                 }
                 else
                 {
-                    ProfileList = new ObservableCollection<ProfileModel>(resultsOfSelectingProfilesById);
+                    ProfileList.AddRange(resultsOfSelectingProfilesById);
+                    //ProfileList = new ObservableCollection<ProfileModel>(resultsOfSelectingProfilesById);
                 }
             }
         }

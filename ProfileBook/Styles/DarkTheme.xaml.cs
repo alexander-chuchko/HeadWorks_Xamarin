@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-namespace ProfileBook.View
+namespace ProfileBook.Styles
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class ShowPicture
+    public partial class DarkTheme: ResourceDictionary
     {
-        public ShowPicture()
+        public DarkTheme()
         {
             InitializeComponent();
         }

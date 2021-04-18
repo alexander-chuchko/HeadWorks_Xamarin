@@ -161,10 +161,7 @@ namespace ProfileBook.ViewModel
                 PathPicture = result.FullPath;
             }
         }
-        public void OnNavigatedFrom(INavigationParameters parameters)
-        {
-            throw new NotImplementedException();
-        }
+        public void OnNavigatedFrom(INavigationParameters parameters){}
         public void OnNavigatedTo(INavigationParameters parameters)
         {
             if (parameters.Count != 0)
