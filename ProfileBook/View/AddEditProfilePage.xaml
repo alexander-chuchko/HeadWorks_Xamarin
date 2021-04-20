@@ -11,7 +11,7 @@
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.ToolbarItems>
-        <ToolbarItem IconImageSource="ic_save.png" Priority="1" Order="Primary" Command="{Binding NavigationCommand}"/>
+        <ToolbarItem IconImageSource="ic_save.png" Priority="1" Order="Primary" Command="{Binding SaveCommand}"/>
     </ContentPage.ToolbarItems>
     <Grid Padding="30" BackgroundColor="Bisque">
         <Grid.RowDefinitions>

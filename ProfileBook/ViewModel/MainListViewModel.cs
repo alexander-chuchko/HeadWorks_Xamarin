@@ -74,10 +74,10 @@ namespace ProfileBook.ViewModel
         }
         public ObservableCollection<ProfileModel> ProfileList
         {
-            set { _profilelList = value; }
-            get { return _profilelList; }
-            //get => profilelList;
-            //set => SetProperty(ref profilelList, value);
+            //set { _profilelList = value; }
+            //get { return _profilelList; }
+            get => _profilelList;
+            set => SetProperty(ref _profilelList, value);
         }
         #endregion
         #region---Methods---
@@ -123,7 +123,7 @@ namespace ProfileBook.ViewModel
                 var result = await UserDialogs.Instance.ConfirmAsync(confirmConfig);
                 if (result)
                 {
-                    _profileService.RemoveProfileModel(profileModel);
+                    await _profileService.RemoveProfileModel(profileModel);
                     ProfileList.Remove(profileModel);
                 }
             }

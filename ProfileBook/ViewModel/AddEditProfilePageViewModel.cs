@@ -9,6 +9,7 @@ using ProfileBook.View;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -31,7 +32,7 @@ namespace ProfileBook.ViewModel
         private IProfileService _profileService;
         private INavigationService _navigationService;
         public ICommand TapCommand { get; set; }
-        public ICommand NavigationCommand { get; set; }
+        public ICommand SaveCommand { get; set; }
         public AddEditProfilePageViewModel(INavigationService navigationService, IAuthorization authorization, IProfileService profileService):base()
         {
             _navigationService = navigationService;
@@ -40,7 +41,7 @@ namespace ProfileBook.ViewModel
             Name = string.Empty;
             NickName = string.Empty;
             IsEnable = false;
-            NavigationCommand = new Command(NavigationToMainList);
+            SaveCommand = new Command(SaveProfileModel);
              TapCommand = new Command(TouchedPicture);
             OpenGallery = SelectImage;
             TakePhoto = TakingPictures;
@@ -97,33 +98,39 @@ namespace ProfileBook.ViewModel
             config.Cancel = cancel;
             userDialogs.ActionSheet(config);
         }
-        public void NavigationToMainList()
+
+        public bool IsFieldsFilled()
         {
-            if (Validation.IsInformationInNameAndNickName(Name, NickName))
-            {
-                if (ProfileUser != null)
-                {
-                    UpdateProfileModel();
-                }
-                else
-                {
-                    AddProfileModel();
-                }
-                ExecuteNavigateToNavigationToMainList();
-            }
-            else
+            var resultFilling = true;
+            if (!Validation.IsInformationInNameAndNickName(Name, NickName))
             {
                 ListOfMessages.ShowInformationIsMissingInTheFieldsNameAndNickName();
             }
+            return resultFilling;
         }
-        public void UpdateProfileModel()
+        public async void SaveProfileModel()
+        {
+            if (IsFieldsFilled())
+            {
+                if (ProfileUser != null)
+                {
+                    await UpdateProfileModel();
+                }
+                else
+                {
+                    await AddProfileModel();
+                }
+                ExecuteNavigateToNavigationToMainList();
+            }
+        }
+        public async Task UpdateProfileModel()
         {
             ProfileUser.ImageSource = PathPicture;
             ProfileUser.Name = Name;
             ProfileUser.NickName = NickName;
-            _profileService.UpdateProfileModel(ProfileUser);
+            await _profileService.UpdateProfileModel(ProfileUser);
         }
-        public void AddProfileModel()
+        public async Task AddProfileModel()
         {
             ProfileModel profileModel = new ProfileModel()
             {
@@ -134,7 +141,7 @@ namespace ProfileBook.ViewModel
                 Name = Name,
                 NickName = NickName
             };
-            _profileService.InsertProfileModel(profileModel);
+            await _profileService.InsertProfileModel(profileModel);
         }
         public async void SelectImage()
         {

@@ -72,6 +72,5 @@
                 </Label>
             </StackLayout>
         </Grid>
-        
     </Grid>
 </ContentPage>

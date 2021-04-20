@@ -8,9 +8,9 @@ namespace ProfileBook.Service.User
 {
     public interface IUserService
     {
-        void UpdateUserModel(UserModel userModel);
-        void InsertUserModel(UserModel userModel);
-        void RemoveUserModel(UserModel userModel);
+        Task UpdateUserModel(UserModel userModel);
+        Task InsertUserModel(UserModel userModel);
+        Task RemoveUserModel(UserModel userModel);
         Task<List<UserModel>> GetAllUserModel();
     }
 }

@@ -6,18 +6,17 @@
 <prism:PrismApplication.Resources>
         <ResourceDictionary>
             <Style TargetType="Button">
-                <Setter Property="BackgroundColor" Value="{x:DynamicResource NavigationBarColor}"/>
-                <Setter Property="TextColor" Value="{x:DynamicResource PageBackgroundColor}"/>
-                <Setter Property="BorderColor" Value="{x:DynamicResource PageBackgroundColor}"/>
-            </Style>
-            <Style TargetType="Grid">
-                <Setter Property="BackgroundColor"  Value="{x:DynamicResource GridColor}"/>
-            </Style>
+                    <Setter Property="BackgroundColor" Value="{x:DynamicResource NavigationBarColor}"/>
+                    <Setter Property="TextColor" Value="{x:DynamicResource PageBackgroundColor}"/>
+                    <Setter Property="BorderColor" Value="{x:DynamicResource PageBackgroundColor}"/>
+                </Style>
+                <Style TargetType="Grid">
+                    <Setter Property="BackgroundColor"  Value="{x:DynamicResource GridColor}"/>
+                </Style>
             <Style TargetType="NavigationPage">
                 <Setter Property="BarBackgroundColor" Value="{x:DynamicResource NavigationBarColor}"/>
                 <Setter Property="BarTextColor" Value="{x:DynamicResource PrimaryTextColor}"/>
             </Style>
-            <Style TargetType="ContentPage"></Style>
         </ResourceDictionary>
         </prism:PrismApplication.Resources>
 </prism:PrismApplication>

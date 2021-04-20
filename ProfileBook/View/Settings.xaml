@@ -6,6 +6,7 @@
     <ContentPage.Content>
         <Grid RowDefinitions="auto, auto, auto, auto" Padding="20">
             <Grid Grid.Row="0" Padding="15">
+                <Frame BackgroundColor="Transparent" CornerRadius="10" OutlineColor="Gray" Opacity="0.7" Padding="10">
                 <StackLayout>
                     <Label Text="Select sorting option:"
                            TextColor="Blue"
@@ -15,6 +16,7 @@
                     <RadioButton Content="By date added to the database" IsChecked="{Binding IsCheckedDataAddedToTheDB}"/>
                     <RadioButton Content="By date added to the database" IsChecked="{Binding IsCheckedTheme}"/>
                 </StackLayout>
+                   </Frame>
             </Grid>
             <Grid  Grid.Row="1" ColumnDefinitions="*,150" Padding="15"  BackgroundColor="Azure" >
                 <Label Text="Enable dark theme:"

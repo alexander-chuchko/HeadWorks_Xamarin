@@ -8,9 +8,9 @@ namespace ProfileBook.Service.Profile
 {
     public interface IProfileService
     {
-        void UpdateProfileModel(ProfileModel profileModel);
-        void InsertProfileModel(ProfileModel profileModel);
-        void RemoveProfileModel(ProfileModel profileModel);
+        Task UpdateProfileModel(ProfileModel profileModel);
+        Task InsertProfileModel(ProfileModel profileModel);
+        Task RemoveProfileModel(ProfileModel profileModel);
         Task<List<ProfileModel>> GetAllProfileModel();
     }
 }

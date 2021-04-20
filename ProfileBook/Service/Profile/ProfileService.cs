@@ -28,7 +28,7 @@ namespace ProfileBook.Service.Profile
             return userModels;
         }
 
-        public async void InsertProfileModel(ProfileModel profileModel)
+        public async Task InsertProfileModel(ProfileModel profileModel)
         {
             try
             {
@@ -39,7 +39,7 @@ namespace ProfileBook.Service.Profile
                 UserDialogs.Instance.Alert(ex.Message);
             }
         }
-        public async void RemoveProfileModel(ProfileModel profileModel)
+        public async Task RemoveProfileModel(ProfileModel profileModel)
         {
             try
             {
@@ -53,7 +53,7 @@ namespace ProfileBook.Service.Profile
                 UserDialogs.Instance.Alert(ex.Message);
             }
         }
-        public async void UpdateProfileModel(ProfileModel profileModel)
+        public async Task UpdateProfileModel(ProfileModel profileModel)
         {
             try
             {

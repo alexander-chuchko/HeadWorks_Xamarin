@@ -1,9 +1,9 @@
-﻿using Prism.Commands;
-using Prism.Mvvm;
+﻿using Prism.Mvvm;
 using Prism.Navigation;
 using ProfileBook.Service.Authorization;
 using ProfileBook.Styles;
 using ProfileBook.View;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Input;
 using Xamarin.Forms;
@@ -23,6 +23,8 @@ namespace ProfileBook.ViewModel
         public ICommand ThemeCommand { get; set; }
         public ICommand SaveCommand { get; set; }
         public ICommand CancelCommand { get; set; }
+
+        [System.Obsolete]
         public SettingsViewModel(INavigationService navigationService, IAuthorization authorization)
         {
             TitlePage = ($"{ nameof(Settings)}");
@@ -65,10 +67,30 @@ namespace ProfileBook.ViewModel
             Light,
             Dark
         }
+        public void SetTheme1(Theme theme)
+        {
+            ICollection<ResourceDictionary> mergedDictionaries = Application.Current.Resources.MergedDictionaries;
+            if (mergedDictionaries != null)
+            {
+                mergedDictionaries.Clear();
 
+                switch (theme)
+                {
+                    case Theme.Dark:
+                        mergedDictionaries.Add(new DarkTheme());
+                        break;
+                    case Theme.Light:
+                    default:
+                        mergedDictionaries.Add(new LightTheme());
+                        break;
+                }
+            }
+        }
+        /*
         [System.Obsolete]
         public void SetTheme(Theme theme)
         {
+            ICollection<ResourceDictionary> mergedDictionaries = Application.Current.Resources.MergedDictionaries;
             Device.BeginInvokeOnMainThread(() =>
             {
                 switch (theme)
@@ -84,30 +106,14 @@ namespace ProfileBook.ViewModel
                 }
             });
         }
-
-        [System.Obsolete]
+        */
         public void ExecuteChangedSettingsColor()
         {
-            OSAppTheme currentTheme = Application.Current.RequestedTheme;
-            SetTheme(Theme.Dark);
-            if (true)
-            {
-                Application.Current.UserAppTheme = OSAppTheme.Dark;
-                if (false)
-                {
-                    //Application.Current.UserAppTheme= OSAppTheme.Light;
-                }
-                else
-                {
-                   // Application.Current.Resources = new DarkTheme();
-                    //Application.Current.UserAppTheme = OSAppTheme.Dark;
-                }
-                //SetTheme(Application.Current.RequestedTheme);
-
-                //Application.Current.RequestedThemeChanged += (s, a) => { SetTheme(a.RequestedTheme); };
-                //Application.Current.UserAppTheme = OSAppTheme.Dark//Application.Current.UserAppTheme = OSAppTheme.Dark;
-            }
+            //OSAppTheme currentTheme = Application.Current.RequestedTheme;
+            SetTheme1(Theme.Dark);
         }
+
+        /*
         private void SetTheme(OSAppTheme appTheme)
         {
             switch (appTheme)
@@ -123,6 +129,7 @@ namespace ProfileBook.ViewModel
                     break;
             }
         }
+        */
         public bool IsVisibleButton
         {
             set => SetProperty(ref _isVisibleButton, value);

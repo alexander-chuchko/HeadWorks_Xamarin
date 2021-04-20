@@ -90,11 +90,7 @@ namespace ProfileBook.ViewModel
                 Password = Password
             };
         }
-        public void AddUserModel()
-        {
-            CreateUserModel();
-            _userService.InsertUserModel(UserModel);
-        }
+
         //Authentication methods
         private bool IsValidLogin()
         {
@@ -142,11 +138,16 @@ namespace ProfileBook.ViewModel
             Password = string.Empty;
             ConfirmPassword = string.Empty;
         }
-        public void Execute()
+        public async Task AddUserModel()
+        {
+            CreateUserModel();
+            await _userService.InsertUserModel(UserModel);
+        }
+        public async void Execute()
         {
             if(IsValidLogin()&& IsLinesMatch()&& IsValidPassword()&& IsLoginUnique())
             {
-                AddUserModel();
+                await AddUserModel();
                 ExecuteGoBack();
             }
             else
