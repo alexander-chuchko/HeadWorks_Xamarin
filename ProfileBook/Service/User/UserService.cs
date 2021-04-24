@@ -17,7 +17,7 @@ namespace ProfileBook.Service.User
             _navigationService = navigationService;
             _repository = repository;
         }
-        public async Task<List<UserModel>> GetAllUserModel()
+        public async Task<List<UserModel>> GetAllUserModelAsync()
         {
             List<UserModel> userModels = null;
             try
@@ -30,21 +30,24 @@ namespace ProfileBook.Service.User
             }
             return userModels;
         }
-        public async Task RemoveUserModel(UserModel userModel)
+        public async Task RemoveUserModelAsync(UserModel userModel)
         {
+            //var operationResult = false;
             try
             {
                 if (userModel != null)
                 {
                     await _repository.DeleteAsync(userModel);
+                    //operationResult = true;
                 }
             }
             catch(Exception ex)
             {
                 UserDialogs.Instance.Alert(ex.Message);
             }
+            //return operationResult;
         }
-        public async Task InsertUserModel(UserModel userModel)
+        public async Task InsertUserModelAsync(UserModel userModel)
         {
             try
             {
@@ -55,7 +58,7 @@ namespace ProfileBook.Service.User
                 UserDialogs.Instance.Alert(ex.Message);
             }
         }
-        public async Task UpdateUserModel(UserModel userModel)
+        public async Task UpdateUserModelAsync(UserModel userModel)
         {
             try
             {

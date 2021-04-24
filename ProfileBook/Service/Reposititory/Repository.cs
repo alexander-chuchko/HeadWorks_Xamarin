@@ -9,12 +9,12 @@ using System.Threading.Tasks;
 
 namespace ProfileBook.Service.Repository
 {
-    class Repository : IRepository
+    public class Repository : IRepository
     {
-        readonly Lazy<SQLiteAsyncConnection> database;
+        private readonly Lazy<SQLiteAsyncConnection> _database;
         public Repository()
         {
-            database = new Lazy<SQLiteAsyncConnection>(() =>
+            _database = new Lazy<SQLiteAsyncConnection>(() =>
               {
                   //Get the path to local folder 
                   var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "profilebook.db3");
@@ -29,19 +29,19 @@ namespace ProfileBook.Service.Repository
         }
         public async Task<int> DeleteAsync<T>(T entity) where T : IEntityBase, new()
         {
-            return await database.Value.DeleteAsync(entity);
+            return await _database.Value.DeleteAsync(entity);
         }
         public async Task<List<T>> GetAllAsync<T>() where T : IEntityBase, new()
         {
-            return await database.Value.Table<T>().ToListAsync();
+            return await _database.Value.Table<T>().ToListAsync();
         }
         public async Task<int> InsertAsync<T>(T entity) where T : IEntityBase, new()
         {
-            return await database.Value.InsertAsync(entity);
+            return await _database.Value.InsertAsync(entity);
         }
         public async Task<int> UpdateAsync<T>(T entity) where T : IEntityBase, new()
         {
-            return await database.Value.UpdateAsync(entity);
+            return await _database.Value.UpdateAsync(entity);
         }
     }
 }

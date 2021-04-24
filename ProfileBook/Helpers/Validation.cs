@@ -1,5 +1,4 @@
-﻿using Acr.UserDialogs;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 
 namespace ProfileBook
 {
@@ -33,7 +32,8 @@ namespace ProfileBook
         public static bool CompareStrings(string password, string confirmPassword)
         {
             var comparisonResult = false;
-            if (string.Compare(password, confirmPassword, false)==0)
+            var returnedResult = string.Compare(password, confirmPassword, false);
+            if (returnedResult == 0)
             {
                 comparisonResult = true;
             }
@@ -43,7 +43,6 @@ namespace ProfileBook
         public static bool IsInformationInNameAndNickName(string name, string nickName)
         {
             var validationResult = false;
-            //Дописать проверку string Empty
             if (!string.IsNullOrEmpty(name) && !string.IsNullOrEmpty(nickName))
             {
                 validationResult = true;

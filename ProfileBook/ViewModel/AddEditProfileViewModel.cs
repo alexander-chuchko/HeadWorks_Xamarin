@@ -16,7 +16,7 @@ using Xamarin.Forms;
 
 namespace ProfileBook.ViewModel
 {
-    public class AddEditProfilePageViewModel: BindableBase, INavigatedAware
+    public class AddEditProfileViewModel: BindableBase, INavigatedAware
     {
         private string _titlePage;
         private string _nickName;
@@ -28,15 +28,15 @@ namespace ProfileBook.ViewModel
         public Action OpenGallery { get; set; }
         public Action TakePhoto { get; set; }
 
-        private IAuthorization _authorization;
+        private IAuthorizationService _authorizationService;
         private IProfileService _profileService;
         private INavigationService _navigationService;
         public ICommand TapCommand { get; set; }
         public ICommand SaveCommand { get; set; }
-        public AddEditProfilePageViewModel(INavigationService navigationService, IAuthorization authorization, IProfileService profileService):base()
+        public AddEditProfileViewModel(INavigationService navigationService, IAuthorizationService authorizationService, IProfileService profileService):base()
         {
             _navigationService = navigationService;
-            _authorization = authorization;
+            _authorizationService = authorizationService;
             _profileService = profileService;
             Name = string.Empty;
             NickName = string.Empty;
@@ -104,6 +104,7 @@ namespace ProfileBook.ViewModel
             var resultFilling = true;
             if (!Validation.IsInformationInNameAndNickName(Name, NickName))
             {
+                resultFilling = false;
                 ListOfMessages.ShowInformationIsMissingInTheFieldsNameAndNickName();
             }
             return resultFilling;
@@ -128,20 +129,20 @@ namespace ProfileBook.ViewModel
             ProfileUser.ImageSource = PathPicture;
             ProfileUser.Name = Name;
             ProfileUser.NickName = NickName;
-            await _profileService.UpdateProfileModel(ProfileUser);
+            await _profileService.UpdateProfileModelAsync(ProfileUser);
         }
         public async Task AddProfileModel()
         {
             ProfileModel profileModel = new ProfileModel()
             {
-                UserId = _authorization.GetIdCurrentUser(),
+                UserId = _authorizationService.GetIdCurrentUser(),
                 Description = Description,
                 ImageSource = PathPicture,
                 MomentOfRegistration = DateTime.Now,
                 Name = Name,
                 NickName = NickName
             };
-            await _profileService.InsertProfileModel(profileModel);
+            await _profileService.InsertProfileModelAsync(profileModel);
         }
         public async void SelectImage()
         {

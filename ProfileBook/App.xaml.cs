@@ -42,7 +42,7 @@ namespace ProfileBook
         
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            #region ---Service---
+
             //Services
             containerRegistry.RegisterPopupNavigationService();
             containerRegistry.RegisterPopupDialogService();
@@ -51,18 +51,14 @@ namespace ProfileBook
             containerRegistry.RegisterInstance<IProfileService>(Container.Resolve<ProfileService>());
             containerRegistry.RegisterInstance<IAuthenticationService>(Container.Resolve<AuthenticationService>());
             containerRegistry.RegisterInstance<ISettingsManager>(Container.Resolve<SettingsManager>());
-            containerRegistry.RegisterInstance<IAuthorization>(Container.Resolve<Authorization>());
+            containerRegistry.RegisterInstance<IAuthorizationService>(Container.Resolve<AuthorizationService>());
 
-            #endregion
-
-            //Navigation
-            //регистрируем страницу навигации
+            //Registration
             containerRegistry.RegisterForNavigation<NavigationPage>();
-            //регистрируем страницы в контейнере
             containerRegistry.RegisterForNavigation<MainPage, MainPageViewModel>();
             containerRegistry.RegisterForNavigation<SignUp, SingUpViewModel>();
             containerRegistry.RegisterForNavigation<MainList, MainListViewModel>();
-            containerRegistry.RegisterForNavigation<AddEditProfilePage, AddEditProfilePageViewModel>();
+            containerRegistry.RegisterForNavigation<AddEditProfilePage, AddEditProfileViewModel>();
             containerRegistry.RegisterForNavigation<Settings, SettingsViewModel>();
             containerRegistry.RegisterDialog<PopupsContent, PopupsContentViewModel>();
         }
@@ -70,7 +66,8 @@ namespace ProfileBook
         {
             InitializeComponent();
             //Кладем первую страницу в стек навигации
-            var result=await NavigationService.NavigateAsync("NavigationPage/MainPage");
+            //var result=await NavigationService.NavigateAsync("NavigationPage/MainPage");
+            var result = await NavigationService.NavigateAsync($"{nameof(NavigationPage)}/{nameof(MainPage)}");
             //var result = await NavigationService.NavigateAsync($"{nameof(MainPage)}"));
             //var result = await NavigationService.NavigateAsync(($"{ nameof(SignUp)}"));
             //var result = await NavigationService.NavigateAsync(($"{nameof(NavigationPage)}/{ nameof(MainList)}"));

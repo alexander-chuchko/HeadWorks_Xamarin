@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="ProfileBook.View.Settings"
-             Title="{Binding TitlePage}">
+             Title="{Binding Path=TitlePage}">
     <ContentPage.Content>
         <Grid RowDefinitions="auto, auto, auto, auto" Padding="20">
             <Grid Grid.Row="0" Padding="15">
@@ -18,7 +18,9 @@
                 </StackLayout>
                    </Frame>
             </Grid>
-            <Grid  Grid.Row="1" ColumnDefinitions="*,150" Padding="15"  BackgroundColor="Azure" >
+            <Grid  Grid.Row="1" ColumnDefinitions="*,150" Padding="15">
+                <Frame BackgroundColor="Transparent" CornerRadius="10" OutlineColor="Gray" Opacity="0.7" Padding="10">
+                    <StackLayout Orientation="Horizontal">
                 <Label Text="Enable dark theme:"
                            FontSize="22"
                            TextColor="Blue"
@@ -26,6 +28,8 @@
                 <CheckBox Grid.Column="1"
                           IsChecked="{Binding IsCheckedTheme}"
                           ></CheckBox>
+                    </StackLayout>
+                </Frame>
             </Grid>
             <Grid Grid.Row="2" Padding="15">
                 <Label Text="Change the language"

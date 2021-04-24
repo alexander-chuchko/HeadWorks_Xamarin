@@ -1,15 +1,10 @@
-﻿using System;
-using Android.App;
+﻿using Android.App;
 using Android.Content.PM;
 using Android.Runtime;
-using Android.Views;
-using Android.Widget;
 using Android.OS;
-using Unity;
 using Prism;
 using Prism.Ioc;
 using Acr.UserDialogs;
-using Prism.Plugin.Popups;
 
 namespace ProfileBook.Droid
 {
@@ -28,15 +23,12 @@ namespace ProfileBook.Droid
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
 
             global::Rg.Plugins.Popup.Popup.Init(this, savedInstanceState);
-            //Rg.Plugins.Popup.Popup.Init(this);
             LoadApplication(new App(new AndroidInitializer()));
-            //LoadApplication(new App());
         }
         public class AndroidInitializer: IPlatformInitializer 
         {
             public void RegisterTypes(IContainerRegistry containerRegistry)
             {
-            
             }
         }
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)

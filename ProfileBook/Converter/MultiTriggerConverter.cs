@@ -8,16 +8,19 @@ namespace ProfileBook.Converter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if ((int)value > 0) // length > 0 ?
-                // some data has been entered
+            if ((int)value > 0)
+            {
                 return true;
+            }  
             else
-                // input is empty
+            {
                 return false;
+            }  
         }
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            throw new NotImplementedException();
+            return value;
+            //return Convert(value, targetType, parameter, culture);
         }
     }
 }

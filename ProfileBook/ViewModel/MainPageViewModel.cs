@@ -1,9 +1,9 @@
-﻿using Prism.Commands;
-using Prism.Navigation;
+﻿using Prism.Navigation;
 using ProfileBook.Helpers;
 using ProfileBook.Model;
 using ProfileBook.Service;
 using ProfileBook.Service.Authorization;
+using ProfileBook.Service.Profile;
 using ProfileBook.Service.User;
 using ProfileBook.View;
 using System.Collections.ObjectModel;
@@ -25,22 +25,24 @@ namespace ProfileBook.ViewModel
 
         private IAuthenticationService _authenticationService;
         private IUserService _userService;
-        private IAuthorization _authorization;
+        private IAuthorizationService _authorizationService;
+        private IProfileService _profileService;
         private ObservableCollection<UserModel> _userList;
         private UserModel _userModel;
         public ICommand NavigationToSingUp { get; set; }
         public ICommand NavigateToListView { get; set; }
 
-        public MainPageViewModel(INavigationService navigationService, IAuthenticationService authenticationService, IAuthorization authorization, IUserService userService):base(navigationService)
+        public MainPageViewModel(INavigationService navigationService, IAuthenticationService authenticationService, IAuthorizationService authorizationService, IUserService userService, IProfileService profileService) :base(navigationService)
         {
             IsEnabled = false;
             Login = string.Empty;
             Password = string.Empty;
             _authenticationService = authenticationService;
-            _authorization = authorization;
+            _authorizationService = authorizationService;
             _userService = userService;
-            NavigateToListView = new DelegateCommand(Execute, CanExecute).ObservesProperty(() => IsEnabled);//For verefication and navigation
-            NavigationToSingUp = new DelegateCommand(ExecuteNavigateToSignUp); //NavigationToSingUp for navigation to page SignUp(Tab Label)
+            _profileService = profileService;
+            NavigateToListView = new Command(ExecuteNavigationToMainList);
+            NavigationToSingUp = new Command(ExecuteNavigateToSignUp);
             TitlePage = ($"{ nameof(MainPage)}");
         }
         public string TitlePage
@@ -65,8 +67,8 @@ namespace ProfileBook.ViewModel
         }
         public UserModel UserModel
         {
-            get { return _userModel;}
-            set { _userModel=value;}
+            get { return _userModel; }
+            set { SetProperty(ref _userModel, value); }
         }
         public ObservableCollection<UserModel> UserList
         {
@@ -82,11 +84,11 @@ namespace ProfileBook.ViewModel
         {
             await _navigationService.NavigateAsync(($"{ nameof(SignUp)}"));
         }
-        public async void Execute()
+        public async void ExecuteNavigationToMainList()
         {
             if (_authenticationService.IsRelevantLoginAndPassword(UserList, Login, Password))
             {
-                Id = _authenticationService.GetRegisteredUserId();
+                Id = _authenticationService.Id;
                 await _navigationService.NavigateAsync(($"/{ nameof(NavigationPage)}/{ nameof(MainList)}"));
             }
             else
@@ -95,10 +97,6 @@ namespace ProfileBook.ViewModel
                 Login = string.Empty;
                 Password = string.Empty;
             }
-        }
-        public bool CanExecute()
-        {
-            return IsEnabled;
         }
         #region ---Overriding---
         public override void OnNavigatedTo(INavigationParameters parameters)
@@ -112,7 +110,7 @@ namespace ProfileBook.ViewModel
         public override void OnNavigatedFrom(INavigationParameters parameters) { }
         public override async Task InitializeAsync(INavigationParameters parameters)
         {
-            var userList = await _userService.GetAllUserModel();
+            var userList = await _userService.GetAllUserModelAsync();
             UserList = new ObservableCollection<UserModel>(userList);
         }
         protected override void OnPropertyChanged(PropertyChangedEventArgs args)
@@ -120,11 +118,13 @@ namespace ProfileBook.ViewModel
             base.OnPropertyChanged(args);
             if (args.PropertyName == nameof(Id))
             {
-                if (_authorization.GetIdCurrentUser() != 0)
+                //In case of incorrect exit from the application, we check
+                if (_authorizationService.GetIdCurrentUser() != 0||_profileService.GetValueSortByDateAddedToDatabase()||_profileService.GetValueSortByNickName()||_profileService.GetValueToSortByName())
                 {
-                    _authorization.ClearAllSettings();
+                    _profileService.DeleteAllSortSettings();
+                    _authorizationService.RemoveIdCurrentUser();
                 }
-                _authorization.SetIdCurrentUser(Id);
+                _authorizationService.SetIdCurrentUser(Id);
             }
         }
         #endregion

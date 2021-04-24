@@ -4,7 +4,7 @@
              x:Class="ProfileBook.MainPage"
              xmlns:local="clr-namespace:ProfileBook.Converter"
              xmlns:prism="clr-namespace:Prism.Unity;assembly=Prism.Unity.Forms"
-             Title="{Binding TitlePage}">
+             Title="{Binding Path=TitlePage}">
     <ContentPage.Resources>
         <ResourceDictionary>
             <local:MultiTriggerConverter x:Key="dataHasBeenEntered"/>

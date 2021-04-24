@@ -3,15 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="ProfileBook.View.AddEditProfilePage"
              xmlns:local="clr-namespace:ProfileBook;assembly=ProfileBook"
-             xmlns:local1="clr-namespace:ProfileBook.Converter"
-             Title="{Binding TitlePage}">
-    <ContentPage.Resources>
-        <ResourceDictionary>
-            <local1:TriggerConverter x:Key="dataHasBeenEntered"/>
-        </ResourceDictionary>
-    </ContentPage.Resources>
+             Title="{Binding Path=TitlePage}">
     <ContentPage.ToolbarItems>
-        <ToolbarItem IconImageSource="ic_save.png" Priority="1" Order="Primary" Command="{Binding SaveCommand}"/>
+        <ToolbarItem IconImageSource="ic_save.png" Priority="1" Order="Primary" Command="{Binding Path=SaveCommand}"/>
     </ContentPage.ToolbarItems>
     <Grid Padding="30" BackgroundColor="Bisque">
         <Grid.RowDefinitions>
@@ -25,7 +19,7 @@
         </Grid.ColumnDefinitions>
         <Image  Grid.Row="0" Grid.Column="0" x:Name="resultImage" Source="{Binding PathPicture, Mode=TwoWay}">
             <Image.GestureRecognizers>
-                <TapGestureRecognizer  NumberOfTapsRequired="1" Command="{Binding Path= TapCommand}">
+                <TapGestureRecognizer  NumberOfTapsRequired="1" Command="{Binding Path=TapCommand}">
                 </TapGestureRecognizer>
             </Image.GestureRecognizers>
         </Image>

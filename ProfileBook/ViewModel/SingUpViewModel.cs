@@ -141,7 +141,7 @@ namespace ProfileBook.ViewModel
         public async Task AddUserModel()
         {
             CreateUserModel();
-            await _userService.InsertUserModel(UserModel);
+            await _userService.InsertUserModelAsync(UserModel);
         }
         public async void Execute()
         {
@@ -163,7 +163,7 @@ namespace ProfileBook.ViewModel
         #region---OverloadedMethods---
         public override async Task InitializeAsync(INavigationParameters parameters)
         {
-            var userList = await _userService.GetAllUserModel();
+            var userList = await _userService.GetAllUserModelAsync();
             if(userList!=null)
             {
                 UserList = new ObservableCollection<UserModel>(userList);

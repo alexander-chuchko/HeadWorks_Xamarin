@@ -12,7 +12,7 @@ namespace ProfileBook.Dialogs
         private string _pathImage;
         private ProfileModel _profileModel;
         private readonly INavigationService _navigationService;
-        public IDialogService _dialogService { get; }
+        private readonly IDialogService _dialogService; //{ get; }
 
         public PopupsContentViewModel(INavigationService navigationService, IDialogService dialogService)
         {
@@ -21,7 +21,7 @@ namespace ProfileBook.Dialogs
             CloseCommand = new DelegateCommand(() => RequestClose?.Invoke(null));
         }
         public DelegateCommand CloseCommand { get; }
-
+        
         public event Action<IDialogParameters> RequestClose;
 
         public bool CanCloseDialog() => true;
@@ -31,7 +31,7 @@ namespace ProfileBook.Dialogs
         }
         public void OnDialogOpened(IDialogParameters parameters)
         {
-            PathImage = parameters.GetValue<string>("message");
+            PathImage = parameters.GetValue<string>("path");
         }
         public ProfileModel ProfileModel
         {

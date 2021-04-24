@@ -1,6 +1,7 @@
 ﻿using Prism.Mvvm;
 using Prism.Navigation;
 using ProfileBook.Service.Authorization;
+using ProfileBook.Service.Profile;
 using ProfileBook.Styles;
 using ProfileBook.View;
 using System.Collections.Generic;
@@ -12,8 +13,9 @@ namespace ProfileBook.ViewModel
 {
     public class SettingsViewModel: BindableBase
     {
-        private IAuthorization _authorization;
+        private IAuthorizationService _authorizationService;
         private INavigationService _navigationService;
+        private IProfileService _profileService;
         private bool _isCheckedName;
         private bool _isCheckedNickName;
         private bool _isCheckedDataAddedToTheDB;
@@ -23,23 +25,22 @@ namespace ProfileBook.ViewModel
         public ICommand ThemeCommand { get; set; }
         public ICommand SaveCommand { get; set; }
         public ICommand CancelCommand { get; set; }
-
-        [System.Obsolete]
-        public SettingsViewModel(INavigationService navigationService, IAuthorization authorization)
+        public SettingsViewModel(INavigationService navigationService, IAuthorizationService authorizationService, IProfileService profileService)
         {
             TitlePage = ($"{ nameof(Settings)}");
-            _authorization = authorization;
+            _authorizationService = authorizationService;
             _navigationService = navigationService;
+            _profileService = profileService;
             ThemeCommand = new Command(ExecuteChangedSettingsColor);
             SaveCommand = new Command(SaveSettings);
             CancelCommand = new Command(CancelSettings);
-            IsCheckedName = _authorization.IsSortByName();
-            IsCheckedNickName = _authorization.IsSortByNickName();
-            IsCheckedDataAddedToTheDB = _authorization.IsSortByDateAddedToDatabase();
+            IsCheckedName = _profileService.GetValueToSortByName();
+            IsCheckedNickName = _profileService.GetValueSortByNickName();
+            IsCheckedDataAddedToTheDB = _profileService.GetValueSortByDateAddedToDatabase();
         }
         private async void CancelSettings()
         {
-            _authorization.DeleteAllSettings();
+            _profileService.DeleteAllSortSettings();
             IsCheckedName = false;
             IsCheckedNickName = false;
             IsCheckedDataAddedToTheDB = false;
@@ -47,18 +48,18 @@ namespace ProfileBook.ViewModel
         }
         private async void SaveSettings()
         {
-            _authorization.DeleteAllSettings();
+            _profileService.DeleteAllSortSettings();
             if (IsCheckedName)
             {
-                _authorization.SetValueToSortByName(IsCheckedName);
+                _profileService.SetValueToSortByName(IsCheckedName);
             }
             else if (IsCheckedNickName)
             {
-                _authorization.SetValueToSortByNickName(IsCheckedNickName);
+                _profileService.SetValueToSortByNickName(IsCheckedNickName);
             }
             else if (IsCheckedDataAddedToTheDB)
             {
-                _authorization.SetValueToSortByDateAddedToDatabase(IsCheckedDataAddedToTheDB);
+                _profileService.SetValueToSortByDateAddedToDatabase(IsCheckedDataAddedToTheDB);
             }
             await _navigationService.NavigateAsync(($"/{ nameof(NavigationPage)}/{ nameof(MainList)}"));
         }
@@ -67,13 +68,12 @@ namespace ProfileBook.ViewModel
             Light,
             Dark
         }
-        public void SetTheme1(Theme theme)
+        public void SetTheme(Theme theme)
         {
             ICollection<ResourceDictionary> mergedDictionaries = Application.Current.Resources.MergedDictionaries;
             if (mergedDictionaries != null)
             {
                 mergedDictionaries.Clear();
-
                 switch (theme)
                 {
                     case Theme.Dark:
@@ -86,50 +86,10 @@ namespace ProfileBook.ViewModel
                 }
             }
         }
-        /*
-        [System.Obsolete]
-        public void SetTheme(Theme theme)
-        {
-            ICollection<ResourceDictionary> mergedDictionaries = Application.Current.Resources.MergedDictionaries;
-            Device.BeginInvokeOnMainThread(() =>
-            {
-                switch (theme)
-                {
-                    case Theme.Dark:
-                        Application.Current.Resources.MergedWith = typeof(DarkTheme);
-                        break;
-                    case Theme.Light:
-                        Application.Current.Resources.MergedWith = typeof(LightTheme);
-                        break;
-                    default:
-                        break;
-                }
-            });
-        }
-        */
         public void ExecuteChangedSettingsColor()
         {
-            //OSAppTheme currentTheme = Application.Current.RequestedTheme;
-            SetTheme1(Theme.Dark);
+            SetTheme(Theme.Dark);
         }
-
-        /*
-        private void SetTheme(OSAppTheme appTheme)
-        {
-            switch (appTheme)
-            {
-                case OSAppTheme.Dark:
-                    Application.Current.Resources = new DarkTheme();
-                    break;
-                case OSAppTheme.Light:
-                    Application.Current.Resources = new LightTheme();
-                    break;
-                case OSAppTheme.Unspecified:
-                    Application.Current.Resources = new LightTheme();
-                    break;
-            }
-        }
-        */
         public bool IsVisibleButton
         {
             set => SetProperty(ref _isVisibleButton, value);

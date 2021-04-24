@@ -16,10 +16,5 @@ namespace ProfileBook.View
         {
             InitializeComponent();
         }
-
-        private void Onclick(object sender, EventArgs e)
-        {
-
-        }
     }
 }

@@ -39,7 +39,7 @@
     <EmbeddedResource Update="Styles\LightTheme.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="View\AddEditProfilePage.xaml">
+    <EmbeddedResource Update="View\AddEditProfile.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="View\MainList.xaml">
@@ -62,6 +62,9 @@
     </Compile>
     <Compile Update="Styles\DarkTheme.xaml.cs">
       <DependentUpon>DarkTheme.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="View\AddEditProfile.xaml.cs">
+      <DependentUpon>AddEditProfile.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
 </Project>

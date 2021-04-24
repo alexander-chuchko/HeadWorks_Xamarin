@@ -1,9 +1,8 @@
 ﻿using Acr.UserDialogs;
-using System;
 
 namespace ProfileBook.Helpers
 {
-    static class ListOfMessages
+    public static class ListOfMessages
     {
         public static void ShowInvalidloginOrPassword()
         {
