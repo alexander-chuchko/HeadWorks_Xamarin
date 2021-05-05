@@ -4,7 +4,6 @@ using ProfileBook.Helpers;
 using ProfileBook.Model;
 using ProfileBook.Service;
 using ProfileBook.Service.User;
-using ProfileBook.View;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -14,7 +13,6 @@ namespace ProfileBook.ViewModel
     class SingUpViewModel: BaseViewModel
     {
         #region---PrivateFields---
-        private string _titlePage;
         private string _login;
         private string _password;
         private string _confirmPasword;
@@ -32,47 +30,75 @@ namespace ProfileBook.ViewModel
             ConfirmPassword = string.Empty;
             _authenticationService = authenticationService;
             _userService = userService;
-            SignUpCommand = new DelegateCommand(Execute, CanExecute).ObservesProperty(() => IsEnabled);
-            CommandGoBack = new DelegateCommand(ExecuteGoBack);
-            TitlePage = ($"{ nameof(SignUp)}");  
+            SignUpCommand = new DelegateCommand(Execute, CanExecute).ObservesProperty(() => IsEnabled); 
         }
         #region---PublicProperties---
         public ICommand SignUpCommand { get; set; }
-        public ICommand CommandGoBack { get; set; }
-        public string TitlePage
-        {
-            get => _titlePage;
-            set => SetProperty(ref _titlePage, value);
-        }
         public string Login
         {
-            get => _login;
-            set => SetProperty(ref _login, value);
+            get
+            {
+                return _login;
+            }
+            set
+            {
+                SetProperty(ref _login, value);
+            }
         }
         public string Password
         {
-            get => _password;
-            set => SetProperty(ref _password, value);
+            get
+            {
+                return _password;
+            }
+            set
+            {
+                SetProperty(ref _password, value);
+            }
         }
         public string ConfirmPassword
         {
-            get => _confirmPasword;
-            set => SetProperty(ref _confirmPasword, value);
+            get
+            {
+                return _confirmPasword;
+            }
+            set
+            {
+                SetProperty(ref _confirmPasword, value);
+            }
         }
         public bool IsEnabled
         {
-            get { return _isEnabled; }
-            set { SetProperty(ref _isEnabled, value); }
+            get
+            {
+                return _isEnabled;
+            }
+            set
+            {
+                SetProperty(ref _isEnabled, value);
+            }
         }
         public ObservableCollection<UserModel> UserList
         {
-            set { _userList = value; }
-            get { return _userList; }
+            get
+            {
+                return _userList;
+            }
+            set
+            {
+                _userList = value;
+            }
         }
         public UserModel UserModel
         {
-            set { _userModel = value; }
-            get { return _userModel; }
+            set
+            {
+                _userModel = value;
+            }
+            get
+            {
+                return _userModel;
+            }
         }
         #endregion
         #region---Methods---

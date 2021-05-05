@@ -1,13 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:resource="clr-namespace:ProfileBook.Resource"
              x:Class="ProfileBook.View.AddEditProfilePage"
-             xmlns:local="clr-namespace:ProfileBook;assembly=ProfileBook"
-             Title="{Binding Path=TitlePage}">
+             BackgroundColor="{DynamicResource PageBackgroundColor}"
+             Title="{x:Static resource:AppResource.Titleaddprofile}">
     <ContentPage.ToolbarItems>
-        <ToolbarItem IconImageSource="ic_save.png" Priority="1" Order="Primary" Command="{Binding Path=SaveCommand}"/>
+        <ToolbarItem IconImageSource="ic_save.png"
+                     Priority="1"
+                     Order="Primary"
+                     Command="{Binding Path=SaveCommand}"/>
     </ContentPage.ToolbarItems>
-    <Grid Padding="30" BackgroundColor="Bisque">
+    <Grid Padding="30">
         <Grid.RowDefinitions>
             <RowDefinition Height="2*"/>
             <RowDefinition Height="60"/>
@@ -17,28 +21,36 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        <Image  Grid.Row="0" Grid.Column="0" x:Name="resultImage" Source="{Binding PathPicture, Mode=TwoWay}">
+        <Image Grid.Row="0"
+               Grid.Column="0"
+               Margin="10"
+               Aspect="AspectFit"
+               x:Name="resultImage"
+               Source="{Binding Path=PathPicture}">
             <Image.GestureRecognizers>
-                <TapGestureRecognizer  NumberOfTapsRequired="1" Command="{Binding Path=TapCommand}">
+                <TapGestureRecognizer  NumberOfTapsRequired="1"
+                                       Command="{Binding Path=TapCommand}">
                 </TapGestureRecognizer>
             </Image.GestureRecognizers>
         </Image>
-        <Entry Grid.Row="1" 
-               Placeholder="NickName"
+        <Entry  Grid.Row="1"
+               Placeholder="{x:Static resource:AppResource.Nickname}"
                Grid.Column="0"
-               Text="{Binding Path= NickName}">
+               Text="{Binding Path= NickName}"
+                Style="{StaticResource EntryStyle}">
         </Entry>
         <Entry Grid.Row="2" 
-               Placeholder="Name" 
+               Placeholder="{x:Static resource:AppResource.Name}" 
                Grid.Column="0" 
-               Text="{Binding Path= Name}">
+               Text="{Binding Path= Name}"
+               Style="{StaticResource EntryStyle}">
         </Entry>
-        <Editor Placeholder="Description"
+        <Editor Grid.Row="3"
+                Placeholder="{x:Static resource:AppResource.Description}"
                 MaxLength="120"
-                Grid.Row="3"
-                BackgroundColor="Azure"
                 Grid.Column="0"
-                Text="{Binding Path= Description}">
+                Text="{Binding Path= Description}"
+                Style="{StaticResource EditorStyle}">
         </Editor>
     </Grid>
 </ContentPage>

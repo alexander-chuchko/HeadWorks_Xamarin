@@ -33,6 +33,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Update="Resource\AppResource.fr.resx">
+      <Generator></Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resource\AppResource.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>AppResource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Update="Styles\DarkTheme.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
@@ -59,6 +66,11 @@
   <ItemGroup>
     <Compile Update="Dialogs\PopupsContent.xaml.cs">
       <DependentUpon>PopupsContent.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Resource\AppResource.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>AppResource.resx</DependentUpon>
     </Compile>
     <Compile Update="Styles\DarkTheme.xaml.cs">
       <DependentUpon>DarkTheme.xaml</DependentUpon>

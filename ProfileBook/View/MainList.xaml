@@ -1,13 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:resource="clr-namespace:ProfileBook.Resource"
              x:Class="ProfileBook.View.MainList"
-             xmlns:local="clr-namespace:ProfileBook.ViewModel"
-             xmlns:prism="clr-namespace:Prism.Unity;assembly=Prism.Unity.Forms"
-             Title="{Binding Path=TitlePage, Mode=TwoWay}">
+             BackgroundColor="{DynamicResource PageBackgroundColor}"
+             Title="{x:Static resource:AppResource.Titlemainlist}">
     <ContentPage.ToolbarItems>
-        <ToolbarItem IconImageSource="ic_exit_to_app.png" Priority="1" Order="Primary" Command="{Binding Path= NavigationToSingIn}"/>
-        <ToolbarItem IconImageSource="ic_settings.png" Priority="2" Order="Primary" Command="{Binding Path= NavigationToSettingsView}"/>
+        <ToolbarItem IconImageSource="ic_exit_to_app.png"
+                     Priority="1"
+                     Order="Primary"
+                     Command="{Binding Path= NavigationToSingIn}"/>
+        <ToolbarItem IconImageSource="ic_settings.png"
+                     Priority="2"
+                     Order="Primary"
+                     Command="{Binding Path= NavigationToSettingsView}"/>
     </ContentPage.ToolbarItems>
     <Grid RowDefinitions="Auto">
         <ListView x:Name="MyListView" 
@@ -21,8 +27,12 @@
                 <DataTemplate>
                     <ViewCell>
                         <ViewCell.ContextActions>
-                            <MenuItem Text="EDIT" Command="{Binding Path=BindingContext.UpdateCommand, Source={x:Reference Name=MyListView}}" CommandParameter="{Binding .}"/>
-                            <MenuItem Text="DELETE" Command="{Binding Path=BindingContext.RemoveCommand, Source={x:Reference Name=MyListView}}" CommandParameter="{Binding .}"/>
+                            <MenuItem Text="{x:Static resource:AppResource.Edit}"
+                                      Command="{Binding Path=BindingContext.UpdateCommand, Source={x:Reference Name=MyListView}}"
+                                      CommandParameter="{Binding .}"/>
+                            <MenuItem Text="{x:Static resource:AppResource.Delete}"
+                                      Command="{Binding Path=BindingContext.RemoveCommand, Source={x:Reference Name=MyListView}}"
+                                      CommandParameter="{Binding .}"/>
                         </ViewCell.ContextActions>
                         <ViewCell.View>
                             <StackLayout Orientation="Horizontal">
@@ -30,14 +40,11 @@
                                        WidthRequest="80"
                                        HeightRequest="80"
                                        Margin="10"/>
-                                <StackLayout Orientation="Vertical"  Margin="10">
-                                    <Label TextColor="Black"
-                                           Text="{Binding NickName}"/>
-                                    <Label TextColor="Black"
-                                           Text="{Binding Name}"/>
-                                    <Label TextColor="Black"
-                                           Text="{Binding MomentOfRegistration}"/>
-                            </StackLayout>
+                                <StackLayout Orientation="Vertical" Margin="10">
+                                    <Label Text="{Binding NickName}" Style="{StaticResource LabelStyleForListView}"/>
+                                    <Label Text="{Binding Name}" Style="{StaticResource LabelStyleForListView}"/>
+                                    <Label Text="{Binding MomentOfRegistration}" Style="{StaticResource LabelStyleForListView}"/>
+                                </StackLayout>
                             </StackLayout>
                         </ViewCell.View>
                     </ViewCell>
@@ -50,21 +57,22 @@
                Grid.Row="1" 
                FontSize="28" 
                TextColor="Brown" 
-               Text="No profiles added."/>
+               Text="{x:Static resource:AppResource.Noprofilesadded}"/>
         <Button Grid.Row="1"
-                Text="ADD" 
+                Text="+"
                 BorderColor="CadetBlue" 
                 BorderWidth="3" 
                 FontAttributes="Bold" 
                 BackgroundColor="Gray" 
                 BorderRadius="40" 
-                TextColor="Pink"
-                FontSize="20"
+                TextColor="White"
+                FontSize="42"
                 HorizontalOptions="End" 
                 WidthRequest="80" 
                 HeightRequest="80" 
                 Margin="0,0,20,22" 
                 VerticalOptions="End"
-                Command="{Binding Path=NavigationToAddProfileUser}"/>
+                Command="{Binding Path=NavigationToAddProfileUser}">
+        </Button>
     </Grid>
 </ContentPage>

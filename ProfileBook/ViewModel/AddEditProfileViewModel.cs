@@ -3,6 +3,7 @@ using Prism.Mvvm;
 using Prism.Navigation;
 using ProfileBook.Helpers;
 using ProfileBook.Model;
+using ProfileBook.Resource;
 using ProfileBook.Service.Authorization;
 using ProfileBook.Service.Profile;
 using ProfileBook.View;
@@ -18,7 +19,7 @@ namespace ProfileBook.ViewModel
 {
     public class AddEditProfileViewModel: BindableBase, INavigatedAware
     {
-        private string _titlePage;
+        //private string _titlePage;
         private string _nickName;
         private string _name;
         private string _description;
@@ -45,42 +46,44 @@ namespace ProfileBook.ViewModel
              TapCommand = new Command(TouchedPicture);
             OpenGallery = SelectImage;
             TakePhoto = TakingPictures;
-            TitlePage = ($"{ nameof(AddEditProfilePage)}");
+            //TitlePage = ($"{ nameof(AddEditProfilePage)}");
         }
         public bool IsEnable
         {
-            get => _isEnable;
-            set => SetProperty(ref _isEnable, value);
+            get{return _isEnable;}
+            set { SetProperty(ref _isEnable, value); }
         }
         public ProfileModel ProfileUser
         {
-            get => _profileUser;
-            set => SetProperty(ref _profileUser, value);
+            get { return _profileUser; }
+            set { SetProperty(ref _profileUser, value); }
         }
+        /*
         public string TitlePage
         {
             get => _titlePage;
             set => SetProperty(ref _titlePage, value);
         }
+        */
         public string NickName
         {
-            get => _nickName;
-            set => SetProperty(ref _nickName, value);
+            get { return _nickName; }
+            set { SetProperty(ref _nickName, value); }
         }
         public string Name
         {
-            get => _name;
-            set => SetProperty(ref _name, value);
+            get { return _name; }
+            set { SetProperty(ref _name, value); }
         }
         public string Description
         {
-            get => _description;
-            set => SetProperty(ref _description, value);
+            get { return _description; }
+            set { SetProperty(ref _description, value); }
         }
         public string PathPicture
         {
-            get => pathPicture;
-            set => SetProperty(ref pathPicture, value);
+            get { return pathPicture; }
+            set { SetProperty(ref pathPicture, value); }
         }
         public async void ExecuteNavigateToNavigationToMainList()
         {
@@ -91,14 +94,13 @@ namespace ProfileBook.ViewModel
             IUserDialogs userDialogs = UserDialogs.Instance;
             ActionSheetConfig config = new ActionSheetConfig();
             List<ActionSheetOption> Options = new List<ActionSheetOption>();
-            Options.Add(new ActionSheetOption("Pick at Gallery", OpenGallery, "folder_image.png"));
-            Options.Add(new ActionSheetOption("Take photo with camera", TakePhoto, "camera.png"));
-            ActionSheetOption cancel = new ActionSheetOption("Cancel", null, null);
+            Options.Add(new ActionSheetOption(AppResource.Pickatgallery, OpenGallery, "folder_image.png"));
+            Options.Add(new ActionSheetOption(AppResource.Takephotowithcamera, TakePhoto, "camera.png"));
+            ActionSheetOption cancel = new ActionSheetOption(AppResource.Cancel, null, null);
             config.Options = Options;
             config.Cancel = cancel;
             userDialogs.ActionSheet(config);
         }
-
         public bool IsFieldsFilled()
         {
             var resultFilling = true;
@@ -148,7 +150,7 @@ namespace ProfileBook.ViewModel
         {
             var result = await MediaPicker.PickPhotoAsync(new MediaPickerOptions
             {
-                Title = "Please pick a photo"
+                Title =AppResource.Pleasepickaphoto
             });
             if(result!=null)
             {

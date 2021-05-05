@@ -7,7 +7,11 @@ namespace ProfileBook.Service.Settings
         bool IsSortByName { get; set; }
         bool IsSortByNickName { get; set; }
         bool IsSortByDateAddedToDatabase { get; set; }
+        bool IsDarkTheme { get; set; }
+        string SelectedLanguage { get; set; }
         void RemoveCurrentId();
+        void RemoveDarkTheme();
+        void RemoveLanguage();
         void DeleteAllSortSettings();
     }
 }

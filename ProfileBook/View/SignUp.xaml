@@ -1,41 +1,38 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="ProfileBook.View.SignUp"
              xmlns:local="clr-namespace:ProfileBook.Converter"
-             xmlns:prism="clr-namespace:Prism.Unity;assembly=Prism.Unity.Forms"
-             Title="{Binding Path= TitlePage}">
+             xmlns:resource="clr-namespace:ProfileBook.Resource"
+             x:Class="ProfileBook.View.SignUp"
+             Title="{x:Static resource:AppResource.Titlesignup}">
     <ContentPage.Resources>
         <ResourceDictionary>
             <local:MultiTriggerConverter x:Key="dataHasBeenEntered"/>
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.Content>
-        <Grid RowDefinitions="0.75*, 0.25*" BackgroundColor="Bisque">
+        <Grid RowDefinitions="0.75*, 0.25*">
             <Grid Grid.Row="0">
                 <StackLayout VerticalOptions="Center"  Padding="30">
                     <Entry x:Name="LoginSignUP"
-                       Placeholder="Login"
+                       Placeholder="{x:Static resource:AppResource.Login}"
                        Text="{Binding Path=Login}"
-                       ClearButtonVisibility="WhileEditing"
-                       ></Entry>
+                       ClearButtonVisibility="WhileEditing"/>
                     <Entry x:Name="PasswordSignUp"
                        Placeholder="Password"
-                       IsPassword="True"
+                       IsPassword="False"
                        Text="{Binding Path= Password}"
-                       ClearButtonVisibility="WhileEditing"
-                       ></Entry>
+                       ClearButtonVisibility="WhileEditing"/>
                     <Entry x:Name="ConfirmPasswordSignUp"
-                       Placeholder="Confirm Password"
+                       Placeholder="{x:Static resource:AppResource.Confirmpassword}"
                        IsPassword="True"
                        Text="{Binding Path=ConfirmPassword}"
-                       ClearButtonVisibility="WhileEditing"
-                       ></Entry>
+                       ClearButtonVisibility="WhileEditing"/>
                 </StackLayout>
             </Grid>
             <Grid Grid.Row="1">
                 <StackLayout VerticalOptions="Start"  Padding="30">
-                    <Button Text="SIGN UP"
+                    <Button Text="{x:Static resource:AppResource.Signup}"
                         TextColor="Black"
                         BackgroundColor="Orange"
                         CornerRadius="5"

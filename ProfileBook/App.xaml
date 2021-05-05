@@ -3,26 +3,59 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:prism="clr-namespace:Prism.Unity;assembly=Prism.Unity.Forms"
              x:Class="ProfileBook.App">
-<prism:PrismApplication.Resources>
-        <ResourceDictionary>
-            <Style TargetType="Button">
-                <Setter Property="BackgroundColor" Value="{x:DynamicResource NavigationBarColor}"/>
-                <Setter Property="TextColor" Value="{x:DynamicResource SecondaryColor}"/>
-                <Setter Property="BorderColor" Value="{x:DynamicResource SecondaryColor}"/>
-            </Style>
-                <Style TargetType="Grid">
-                <Setter Property="BackgroundColor"  Value="{x:DynamicResource PageBackgroundColor}"/>
-                </Style>
-            <Style TargetType="NavigationPage">
-                <Setter Property="BarBackgroundColor" Value="{x:DynamicResource NavigationBarColor}"/>
-                <Setter Property="BarTextColor" Value="{x:DynamicResource PrimaryTextColor}"/>
-            </Style>
-            <Style TargetType="RadioButton">
-                <Setter Property="BackgroundColor" Value="{x:DynamicResource SecondaryColor}"/>
-            </Style>
-            <Style TargetType="Label">
-                <Setter Property="TextColor" Value="{x:DynamicResource PrimaryTextColor}"/>
-            </Style>
-        </ResourceDictionary>
-        </prism:PrismApplication.Resources>
+<Application.Resources>
+        <ResourceDictionary Source="Styles/LightTheme.xaml"/>
+        <Style TargetType="NavigationPage">
+            <Setter Property="BarBackgroundColor"
+                    Value="{DynamicResource NavigationBarColor}"/>
+            <Setter Property="BarTextColor"
+                    Value="{DynamicResource SecondaryColor}"/>
+        </Style>
+        <Style x:Key="ButtonStyle"
+               TargetType="Button">
+            <Setter Property="BackgroundColor"
+                    Value="{DynamicResource PrimaryColor}"/>
+            <Setter Property="TextColor"
+                    Value="{DynamicResource SecondaryColor}"/>
+        </Style>
+        <Style x:Key="NavigationButtonStyle"
+               TargetType="Button">
+            <Setter Property="BackgroundColor"
+                    Value="Transparent" />
+            <Setter Property="TextColor"
+                    Value="{DynamicResource SecondaryColor}"/>
+        </Style>
+        <Style x:Key="EntryStyle"
+               TargetType="Entry">
+            <Setter Property="TextColor"
+                    Value="{DynamicResource PrimaryTextColor}"/>
+            <Setter Property="PlaceholderColor"
+                    Value="{DynamicResource TertiaryTextColor}"/>
+            <Setter Property="BackgroundColor"
+                    Value="{DynamicResource EntryBackgroundColor}"/>
+        </Style>
+    
+        <Style x:Key="RadioButton"
+               TargetType="RadioButton">
+            <Setter Property="TextColor" Value="{DynamicResource PrimaryTextColor}"/>
+            <Setter Property="BorderColor"
+                    Value="{DynamicResource RadioButtonBorderColor}"/>
+        </Style>
+        <Style x:Key="EditorStyle"
+               TargetType="Editor">
+            <Setter Property="TextColor"
+                    Value="{DynamicResource PrimaryTextColor}"/>
+            <Setter Property="PlaceholderColor"
+                    Value="{DynamicResource TertiaryTextColor}"/>
+            <Setter Property="BackgroundColor"
+                    Value="{DynamicResource EntryBackgroundColor}"/>
+        </Style>
+        <!--My style -->
+        <Style x:Key="LabelStyle" TargetType="Label">
+            <Setter Property="TextColor" Value="{DynamicResource PrimaryTextColor}"/>
+        </Style>
+        <Style x:Key="LabelStyleForListView" TargetType="Label">
+            <Setter Property="TextColor" Value="{DynamicResource LabelListViewColor}"/>
+        </Style>
+    </Application.Resources>
 </prism:PrismApplication>

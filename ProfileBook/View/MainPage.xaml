@@ -3,23 +3,23 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="ProfileBook.MainPage"
              xmlns:local="clr-namespace:ProfileBook.Converter"
-             xmlns:prism="clr-namespace:Prism.Unity;assembly=Prism.Unity.Forms"
-             Title="{Binding Path=TitlePage}">
+             xmlns:resource="clr-namespace:ProfileBook.Resource"
+             Title="{x:Static resource:AppResource.Titlemainpage}">
     <ContentPage.Resources>
         <ResourceDictionary>
             <local:MultiTriggerConverter x:Key="dataHasBeenEntered"/>
         </ResourceDictionary>
     </ContentPage.Resources>
-    <Grid RowDefinitions="0.75*,0.25*" BackgroundColor="Bisque">
+    <Grid RowDefinitions="0.75*,0.25*">
         <Grid Grid.Row="0">
             <StackLayout VerticalOptions="Center"  Padding="30">
             <Entry x:Name="LoginSignIn"
-                   Placeholder="Login"
+                   Placeholder="{x:Static resource:AppResource.Login}"
                    Text="{Binding Path= Login}"
                    ClearButtonVisibility="WhileEditing">
             </Entry>
             <Entry x:Name="PasswordSignIn"
-                   Placeholder="Password" 
+                   Placeholder="{x:Static resource:AppResource.Password}" 
                    IsPassword="True"
                    Text="{Binding Path= Password}"
                    ClearButtonVisibility="WhileEditing">
@@ -29,14 +29,14 @@
         <Grid Grid.Row="1">
             <StackLayout VerticalOptions="Start"  Padding="30">
                 <Button x:Name="Button1" 
-                    Text="SIGN IN" 
+                    Text="{x:Static resource:AppResource.Signin}" 
                     TextColor="Black" 
                     BackgroundColor="Orange" 
                     CornerRadius="5"  
                     FontSize="18"  
                     BorderWidth="3" 
                     BorderColor="Black"
-                    IsEnabled="{Binding Path=IsEnabled}"
+                    IsEnabled="{Binding IsEnabled}"
                     Command="{Binding Path=NavigateToListView}">
                     <Button.Triggers>
                         <MultiTrigger TargetType="Button">
@@ -61,7 +61,8 @@
                    Margin="10">
                     <Label.FormattedText>
                         <FormattedString>
-                            <Span Text="SING UP" TextColor="Blue" FontSize="18">
+                            <Span Text="{x:Static resource:AppResource.Signup}"
+                                  TextColor="Blue" FontSize="18">
                                 <Span.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding Path=NavigationToSingUp}">
                                     </TapGestureRecognizer>

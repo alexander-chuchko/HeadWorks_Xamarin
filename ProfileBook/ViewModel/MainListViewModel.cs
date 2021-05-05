@@ -12,29 +12,32 @@ using ProfileBook.Service.Profile;
 using Acr.UserDialogs;
 using ProfileBook.Service.Authorization;
 using ProfileBook.Extension;
+using ProfileBook.Service.Theme;
+using ProfileBook.Enum;
+using ProfileBook.Resource;
 
 namespace ProfileBook.ViewModel
 {
     public class MainListViewModel:BaseViewModel
     {
         #region---PrivateFields---
-        private string _titlePage;
         private bool _isVisibleLabel;
-        private IDialogService _dialogService;
-        private IProfileService _profileService;
-        private IAuthorizationService _authorizationService;
+        private readonly IDialogService _dialogService;
+        private readonly IProfileService _profileService;
+        private readonly IAuthorizationService _authorizationService;
+        private readonly IThemService _themService;
         private ObservableCollection<ProfileModel> _profilelList;
         private bool _isVisibleListView;
         private ProfileModel _profileModel;
         private string _nameCheckedButton;
         #endregion
-        public MainListViewModel(INavigationService navigationService, IDialogService diulogService, IProfileService profileService, IAuthorizationService authorizationService):base(navigationService)
+        public MainListViewModel(INavigationService navigationService, IDialogService diulogService, IProfileService profileService, IAuthorizationService authorizationService, IThemService themService) :base(navigationService)
         {
-            TitlePage = ($"{ nameof(MainList)}");
             _authorizationService = authorizationService;
             _profileService = profileService;
             _dialogService = diulogService;
-            NavigationToSettingsView = new Command(ExecuteGoToSettingsPage);
+            _themService = themService;
+             NavigationToSettingsView = new Command(ExecuteGoToSettingsPage);
             NavigationToAddProfileUser = new Command(ExecuteGoToAddProfileUser);
             RemoveCommand = new Command(RemoveModel);
             UpdateCommand = new Command(UpdateModel);
@@ -49,33 +52,58 @@ namespace ProfileBook.ViewModel
         public ICommand UpdateCommand { set; get; }
         public string NameIsChecked
         {
-            set => SetProperty(ref _nameCheckedButton, value);
-            get => _nameCheckedButton;
+            set
+            {
+                SetProperty(ref _nameCheckedButton, value);
+            }
+            get
+            {
+                return _nameCheckedButton;
+            }
         }
         public ProfileModel ProfileModel
         {
-            set => SetProperty(ref _profileModel, value);
-            get => _profileModel;
+            set
+            {
+                SetProperty(ref _profileModel, value);
+            }
+            get
+            {
+                return _profileModel;
+            }
         }
         public bool IsVisableListView
         {
-            get => _isVisibleListView;
-            set => SetProperty(ref _isVisibleListView, value);
+            get
+            {
+                return _isVisibleListView;
+            }
+            set
+            {
+                SetProperty(ref _isVisibleListView, value);
+            }
         }
         public bool IsVisableLabel
         {
-            get => _isVisibleLabel;
-            set => SetProperty(ref _isVisibleLabel, value);
-        }
-        public string TitlePage
-        {
-            get => _titlePage;
-            set => SetProperty(ref _titlePage, value);
+            get
+            {
+                return _isVisibleLabel;
+            }
+            set
+            {
+                SetProperty(ref _isVisibleLabel, value);
+            }
         }
         public ObservableCollection<ProfileModel> ProfileList
         {
-            get => _profilelList;
-            set => SetProperty(ref _profilelList, value);
+            get
+            {
+                return _profilelList;
+            }
+            set
+            {
+                SetProperty(ref _profilelList, value);
+            }
         }
         #endregion
         #region---Methods---
@@ -97,10 +125,12 @@ namespace ProfileBook.ViewModel
                 await _navigationService.NavigateAsync(($"{ nameof(AddEditProfilePage)}"), parametr);
             }
         }
-        private void DeletingCurrentUserSettings()
+        private void DeletingCurrentUserSettings() //When logging out, delete all user settings
         {
             _profileService.DeleteAllSortSettings();
             _authorizationService.RemoveIdCurrentUser();
+            _themService.RemoveThemeDark();
+            //_themService.ChangeTheme(EnumSet.Theme.Light);
         }
         private async void ExecuteGoBack()
         {
@@ -114,9 +144,9 @@ namespace ProfileBook.ViewModel
             {
                 var confirmConfig = new ConfirmConfig()
                 {
-                    Message = "You really want to delete this profile?",
-                    OkText = "Delete",
-                    CancelText = "Cancel"
+                    Message = AppResource.Youreallywanttodeletethisprofile,
+                    OkText = AppResource.Delete,
+                    CancelText = AppResource.Cancel
                 };
                 var result = await UserDialogs.Instance.ConfirmAsync(confirmConfig);
                 if (result)
