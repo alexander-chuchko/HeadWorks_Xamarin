@@ -25,25 +25,15 @@ namespace ProfileBook.Service.Theme
         {
             _settingsManager.RemoveDarkTheme();
         }
-        /*
-        public void ChangeTheme(EnumSet.Theme theme)
+        public void SetDefaultTheme()
         {
+            RemoveThemeDark();
             ICollection<ResourceDictionary> mergedDictionaries = Application.Current.Resources.MergedDictionaries;
             if (mergedDictionaries != null)
             {
                 mergedDictionaries.Clear();
-                switch (theme)
-                {
-                    case EnumSet.Theme.Dark:
-                        mergedDictionaries.Add(new DarkTheme());
-                        break;
-                    case EnumSet.Theme.Light:
-                    default:
-                        Application.Current.UserAppTheme = OSAppTheme.Unspecified;
-                        // mergedDictionaries.Add(new LightTheme());
-                        break;
-                }
+                mergedDictionaries.Add(new LightTheme());
             }
-        }*/
+        }
     }
 }

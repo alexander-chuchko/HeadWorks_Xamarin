@@ -9,5 +9,6 @@ namespace ProfileBook.Service.Localization
         string GetValueLanguage();
         void SetValueLanguage(string value);
         void RemoveLanguage();
+        void SetDefaultLanguage();
     }
 }

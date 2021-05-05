@@ -15,6 +15,7 @@ using ProfileBook.Extension;
 using ProfileBook.Service.Theme;
 using ProfileBook.Enum;
 using ProfileBook.Resource;
+using ProfileBook.Service.Localization;
 
 namespace ProfileBook.ViewModel
 {
@@ -26,18 +27,20 @@ namespace ProfileBook.ViewModel
         private readonly IProfileService _profileService;
         private readonly IAuthorizationService _authorizationService;
         private readonly IThemService _themService;
+        private readonly ILocalizationService _localizationService;
         private ObservableCollection<ProfileModel> _profilelList;
         private bool _isVisibleListView;
         private ProfileModel _profileModel;
         private string _nameCheckedButton;
         #endregion
-        public MainListViewModel(INavigationService navigationService, IDialogService diulogService, IProfileService profileService, IAuthorizationService authorizationService, IThemService themService) :base(navigationService)
+        public MainListViewModel(INavigationService navigationService, IDialogService diulogService, IProfileService profileService, IAuthorizationService authorizationService, IThemService themService, ILocalizationService localizationService) :base(navigationService)
         {
             _authorizationService = authorizationService;
             _profileService = profileService;
             _dialogService = diulogService;
             _themService = themService;
-             NavigationToSettingsView = new Command(ExecuteGoToSettingsPage);
+            _localizationService = localizationService;
+              NavigationToSettingsView = new Command(ExecuteGoToSettingsPage);
             NavigationToAddProfileUser = new Command(ExecuteGoToAddProfileUser);
             RemoveCommand = new Command(RemoveModel);
             UpdateCommand = new Command(UpdateModel);
@@ -130,7 +133,8 @@ namespace ProfileBook.ViewModel
             _profileService.DeleteAllSortSettings();
             _authorizationService.RemoveIdCurrentUser();
             _themService.RemoveThemeDark();
-            //_themService.ChangeTheme(EnumSet.Theme.Light);
+            _themService.SetDefaultTheme();
+            _localizationService.SetDefaultLanguage();
         }
         private async void ExecuteGoBack()
         {

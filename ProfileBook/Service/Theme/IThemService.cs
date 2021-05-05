@@ -1,4 +1,6 @@
 ﻿
+using ProfileBook.Enum;
+
 namespace ProfileBook.Service.Theme
 {
     public interface IThemService
@@ -6,6 +8,6 @@ namespace ProfileBook.Service.Theme
         bool GetValueDarkTheme();
         void SetValueValueDarkTheme(bool value);
         void RemoveThemeDark();
-        //void ChangeTheme(EnumSet.Theme theme);
+        void SetDefaultTheme();
     }
 }

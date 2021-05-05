@@ -4,6 +4,7 @@ using ProfileBook.Helpers;
 using ProfileBook.Model;
 using ProfileBook.Service;
 using ProfileBook.Service.Authorization;
+using ProfileBook.Service.Localization;
 using ProfileBook.Service.Profile;
 using ProfileBook.Service.Theme;
 using ProfileBook.Service.User;
@@ -29,10 +30,11 @@ namespace ProfileBook.ViewModel
         private readonly IAuthorizationService _authorizationService;
         private readonly IProfileService _profileService;
         private readonly IThemService _themService;
+        private readonly ILocalizationService _localizationService;
         private ObservableCollection<UserModel> _userList;
         private UserModel _userModel;
         #endregion
-        public MainPageViewModel(INavigationService navigationService, IAuthenticationService authenticationService, IAuthorizationService authorizationService, IUserService userService, IProfileService profileService, IThemService themService) :base(navigationService)
+        public MainPageViewModel(INavigationService navigationService, IAuthenticationService authenticationService, IAuthorizationService authorizationService, IUserService userService, IProfileService profileService, IThemService themService, ILocalizationService localizationService) :base(navigationService)
         {
             IsEnabled = false;
             Login = string.Empty;
@@ -42,6 +44,7 @@ namespace ProfileBook.ViewModel
             _userService = userService;
             _profileService = profileService;
             _themService = themService;
+            _localizationService=localizationService;
             NavigateToListView = new DelegateCommand(ExecuteNavigationToMainList, CanExecuteNavigateToSignUp).ObservesProperty(() => IsEnabled);
             NavigationToSingUp = new Command(ExecuteNavigateToSignUp);
         }
@@ -152,11 +155,12 @@ namespace ProfileBook.ViewModel
         public override async Task InitializeAsync(INavigationParameters parameters)
         {
             //In case of incorrect exit from the application, we check
-            if (_authorizationService.GetIdCurrentUser() != 0 || _profileService.GetValueSortByDateAddedToDatabase() || _profileService.GetValueSortByNickName() || _profileService.GetValueToSortByName()||_themService.GetValueDarkTheme())
+            if (_authorizationService.GetIdCurrentUser() != 0 || _profileService.GetValueSortByDateAddedToDatabase() || _profileService.GetValueSortByNickName() || _profileService.GetValueToSortByName()||_themService.GetValueDarkTheme()|| _localizationService.GetValueLanguage()!= "English")
             {
                 _profileService.DeleteAllSortSettings();
                 _authorizationService.RemoveIdCurrentUser();
                 _themService.RemoveThemeDark();
+                _localizationService.RemoveLanguage();
             }
             var userList = await _userService.GetAllUserModelAsync();
             UserList = new ObservableCollection<UserModel>(userList);

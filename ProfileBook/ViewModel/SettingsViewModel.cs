@@ -31,7 +31,6 @@ namespace ProfileBook.ViewModel
         private bool _isCheckedTheme;
         private string _selectedLanguage;
         private string _currentLanguage;
-        private bool _isVisibleButton;
         public ICommand SaveCommand { get; set; }
         public ICommand CancelCommand { get; set; }
         public SettingsViewModel(INavigationService navigationService, IAuthorizationService authorizationService, IProfileService profileService, IThemService themService, ILocalizationService localizationService)
@@ -51,10 +50,6 @@ namespace ProfileBook.ViewModel
         }
         private async void CancelSettings()
         {
-            //_profileService.DeleteAllSortSettings();
-            //IsCheckedName = false;
-            //IsCheckedNickName = false;
-            //IsCheckedDataAddedToTheDB = false;
             await _navigationService.GoBackAsync();
         }
         private void SaveSettings()
@@ -107,48 +102,33 @@ namespace ProfileBook.ViewModel
         }
         public string SelectedLanguage
         {
-            set
-            {
-                SetProperty(ref _selectedLanguage, value);
-            }
-            get
-            {
-                return _selectedLanguage;
-            }
+            set { SetProperty(ref _selectedLanguage, value);}
+            get { return _selectedLanguage;}
         }
         public string CurrentLanguage
         {
-            set
-            {
-                SetProperty(ref _currentLanguage, value);
-            }
-            get
-            {
-                return _currentLanguage;
-            }
+            set { SetProperty(ref _currentLanguage, value);}
+            get {return _currentLanguage;}
         }
-        public bool IsVisibleButton
-        {
-            set 
-            {
-                SetProperty(ref _isVisibleButton, value);
-            }
-            get
-            {
-                return _isVisibleButton;
-            }
-        }
-
         public bool IsCheckedTheme
         {
-            get
-            {
-                return _isCheckedTheme;
-            }
-            set
-            {
-                SetProperty(ref _isCheckedTheme, value);
-            }
+            get {return _isCheckedTheme;}
+            set {SetProperty(ref _isCheckedTheme, value);}
+        }
+        public bool IsCheckedName
+        {
+            set { SetProperty(ref _isCheckedName, value); }
+            get { return _isCheckedName; }
+        }
+        public bool IsCheckedNickName
+        {
+            set { SetProperty(ref _isCheckedNickName, value); }
+            get {return _isCheckedNickName;}
+        }
+        public bool IsCheckedDataAddedToTheDB
+        {
+            set { SetProperty(ref _isCheckedDataAddedToTheDB, value); }
+            get  {return _isCheckedDataAddedToTheDB;}
         }
         public void PerformThemeChange(EnumSet.Theme theme)
         {
@@ -168,39 +148,11 @@ namespace ProfileBook.ViewModel
                 }
             }
         }
-        public bool IsCheckedName
-        {
-            set => SetProperty(ref _isCheckedName, value);
-            get => _isCheckedName;
-        }
-        public bool IsCheckedNickName
-        {
-            set => SetProperty(ref _isCheckedNickName, value);
-            get => _isCheckedNickName;
-        }
-        public bool IsCheckedDataAddedToTheDB
-        {
-            set => SetProperty(ref _isCheckedDataAddedToTheDB, value);
-            get => _isCheckedDataAddedToTheDB;
-        }
         protected override void OnPropertyChanged(PropertyChangedEventArgs args)
         {
             base.OnPropertyChanged(args);
             if(args.PropertyName == nameof(IsCheckedTheme))
             {
-
-            }
-            if(args.PropertyName==nameof(IsCheckedName))
-            {
-                _profileService.SetValueToSortByName(IsCheckedName);
-            }
-            if(args.PropertyName==nameof(IsCheckedNickName))
-            {
-                _profileService.SetValueToSortByNickName(IsCheckedNickName);
-            }
-            if (args.PropertyName == nameof(IsCheckedDataAddedToTheDB))
-            {
-                _profileService.SetValueToSortByDateAddedToDatabase(IsCheckedDataAddedToTheDB);
             }
         }
     }
