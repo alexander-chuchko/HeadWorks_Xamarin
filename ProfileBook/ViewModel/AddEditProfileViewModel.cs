@@ -19,35 +19,36 @@ namespace ProfileBook.ViewModel
 {
     public class AddEditProfileViewModel: BindableBase, INavigatedAware
     {
-        //private string _titlePage;
+        #region---PrivateFields---
         private string _nickName;
         private string _name;
         private string _description;
         private string pathPicture;
         private bool _isEnable;
         private ProfileModel _profileUser;
-        public Action OpenGallery { get; set; }
-        public Action TakePhoto { get; set; }
-
-        private IAuthorizationService _authorizationService;
-        private IProfileService _profileService;
-        private INavigationService _navigationService;
-        public ICommand TapCommand { get; set; }
-        public ICommand SaveCommand { get; set; }
+        private readonly IAuthorizationService _authorizationService;
+        private readonly IProfileService _profileService;
+        private readonly INavigationService _navigationService;
+        #endregion
         public AddEditProfileViewModel(INavigationService navigationService, IAuthorizationService authorizationService, IProfileService profileService):base()
         {
-            _navigationService = navigationService;
-            _authorizationService = authorizationService;
-            _profileService = profileService;
             Name = string.Empty;
             NickName = string.Empty;
             IsEnable = false;
+            _navigationService = navigationService;
+            _authorizationService = authorizationService;
+            _profileService = profileService;
             SaveCommand = new Command(SaveProfileModel);
              TapCommand = new Command(TouchedPicture);
             OpenGallery = SelectImage;
             TakePhoto = TakingPictures;
-            //TitlePage = ($"{ nameof(AddEditProfilePage)}");
         }
+        #region---PublicProperties---
+        public Action OpenGallery { get; set; }
+        public Action TakePhoto { get; set; }
+
+        public ICommand TapCommand { get; set; }
+        public ICommand SaveCommand { get; set; }
         public bool IsEnable
         {
             get{return _isEnable;}
@@ -58,13 +59,6 @@ namespace ProfileBook.ViewModel
             get { return _profileUser; }
             set { SetProperty(ref _profileUser, value); }
         }
-        /*
-        public string TitlePage
-        {
-            get => _titlePage;
-            set => SetProperty(ref _titlePage, value);
-        }
-        */
         public string NickName
         {
             get { return _nickName; }
@@ -85,12 +79,14 @@ namespace ProfileBook.ViewModel
             get { return pathPicture; }
             set { SetProperty(ref pathPicture, value); }
         }
-        public async void ExecuteNavigateToNavigationToMainList()
+        #endregion
+        #region---Methods---
+        private async void ExecuteNavigateToNavigationToMainList()
         {
             await _navigationService.NavigateAsync(($"/{ nameof(NavigationPage)}/{ nameof(MainList)}"));
         }
-       public void TouchedPicture()
-        {
+       private void TouchedPicture()
+       {
             IUserDialogs userDialogs = UserDialogs.Instance;
             ActionSheetConfig config = new ActionSheetConfig();
             List<ActionSheetOption> Options = new List<ActionSheetOption>();
@@ -101,7 +97,7 @@ namespace ProfileBook.ViewModel
             config.Cancel = cancel;
             userDialogs.ActionSheet(config);
         }
-        public bool IsFieldsFilled()
+        private bool IsFieldsFilled()
         {
             var resultFilling = true;
             if (!Validation.IsInformationInNameAndNickName(Name, NickName))
@@ -111,7 +107,7 @@ namespace ProfileBook.ViewModel
             }
             return resultFilling;
         }
-        public async void SaveProfileModel()
+        private async void SaveProfileModel()
         {
             if (IsFieldsFilled())
             {
@@ -126,14 +122,14 @@ namespace ProfileBook.ViewModel
                 ExecuteNavigateToNavigationToMainList();
             }
         }
-        public async Task UpdateProfileModel()
+        private async Task UpdateProfileModel()
         {
             ProfileUser.ImageSource = PathPicture;
             ProfileUser.Name = Name;
             ProfileUser.NickName = NickName;
             await _profileService.UpdateProfileModelAsync(ProfileUser);
         }
-        public async Task AddProfileModel()
+        private async Task AddProfileModel()
         {
             ProfileModel profileModel = new ProfileModel()
             {
@@ -146,7 +142,7 @@ namespace ProfileBook.ViewModel
             };
             await _profileService.InsertProfileModelAsync(profileModel);
         }
-        public async void SelectImage()
+        private async void SelectImage()
         {
             var result = await MediaPicker.PickPhotoAsync(new MediaPickerOptions
             {
@@ -159,7 +155,7 @@ namespace ProfileBook.ViewModel
                 PathPicture = result.FullPath;
             }
         }
-        public async void TakingPictures()
+        private async void TakingPictures()
         {
             var result = await MediaPicker.CapturePhotoAsync();
             if(result!=null)
@@ -171,13 +167,15 @@ namespace ProfileBook.ViewModel
                 PathPicture = result.FullPath;
             }
         }
-        public void OnNavigatedFrom(INavigationParameters parameters){}
+        #endregion
+        #region--Iterface INavigatedAware implementation-- 
+        public void OnNavigatedFrom(INavigationParameters parameters) { }
         public void OnNavigatedTo(INavigationParameters parameters)
         {
             if (parameters.Count != 0)
             {
                 ProfileUser = parameters.GetValue<ProfileModel>("ProfileUser");
-                if(ProfileUser!=null)
+                if (ProfileUser != null)
                 {
                     Description = ProfileUser.Description;
                     PathPicture = ProfileUser.ImageSource;
@@ -190,5 +188,6 @@ namespace ProfileBook.ViewModel
                 PathPicture = "pic_profile.png";
             }
         }
+        #endregion
     }
 }

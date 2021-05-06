@@ -23,15 +23,15 @@ namespace ProfileBook.ViewModel
     {
         #region---PrivateFields---
         private bool _isVisibleLabel;
+        private bool _isVisibleListView;
+        private string _nameCheckedButton;
+        private ProfileModel _profileModel;
+        private ObservableCollection<ProfileModel> _profilelList;
+        private readonly IThemService _themService;
         private readonly IDialogService _dialogService;
         private readonly IProfileService _profileService;
         private readonly IAuthorizationService _authorizationService;
-        private readonly IThemService _themService;
         private readonly ILocalizationService _localizationService;
-        private ObservableCollection<ProfileModel> _profilelList;
-        private bool _isVisibleListView;
-        private ProfileModel _profileModel;
-        private string _nameCheckedButton;
         #endregion
         public MainListViewModel(INavigationService navigationService, IDialogService diulogService, IProfileService profileService, IAuthorizationService authorizationService, IThemService themService, ILocalizationService localizationService) :base(navigationService)
         {
@@ -55,60 +55,31 @@ namespace ProfileBook.ViewModel
         public ICommand UpdateCommand { set; get; }
         public string NameIsChecked
         {
-            set
-            {
-                SetProperty(ref _nameCheckedButton, value);
-            }
-            get
-            {
-                return _nameCheckedButton;
-            }
+            set{ SetProperty(ref _nameCheckedButton, value);}
+            get{ return _nameCheckedButton;}
         }
         public ProfileModel ProfileModel
         {
-            set
-            {
-                SetProperty(ref _profileModel, value);
-            }
-            get
-            {
-                return _profileModel;
-            }
+            set{ SetProperty(ref _profileModel, value);}
+            get{ return _profileModel;}
         }
         public bool IsVisableListView
         {
-            get
-            {
-                return _isVisibleListView;
-            }
-            set
-            {
-                SetProperty(ref _isVisibleListView, value);
-            }
+            get{ return _isVisibleListView;}
+            set{ SetProperty(ref _isVisibleListView, value);}
         }
         public bool IsVisableLabel
         {
-            get
-            {
-                return _isVisibleLabel;
-            }
-            set
-            {
-                SetProperty(ref _isVisibleLabel, value);
-            }
+            get{ return _isVisibleLabel;}
+            set{ SetProperty(ref _isVisibleLabel, value);}
         }
         public ObservableCollection<ProfileModel> ProfileList
         {
-            get
-            {
-                return _profilelList;
-            }
-            set
-            {
-                SetProperty(ref _profilelList, value);
-            }
+            get{ return _profilelList;}
+            set{ SetProperty(ref _profilelList, value);}
         }
         #endregion
+
         #region---Methods---
         private async void ExecuteGoToAddProfileUser()
         {
@@ -160,10 +131,7 @@ namespace ProfileBook.ViewModel
                 }
             }
         }
-        #region---PublicMethods---
-
-        #endregion
-        public void OnShowDialogExecuted()
+        private void OnShowDialogExecuted()
         {
             _dialogService.ShowDialog("PopupsContent", new DialogParameters
             {
@@ -171,7 +139,8 @@ namespace ProfileBook.ViewModel
             });
         }
         #endregion
-        #region---OverloadedMethods---
+
+        #region---Overriding---
         public override async Task InitializeAsync(INavigationParameters parameters)
         {
             var listOfUsers = await _profileService.GetAllProfileModelAsync();
@@ -203,7 +172,6 @@ namespace ProfileBook.ViewModel
                 }
             }
         }
-        public override void OnNavigatedFrom(INavigationParameters parameters) { }
         protected override void OnPropertyChanged(PropertyChangedEventArgs args)
         {
             base.OnPropertyChanged(args);
@@ -212,6 +180,10 @@ namespace ProfileBook.ViewModel
                 OnShowDialogExecuted();
             }
         }
+        #endregion
+
+        #region--Iterface INavigatedAware implementation-- 
+        public override void OnNavigatedFrom(INavigationParameters parameters) { }
         public override void OnNavigatedTo(INavigationParameters parameters)
         {
             if (parameters.Count != 0)

@@ -57,5 +57,8 @@
         <Style x:Key="LabelStyleForListView" TargetType="Label">
             <Setter Property="TextColor" Value="{DynamicResource LabelListViewColor}"/>
         </Style>
+        <Style x:Key="PickerStyle" TargetType="Picker">
+            <Setter Property="TitleColor" Value="{DynamicResource PrimaryTextColor}"/>
+        </Style>
     </Application.Resources>
 </prism:PrismApplication>

@@ -53,81 +53,46 @@ namespace ProfileBook.ViewModel
         public ICommand NavigateToListView { get; set; }
         public string Login
         {
-            get
-            {
-                return _login;
-            }
-            set
-            {
-                SetProperty(ref _login, value);
-            }
+            get{ return _login; }
+            set { SetProperty(ref _login, value); }
         }
         public string Password
         {
-            get
-            {
-                return _password;
-            }
-            set
-            {
-                SetProperty(ref _password, value);
-            }
+            get{ return _password; }
+            set { SetProperty(ref _password, value); }
         }
         public bool IsEnabled
         {
-            get
-            {
-                return _isEnabled;
-            }
-            set
-            {
-                SetProperty(ref _isEnabled, value);
-            }
+            get { return _isEnabled;}
+            set { SetProperty(ref _isEnabled, value);}
         }
         public UserModel UserModel
         {
-            get
-            {
-                return _userModel;
-            }
-            set
-            {
-                SetProperty(ref _userModel, value);
-            }
+            get{ return _userModel; }
+            set{ SetProperty(ref _userModel, value);}
         }
         public ObservableCollection<UserModel> UserList
         {
-            get
-            {
-                return _userList;
-            }
-            set
-            {
-                _userList=value;
-            }
+            get{ return _userList;}
+            set {_userList=value;}
         }
         public int Id
         {
-            get
-            {
-                return _id;
-            }
-            set
-            {
-                SetProperty(ref _id, value);
-            }
+            get { return _id;}
+            set { SetProperty(ref _id, value); }
         }
         #endregion
+
         #region---Methods---
-        public bool CanExecuteNavigateToSignUp()
-        {
-            return IsEnabled;
-        }
-        public async void ExecuteNavigateToSignUp()
+        private async void ExecuteNavigateToSignUp()
         {
             await _navigationService.NavigateAsync(($"{ nameof(SignUp)}"));
         }
-        public async void ExecuteNavigationToMainList()
+        private bool CanExecuteNavigateToSignUp()
+        {
+            return IsEnabled;
+        }
+        private async void ExecuteNavigationToMainList()
         {
             if (_authenticationService.IsRelevantLoginAndPassword(UserList, Login, Password))
             {
@@ -142,16 +107,8 @@ namespace ProfileBook.ViewModel
             }
         }
         #endregion
+
         #region ---Overriding---
-        public override void OnNavigatedTo(INavigationParameters parameters)
-        {
-            if (parameters.Count != 0)
-            {
-                UserModel = parameters.GetValue<UserModel>("NewUser");
-                Login = UserModel.Login;
-            }
-        }
-        public override void OnNavigatedFrom(INavigationParameters parameters) { }
         public override async Task InitializeAsync(INavigationParameters parameters)
         {
             //In case of incorrect exit from the application, we check
@@ -173,6 +130,18 @@ namespace ProfileBook.ViewModel
                 _authorizationService.SetIdCurrentUser(Id);
             }
         }
+        #endregion
+
+        #region--Iterface INavigatedAware implementation--
+        public override void OnNavigatedTo(INavigationParameters parameters)
+        {
+            if (parameters.Count != 0)
+            {
+                UserModel = parameters.GetValue<UserModel>("NewUser");
+                Login = UserModel.Login;
+            }
+        }
+        public override void OnNavigatedFrom(INavigationParameters parameters) { }
         #endregion
     }
 }

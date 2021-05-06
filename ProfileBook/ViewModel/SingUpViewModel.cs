@@ -17,8 +17,8 @@ namespace ProfileBook.ViewModel
         private string _password;
         private string _confirmPasword;
         private bool _isEnabled;
-        private IAuthenticationService _authenticationService;
-        private IUserService _userService;
+        private readonly IAuthenticationService _authenticationService;
+        private readonly IUserService _userService;
         private ObservableCollection<UserModel> _userList;
         private UserModel _userModel;
         #endregion
@@ -30,85 +30,49 @@ namespace ProfileBook.ViewModel
             ConfirmPassword = string.Empty;
             _authenticationService = authenticationService;
             _userService = userService;
-            SignUpCommand = new DelegateCommand(Execute, CanExecute).ObservesProperty(() => IsEnabled); 
+            SignUpCommand = new DelegateCommand(ExecuteNavigationToSignUp, CanExecuteNavigationToSignUp).ObservesProperty(() => IsEnabled); 
         }
         #region---PublicProperties---
         public ICommand SignUpCommand { get; set; }
         public string Login
         {
-            get
-            {
-                return _login;
-            }
-            set
-            {
-                SetProperty(ref _login, value);
-            }
+            get{ return _login;}
+            set{ SetProperty(ref _login, value);}
         }
         public string Password
         {
-            get
-            {
-                return _password;
-            }
-            set
-            {
-                SetProperty(ref _password, value);
-            }
+            get{ return _password;}
+            set{ SetProperty(ref _password, value);}
         }
         public string ConfirmPassword
         {
-            get
-            {
-                return _confirmPasword;
-            }
-            set
-            {
-                SetProperty(ref _confirmPasword, value);
-            }
+            get{ return _confirmPasword;}
+            set{ SetProperty(ref _confirmPasword, value);}
         }
         public bool IsEnabled
         {
-            get
-            {
-                return _isEnabled;
-            }
-            set
-            {
-                SetProperty(ref _isEnabled, value);
-            }
+            get{ return _isEnabled;}
+            set{ SetProperty(ref _isEnabled, value);}
         }
         public ObservableCollection<UserModel> UserList
         {
-            get
-            {
-                return _userList;
-            }
-            set
-            {
-                _userList = value;
-            }
+            get{ return _userList;}
+            set{ _userList = value;}
         }
         public UserModel UserModel
         {
-            set
-            {
-                _userModel = value;
-            }
-            get
-            {
-                return _userModel;
-            }
+            set{ _userModel = value;}
+            get{ return _userModel;}
         }
         #endregion
         #region---Methods---
-        public async void ExecuteGoBack()
+        private async void ExecuteGoBack()
         {
             var parametr = new NavigationParameters();
             parametr.Add("NewUser", UserModel);
             await _navigationService.NavigateAsync("/MainPage", parametr);
         }
-        public void CreateUserModel()
+        private void CreateUserModel()
         {
             UserModel = new UserModel()
             {
@@ -164,12 +128,12 @@ namespace ProfileBook.ViewModel
             Password = string.Empty;
             ConfirmPassword = string.Empty;
         }
-        public async Task AddUserModel()
+        private async Task AddUserModel()
         {
             CreateUserModel();
             await _userService.InsertUserModelAsync(UserModel);
         }
-        public async void Execute()
+        private async void ExecuteNavigationToSignUp()
         {
             if(IsValidLogin()&& IsLinesMatch()&& IsValidPassword()&& IsLoginUnique())
             {
@@ -181,12 +145,12 @@ namespace ProfileBook.ViewModel
                 ClearFields();
             }
         }
-        public bool CanExecute()
+        private bool CanExecuteNavigationToSignUp()
         {
             return IsEnabled;
         }
         #endregion
-        #region---OverloadedMethods---
+        #region---Overriding---
         public override async Task InitializeAsync(INavigationParameters parameters)
         {
             var userList = await _userService.GetAllUserModelAsync();
