@@ -1,56 +1,47 @@
 ﻿using Prism.Commands;
 using Prism.Navigation;
+using Prism.Services;
 using ProfileBook.Helpers;
 using ProfileBook.Model;
+using ProfileBook.Resource;
 using ProfileBook.Service;
 using ProfileBook.Service.Authorization;
-using ProfileBook.Service.Localization;
-using ProfileBook.Service.Profile;
-using ProfileBook.Service.Theme;
 using ProfileBook.Service.User;
 using ProfileBook.View;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
 
 namespace ProfileBook.ViewModel
 {
-    public class MainPageViewModel : BaseViewModel
+    public class MainPageViewModel : BaseViewModel, INavigatedAware
     {
         #region---PrivateFields---
         private string _login;
         private string _password;
         private bool _isEnabled;
         private int _id;
-
         private readonly IAuthenticationService _authenticationService;
         private readonly IUserService _userService;
         private readonly IAuthorizationService _authorizationService;
-        private readonly IProfileService _profileService;
-        private readonly IThemService _themService;
-        private readonly ILocalizationService _localizationService;
-        private ObservableCollection<UserModel> _userList;
+        private readonly IPageDialogService _pageDialogService;
         private UserModel _userModel;
         #endregion
-        public MainPageViewModel(INavigationService navigationService, IAuthenticationService authenticationService, IAuthorizationService authorizationService, IUserService userService, IProfileService profileService, IThemService themService, ILocalizationService localizationService) :base(navigationService)
+        public MainPageViewModel(INavigationService navigationService, IAuthenticationService authenticationService, IAuthorizationService authorizationService, IUserService userService, IPageDialogService pageDialogService) :base(navigationService)
         {
             IsEnabled = false;
-            Login = string.Empty;
-            Password = string.Empty;
             _authenticationService = authenticationService;
             _authorizationService = authorizationService;
             _userService = userService;
-            _profileService = profileService;
-            _themService = themService;
-            _localizationService=localizationService;
+            _pageDialogService = pageDialogService;
             NavigateToListView = new DelegateCommand(ExecuteNavigationToMainList, CanExecuteNavigateToSignUp).ObservesProperty(() => IsEnabled);
             NavigationToSingUp = new Command(ExecuteNavigateToSignUp);
+            _authorizationService.SettingDefaultSettings(); //In case of incorrect exit from the application, we check
         }
         #region---PublicProperties---
         public ICommand NavigationToSingUp { get; set; }
         public ICommand NavigateToListView { get; set; }
+        
         public string Login
         {
             get{ return _login; }
@@ -66,15 +57,10 @@ namespace ProfileBook.ViewModel
             get { return _isEnabled;}
             set { SetProperty(ref _isEnabled, value);}
         }
-        public UserModel UserModel
+        public UserModel  UserModel
         {
             get{ return _userModel; }
             set{ SetProperty(ref _userModel, value);}
-        }
-        public ObservableCollection<UserModel> UserList
-        {
-            get{ return _userList;}
-            set {_userList=value;}
         }
         public int Id
         {
@@ -82,7 +68,6 @@ namespace ProfileBook.ViewModel
             set { SetProperty(ref _id, value); }
         }
         #endregion
-
         #region---Methods---
         private async void ExecuteNavigateToSignUp()
         {
@@ -94,34 +79,20 @@ namespace ProfileBook.ViewModel
         }
         private async void ExecuteNavigationToMainList()
         {
-            if (_authenticationService.IsRelevantLoginAndPassword(UserList, Login, Password))
+            if(await _authenticationService.IsRelevantLoginAndPasswordAsync(Login, Password))
             {
                 Id = _authenticationService.Id;
                 await _navigationService.NavigateAsync(($"/{ nameof(NavigationPage)}/{ nameof(MainList)}"));
             }
             else
             {
-                ListOfMessages.ShowInvalidloginOrPassword();
+                await _pageDialogService.DisplayAlertAsync(AppResource.invalid_login_or_password, AppResource.invalid_data_entered, "OK");
                 Login = string.Empty;
                 Password = string.Empty;
             }
         }
         #endregion
-
         #region ---Overriding---
-        public override async Task InitializeAsync(INavigationParameters parameters)
-        {
-            //In case of incorrect exit from the application, we check
-            if (_authorizationService.GetIdCurrentUser() != 0 || _profileService.GetValueSortByDateAddedToDatabase() || _profileService.GetValueSortByNickName() || _profileService.GetValueToSortByName()||_themService.GetValueDarkTheme()|| _localizationService.GetValueLanguage()!= "English")
-            {
-                _profileService.DeleteAllSortSettings();
-                _authorizationService.RemoveIdCurrentUser();
-                _themService.RemoveThemeDark();
-                _localizationService.RemoveLanguage();
-            }
-            var userList = await _userService.GetAllUserModelAsync();
-            UserList = new ObservableCollection<UserModel>(userList);
-        }
         protected override void OnPropertyChanged(PropertyChangedEventArgs args)
         {
             base.OnPropertyChanged(args);
@@ -131,17 +102,18 @@ namespace ProfileBook.ViewModel
             }
         }
         #endregion
-
         #region--Iterface INavigatedAware implementation--
-        public override void OnNavigatedTo(INavigationParameters parameters)
+        public void OnNavigatedTo(INavigationParameters parameters)
         {
-            if (parameters.Count != 0)
+            if (parameters.TryGetValue<UserModel>(ListOfNames.newUser, out UserModel userModel))
             {
-                UserModel = parameters.GetValue<UserModel>("NewUser");
+                UserModel = parameters.GetValue<UserModel>(ListOfNames.newUser);
                 Login = UserModel.Login;
             }
         }
-        public override void OnNavigatedFrom(INavigationParameters parameters) { }
+        public void OnNavigatedFrom(INavigationParameters parameters)
+        {
+        }
         #endregion
     }
 }

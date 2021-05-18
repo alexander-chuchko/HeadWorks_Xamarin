@@ -10,16 +10,17 @@ namespace ProfileBook.Service.User
 {
     public class UserService: IUserService
     {
-        private INavigationService _navigationService;
-        private IRepository _repository;
+        private readonly INavigationService _navigationService;
+        private readonly IRepository _repository;
+
         public UserService(INavigationService navigationService, IRepository repository)
         {
             _navigationService = navigationService;
             _repository = repository;
         }
-        public async Task<List<UserModel>> GetAllUserModelAsync()
+        public async Task<IEnumerable<UserModel>> GetAllUserModelAsync()
         {
-            List<UserModel> userModels = null;
+            IEnumerable<UserModel> userModels = null;
             try
             {
                 userModels = await _repository.GetAllAsync<UserModel>();
@@ -32,20 +33,17 @@ namespace ProfileBook.Service.User
         }
         public async Task RemoveUserModelAsync(UserModel userModel)
         {
-            //var operationResult = false;
             try
             {
                 if (userModel != null)
                 {
                     await _repository.DeleteAsync(userModel);
-                    //operationResult = true;
                 }
             }
             catch(Exception ex)
             {
                 UserDialogs.Instance.Alert(ex.Message);
             }
-            //return operationResult;
         }
         public async Task InsertUserModelAsync(UserModel userModel)
         {

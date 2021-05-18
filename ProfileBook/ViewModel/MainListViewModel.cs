@@ -13,20 +13,22 @@ using Acr.UserDialogs;
 using ProfileBook.Service.Authorization;
 using ProfileBook.Extension;
 using ProfileBook.Service.Theme;
-using ProfileBook.Enum;
 using ProfileBook.Resource;
 using ProfileBook.Service.Localization;
+using ProfileBook.Helpers;
+using ProfileBook.Dialogs;
+using ProfileBook.Enum;
+using System.Collections.Generic;
 
 namespace ProfileBook.ViewModel
 {
-    public class MainListViewModel:BaseViewModel
+    public class MainListViewModel:BaseViewModel, IInitializeAsync
     {
         #region---PrivateFields---
         private bool _isVisibleLabel;
         private bool _isVisibleListView;
-        private string _nameCheckedButton;
-        private ProfileModel _profileModel;
-        private ObservableCollection<ProfileModel> _profilelList;
+        private ProfileViewModel _profileViewModel;
+        private ObservableCollection<ProfileViewModel> _profilelViewModelList;
         private readonly IThemService _themService;
         private readonly IDialogService _dialogService;
         private readonly IProfileService _profileService;
@@ -40,12 +42,12 @@ namespace ProfileBook.ViewModel
             _dialogService = diulogService;
             _themService = themService;
             _localizationService = localizationService;
-              NavigationToSettingsView = new Command(ExecuteGoToSettingsPage);
+             NavigationToSettingsView = new Command(ExecuteGoToSettingsPage);
             NavigationToAddProfileUser = new Command(ExecuteGoToAddProfileUser);
             RemoveCommand = new Command(RemoveModel);
             UpdateCommand = new Command(UpdateModel);
             NavigationToSingIn = new Command(ExecuteGoBack);
-            ProfileList = new ObservableCollection<ProfileModel>();
+            ProfileViewModelList = new ObservableCollection<ProfileViewModel>();
         }
         #region---PublicProperties---
         public ICommand NavigationToSettingsView { get; set; }
@@ -53,15 +55,11 @@ namespace ProfileBook.ViewModel
         public ICommand NavigationToSingIn { get; set; }
         public ICommand RemoveCommand { set; get; }
         public ICommand UpdateCommand { set; get; }
-        public string NameIsChecked
+
+        public ProfileViewModel ProfileViewModel
         {
-            set{ SetProperty(ref _nameCheckedButton, value);}
-            get{ return _nameCheckedButton;}
-        }
-        public ProfileModel ProfileModel
-        {
-            set{ SetProperty(ref _profileModel, value);}
-            get{ return _profileModel;}
+            set { SetProperty(ref _profileViewModel, value); }
+            get { return _profileViewModel; }
         }
         public bool IsVisableListView
         {
@@ -73,10 +71,10 @@ namespace ProfileBook.ViewModel
             get{ return _isVisibleLabel;}
             set{ SetProperty(ref _isVisibleLabel, value);}
         }
-        public ObservableCollection<ProfileModel> ProfileList
+        public ObservableCollection<ProfileViewModel> ProfileViewModelList
         {
-            get{ return _profilelList;}
-            set{ SetProperty(ref _profilelList, value);}
+            get { return _profilelViewModelList; }
+            set { SetProperty(ref _profilelViewModelList, value); }
         }
         #endregion
 
@@ -91,21 +89,17 @@ namespace ProfileBook.ViewModel
         }
         private async void UpdateModel(object selectObject)
         {
-            ProfileModel profileModel = selectObject as ProfileModel;
-            if (profileModel != null)
+            ProfileViewModel profilVieweModel = selectObject as ProfileViewModel;
+            if (profilVieweModel != null)
             {
                 var parametr = new NavigationParameters();
-                parametr.Add("ProfileUser", profileModel);
+                parametr.Add(ListOfNames.profileUser, profilVieweModel);
                 await _navigationService.NavigateAsync(($"{ nameof(AddEditProfilePage)}"), parametr);
             }
         }
         private void DeletingCurrentUserSettings() //When logging out, delete all user settings
         {
-            _profileService.DeleteAllSortSettings();
-            _authorizationService.RemoveIdCurrentUser();
-            _themService.RemoveThemeDark();
-            _themService.SetDefaultTheme();
-            _localizationService.SetDefaultLanguage();
+            _authorizationService.SettingDefaultSettings();
         }
         private async void ExecuteGoBack()
         {
@@ -114,81 +108,94 @@ namespace ProfileBook.ViewModel
         }
         private async void RemoveModel(object selectObject)
         {
-            ProfileModel profileModel = selectObject as ProfileModel;
-            if (profileModel != null)
+            ProfileViewModel profileViewModel = selectObject as ProfileViewModel;
+            if (profileViewModel != null)
             {
                 var confirmConfig = new ConfirmConfig()
                 {
-                    Message = AppResource.Youreallywanttodeletethisprofile,
-                    OkText = AppResource.Delete,
-                    CancelText = AppResource.Cancel
+                    Message = AppResource.you_really_want_to_delete_this_profile,
+                    OkText = AppResource.delete.ToUpper(),
+                    CancelText = AppResource.cancel.ToUpper()
                 };
                 var result = await UserDialogs.Instance.ConfirmAsync(confirmConfig);
                 if (result)
                 {
+                    var profileModel = profileViewModel.ToProfileModel();
                     await _profileService.RemoveProfileModelAsync(profileModel);
-                    ProfileList.Remove(profileModel);
+                    ProfileViewModelList.Remove(profileViewModel);
+                    if(ProfileViewModelList.Count==0)
+                    {
+                        ToggleVisibility(true, false);
+                    }
                 }
             }
         }
-        private void OnShowDialogExecuted()
+        private async void OnShowDialogExecuted()
         {
-            _dialogService.ShowDialog("PopupsContent", new DialogParameters
+            await _dialogService.ShowDialogAsync($"{ nameof(PopupsContent)}", new DialogParameters
             {
-                {"path", ProfileModel.ImageSource}
+                {ListOfNames.pathSelectedPicture, ProfileViewModel.ImageSource}
             });
         }
-        #endregion
-
-        #region---Overriding---
-        public override async Task InitializeAsync(INavigationParameters parameters)
+        private void ToggleVisibility(bool visableLabel, bool visableListView)
         {
-            var listOfUsers = await _profileService.GetAllProfileModelAsync();
-            if (listOfUsers.Count == 0)
+            IsVisableListView = visableListView;
+            IsVisableLabel = visableLabel;
+        }
+        private IEnumerable<ProfileViewModel> ConvertingProfileModelToProfileViewModel(IEnumerable <ProfileModel> listProfileModels)
+        {
+            var profileViewModelList = new ObservableCollection<ProfileViewModel>();
+            foreach (var profileModel in listProfileModels)
             {
-                IsVisableLabel = true;
-                IsVisableListView = false;
+                var convertingProfileViewModel = profileModel.ToProfileViewModel();
+                if (convertingProfileViewModel != null)
+                {
+                    profileViewModelList.Add(convertingProfileViewModel);
+                }
             }
-            else
+            return profileViewModelList;
+        }
+        #endregion
+        #region---Overriding---
+        public async Task InitializeAsync(INavigationParameters parameters)
+        {
+            var listOfProfileModel = await _profileService.GetAllProfileModelAsync();
+            if(listOfProfileModel!=null&&listOfProfileModel.ToList().Count!=0)
             {
-                IsVisableLabel = false;
-                IsVisableListView = true;
-                var resultsOfSelectingProfilesById = listOfUsers.Where(x => x.UserId == _authorizationService.GetIdCurrentUser());
-                if(_profileService.GetValueToSortByName())
+                var resultsOfSelectingProfilesById = listOfProfileModel.Where(x => x.UserId == _authorizationService.GetIdCurrentUser()).ToList();
+                if (resultsOfSelectingProfilesById.Count == 0)
                 {
-                    ProfileList.AddRange(resultsOfSelectingProfilesById.OrderBy(x => x.Name).ToList());
-                }
-                else if(_profileService.GetValueSortByNickName())
-                {
-                    ProfileList.AddRange(resultsOfSelectingProfilesById.OrderBy(x => x.NickName).ToList());
-                }
-                else if(_profileService.GetValueSortByDateAddedToDatabase())
-                {
-                    ProfileList.AddRange(resultsOfSelectingProfilesById.OrderBy(x => x.MomentOfRegistration).ToList());;
+                    ToggleVisibility(true, false);
                 }
                 else
                 {
-                    ProfileList.AddRange(resultsOfSelectingProfilesById);
+                    ToggleVisibility(false, true);
+                    var profileViewModelList = ConvertingProfileModelToProfileViewModel(resultsOfSelectingProfilesById);
+                    if (_profileService.GetValueToSort() == EnumSet.SortingType.SortByName)
+                    {
+                        ProfileViewModelList.AddRange(profileViewModelList.OrderBy(x => x.Name).ToList());
+                    }
+                    else if (_profileService.GetValueToSort() == EnumSet.SortingType.SortByNickName)
+                    {
+                        ProfileViewModelList.AddRange(profileViewModelList.OrderBy(x => x.NickName).ToList());
+                    }
+                    else if (_profileService.GetValueToSort() == EnumSet.SortingType.SortByDateAddedToDatabase)
+                    {
+                        ProfileViewModelList.AddRange(profileViewModelList.OrderBy(x => x.MomentOfRegistration).ToList());
+                    }
+                    else
+                    {
+                        ProfileViewModelList.AddRange(profileViewModelList);
+                    }
                 }
             }
         }
         protected override void OnPropertyChanged(PropertyChangedEventArgs args)
         {
             base.OnPropertyChanged(args);
-            if (args.PropertyName == nameof(ProfileModel))
+            if (args.PropertyName == nameof(ProfileViewModel))
             {
                 OnShowDialogExecuted();
-            }
-        }
-        #endregion
-
-        #region--Iterface INavigatedAware implementation-- 
-        public override void OnNavigatedFrom(INavigationParameters parameters) { }
-        public override void OnNavigatedTo(INavigationParameters parameters)
-        {
-            if (parameters.Count != 0)
-            {
-                NameIsChecked = parameters.GetValue<string>("NameIsChecked");
             }
         }
         #endregion

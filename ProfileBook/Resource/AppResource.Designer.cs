@@ -61,371 +61,362 @@ namespace ProfileBook.Resource {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на ADD.
-        /// </summary>
-        internal static string Add {
-            get {
-                return ResourceManager.GetString("Add", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Ищет локализованную строку, похожую на By date added to the database.
         /// </summary>
-        internal static string Bydateaddedtothedatabase {
+        internal static string by_date_added_to_the_database {
             get {
-                return ResourceManager.GetString("Bydateaddedtothedatabase", resourceCulture);
+                return ResourceManager.GetString("by_date_added_to_the_database", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на By the name.
         /// </summary>
-        internal static string Bythename {
+        internal static string by_the_name {
             get {
-                return ResourceManager.GetString("Bythename", resourceCulture);
+                return ResourceManager.GetString("by_the_name", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на By the Nick Name.
         /// </summary>
-        internal static string Bythenickname {
+        internal static string by_the_nick_name {
             get {
-                return ResourceManager.GetString("Bythenickname", resourceCulture);
+                return ResourceManager.GetString("by_the_nick_name", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на CANCEL.
+        ///   Ищет локализованную строку, похожую на Cancel.
         /// </summary>
-        internal static string Cancel {
+        internal static string cancel {
             get {
-                return ResourceManager.GetString("Cancel", resourceCulture);
+                return ResourceManager.GetString("cancel", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на Change the language:.
         /// </summary>
-        internal static string Changethelanguage {
+        internal static string change_the_language {
             get {
-                return ResourceManager.GetString("Changethelanguage", resourceCulture);
+                return ResourceManager.GetString("change_the_language", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на Confirm Password .
         /// </summary>
-        internal static string Confirmpassword {
+        internal static string confirm_password {
             get {
-                return ResourceManager.GetString("Confirmpassword", resourceCulture);
+                return ResourceManager.GetString("confirm_password", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на German.
         /// </summary>
-        internal static string De {
+        internal static string de {
             get {
-                return ResourceManager.GetString("De", resourceCulture);
+                return ResourceManager.GetString("de", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на DELETE.
+        ///   Ищет локализованную строку, похожую на Delete.
         /// </summary>
-        internal static string Delete {
+        internal static string delete {
             get {
-                return ResourceManager.GetString("Delete", resourceCulture);
+                return ResourceManager.GetString("delete", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на Description.
         /// </summary>
-        internal static string Description {
+        internal static string description {
             get {
-                return ResourceManager.GetString("Description", resourceCulture);
+                return ResourceManager.GetString("description", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на EDIT.
+        ///   Ищет локализованную строку, похожую на Edit.
         /// </summary>
-        internal static string Edit {
+        internal static string edit {
             get {
-                return ResourceManager.GetString("Edit", resourceCulture);
+                return ResourceManager.GetString("edit", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на English.
         /// </summary>
-        internal static string En {
+        internal static string en {
             get {
-                return ResourceManager.GetString("En", resourceCulture);
+                return ResourceManager.GetString("en", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на Enable dark theme .
         /// </summary>
-        internal static string Enabledarktheme {
+        internal static string enable_dark_theme {
             get {
-                return ResourceManager.GetString("Enabledarktheme", resourceCulture);
+                return ResourceManager.GetString("enable_dark_theme", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на French.
         /// </summary>
-        internal static string Fr {
+        internal static string fr {
             get {
-                return ResourceManager.GetString("Fr", resourceCulture);
+                return ResourceManager.GetString("fr", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на Name and NickName fields must be filled!.
         /// </summary>
-        internal static string Informationismissinginthefieldsnameandnickname {
+        internal static string information_is_missing_in_the_fields_name_and_nick_name {
             get {
-                return ResourceManager.GetString("Informationismissinginthefieldsnameandnickname", resourceCulture);
+                return ResourceManager.GetString("information_is_missing_in_the_fields_name_and_nick_name", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на Invalid data entered.
         /// </summary>
-        internal static string Invaliddataentered {
+        internal static string invalid_data_entered {
             get {
-                return ResourceManager.GetString("Invaliddataentered", resourceCulture);
+                return ResourceManager.GetString("invalid_data_entered", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на Invalid login or password!.
         /// </summary>
-        internal static string Invalidloginorpassword {
+        internal static string invalid_login_or_password {
             get {
-                return ResourceManager.GetString("Invalidloginorpassword", resourceCulture);
+                return ResourceManager.GetString("invalid_login_or_password", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на Login.
         /// </summary>
-        internal static string Login {
+        internal static string login {
             get {
-                return ResourceManager.GetString("Login", resourceCulture);
+                return ResourceManager.GetString("login", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на Name.
         /// </summary>
-        internal static string Name {
+        internal static string name {
             get {
-                return ResourceManager.GetString("Name", resourceCulture);
+                return ResourceManager.GetString("name", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на NickName.
         /// </summary>
-        internal static string Nickname {
+        internal static string nickname {
             get {
-                return ResourceManager.GetString("Nickname", resourceCulture);
+                return ResourceManager.GetString("nickname", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на No profiles added.
         /// </summary>
-        internal static string Noprofilesadded {
+        internal static string no_profiles_added {
             get {
-                return ResourceManager.GetString("Noprofilesadded", resourceCulture);
+                return ResourceManager.GetString("no_profiles_added", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на Password.
         /// </summary>
-        internal static string Password {
+        internal static string password {
             get {
-                return ResourceManager.GetString("Password", resourceCulture);
+                return ResourceManager.GetString("password", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на Password and login do not exist in the database!.
         /// </summary>
-        internal static string Passwordorusernamedoesnotexist {
+        internal static string password_or_user_name_does_not_exist {
             get {
-                return ResourceManager.GetString("Passwordorusernamedoesnotexist", resourceCulture);
+                return ResourceManager.GetString("password_or_user_name_does_not_exist", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на Pick at gallery.
         /// </summary>
-        internal static string Pickatgallery {
+        internal static string pick_at_gallery {
             get {
-                return ResourceManager.GetString("Pickatgallery", resourceCulture);
+                return ResourceManager.GetString("pick_at_gallery", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на Polish.
         /// </summary>
-        internal static string Pl {
+        internal static string pl {
             get {
-                return ResourceManager.GetString("Pl", resourceCulture);
+                return ResourceManager.GetString("pl", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на Please pick a photo.
         /// </summary>
-        internal static string Pleasepickaphoto {
+        internal static string please_pick_a_photo {
             get {
-                return ResourceManager.GetString("Pleasepickaphoto", resourceCulture);
+                return ResourceManager.GetString("please_pick_a_photo", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на Password must be at least 8 and no more than 16 characters and contain at least one uppercase letter, one lowercase letter and one number.
         /// </summary>
-        internal static string RequirementsForPasswordAndConfirmPassword {
+        internal static string requirements_for_password_and_confirm_password {
             get {
-                return ResourceManager.GetString("RequirementsForPasswordAndConfirmPassword", resourceCulture);
+                return ResourceManager.GetString("requirements_for_password_and_confirm_password", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на Login must be at least 4 and no more than 16 characters and not start with numbers!.
         /// </summary>
-        internal static string RequirementsToLogin {
+        internal static string requirements_to_login {
             get {
-                return ResourceManager.GetString("RequirementsToLogin", resourceCulture);
+                return ResourceManager.GetString("requirements_to_login", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на Password must be at least 8 and no more than 16 characters and contain at least one uppercase letter, one lowercase letter and one number!.
         /// </summary>
-        internal static string RequirementsToPassword {
+        internal static string requirements_to_password {
             get {
-                return ResourceManager.GetString("RequirementsToPassword", resourceCulture);
+                return ResourceManager.GetString("requirements_to_password", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на SAVE.
+        ///   Ищет локализованную строку, похожую на Save.
         /// </summary>
-        internal static string Save {
+        internal static string save {
             get {
-                return ResourceManager.GetString("Save", resourceCulture);
+                return ResourceManager.GetString("save", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на Select sorting option:.
         /// </summary>
-        internal static string Selectsortingoption {
+        internal static string select_sorting_option {
             get {
-                return ResourceManager.GetString("Selectsortingoption", resourceCulture);
+                return ResourceManager.GetString("select_sorting_option", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на SIGIN IN.
+        ///   Ищет локализованную строку, похожую на Sign in.
         /// </summary>
-        internal static string Signin {
+        internal static string sign_in {
             get {
-                return ResourceManager.GetString("Signin", resourceCulture);
+                return ResourceManager.GetString("sign_in", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на SIGN UP.
         /// </summary>
-        internal static string Signup {
+        internal static string sign_up {
             get {
-                return ResourceManager.GetString("Signup", resourceCulture);
+                return ResourceManager.GetString("sign_up", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на Take photo with camera.
         /// </summary>
-        internal static string Takephotowithcamera {
+        internal static string take_photo_with_camera {
             get {
-                return ResourceManager.GetString("Takephotowithcamera", resourceCulture);
+                return ResourceManager.GetString("take_photo_with_camera", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на This login is already taken!.
         /// </summary>
-        internal static string Thisloginisalreadytaken {
+        internal static string this_login_is_already_taken {
             get {
-                return ResourceManager.GetString("Thisloginisalreadytaken", resourceCulture);
+                return ResourceManager.GetString("this_login_is_already_taken", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на Add Profile.
         /// </summary>
-        internal static string Titleaddprofile {
+        internal static string title_add_profile {
             get {
-                return ResourceManager.GetString("Titleaddprofile", resourceCulture);
+                return ResourceManager.GetString("title_add_profile", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на Main List.
         /// </summary>
-        internal static string Titlemainlist {
+        internal static string title_main_list {
             get {
-                return ResourceManager.GetString("Titlemainlist", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Main Page.
-        /// </summary>
-        internal static string Titlemainpage {
-            get {
-                return ResourceManager.GetString("Titlemainpage", resourceCulture);
+                return ResourceManager.GetString("title_main_list", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на Settings.
         /// </summary>
-        internal static string Titlesettings {
+        internal static string title_settings {
             get {
-                return ResourceManager.GetString("Titlesettings", resourceCulture);
+                return ResourceManager.GetString("title_settings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на SignIn.
+        /// </summary>
+        internal static string title_sign_in {
+            get {
+                return ResourceManager.GetString("title_sign_in", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на Sign Up.
         /// </summary>
-        internal static string Titlesignup {
+        internal static string title_sign_up {
             get {
-                return ResourceManager.GetString("Titlesignup", resourceCulture);
+                return ResourceManager.GetString("title_sign_up", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на You really want to delete this profile?.
         /// </summary>
-        internal static string Youreallywanttodeletethisprofile {
+        internal static string you_really_want_to_delete_this_profile {
             get {
-                return ResourceManager.GetString("Youreallywanttodeletethisprofile", resourceCulture);
+                return ResourceManager.GetString("you_really_want_to_delete_this_profile", resourceCulture);
             }
         }
     }

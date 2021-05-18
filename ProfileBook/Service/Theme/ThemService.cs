@@ -17,22 +17,32 @@ namespace ProfileBook.Service.Theme
         {
             return _settingsManager.IsDarkTheme;
         }
-        public void SetValueValueDarkTheme(bool value)
+        public void SetValueDarkTheme(bool value)
         {
             _settingsManager.IsDarkTheme = value;
         }
-        public void RemoveThemeDark()
-        {
-            _settingsManager.RemoveDarkTheme();
-        }
         public void SetDefaultTheme()
         {
-            RemoveThemeDark();
+            //RemoveThemeDark();
+            SetValueDarkTheme(false);
+            PerformThemeChange(EnumSet.Theme.Light);
+        }
+        public void PerformThemeChange(EnumSet.Theme theme)
+        {
             ICollection<ResourceDictionary> mergedDictionaries = Application.Current.Resources.MergedDictionaries;
             if (mergedDictionaries != null)
             {
                 mergedDictionaries.Clear();
-                mergedDictionaries.Add(new LightTheme());
+                switch (theme)
+                {
+                    case EnumSet.Theme.Dark:
+                        mergedDictionaries.Add(new DarkTheme());
+                        break;
+                    case EnumSet.Theme.Light:
+                    default:
+                        mergedDictionaries.Add(new LightTheme());
+                        break;
+                }
             }
         }
     }

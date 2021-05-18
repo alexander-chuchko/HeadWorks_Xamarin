@@ -4,7 +4,8 @@
              xmlns:local="clr-namespace:ProfileBook.Converter"
              xmlns:resource="clr-namespace:ProfileBook.Resource"
              x:Class="ProfileBook.View.SignUp"
-             Title="{x:Static resource:AppResource.Titlesignup}">
+             BackgroundColor="{DynamicResource PageBackgroundColor}"
+             Title="{x:Static resource:AppResource.title_sign_up}">
     <ContentPage.Resources>
         <ResourceDictionary>
             <local:MultiTriggerConverter x:Key="dataHasBeenEntered"/>
@@ -15,16 +16,16 @@
             <Grid Grid.Row="0">
                 <StackLayout VerticalOptions="Center"  Padding="30">
                     <Entry x:Name="LoginSignUP"
-                       Placeholder="{x:Static resource:AppResource.Login}"
+                       Placeholder="{x:Static resource:AppResource.login}"
                        Text="{Binding Path=Login}"
                        ClearButtonVisibility="WhileEditing"/>
                     <Entry x:Name="PasswordSignUp"
                        Placeholder="Password"
-                       IsPassword="False"
+                       IsPassword="True"
                        Text="{Binding Path= Password}"
                        ClearButtonVisibility="WhileEditing"/>
                     <Entry x:Name="ConfirmPasswordSignUp"
-                       Placeholder="{x:Static resource:AppResource.Confirmpassword}"
+                       Placeholder="{x:Static resource:AppResource.confirm_password}"
                        IsPassword="True"
                        Text="{Binding Path=ConfirmPassword}"
                        ClearButtonVisibility="WhileEditing"/>
@@ -32,8 +33,9 @@
             </Grid>
             <Grid Grid.Row="1">
                 <StackLayout VerticalOptions="Start"  Padding="30">
-                    <Button Text="{x:Static resource:AppResource.Signup}"
+                    <Button Text="{x:Static resource:AppResource.sign_up}"
                         TextColor="Black"
+                        TextTransform="Uppercase"
                         BackgroundColor="Orange"
                         CornerRadius="5"
                         FontSize="18"

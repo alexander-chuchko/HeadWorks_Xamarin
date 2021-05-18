@@ -4,7 +4,7 @@
              xmlns:resource="clr-namespace:ProfileBook.Resource"
              x:Class="ProfileBook.View.MainList"
              BackgroundColor="{DynamicResource PageBackgroundColor}"
-             Title="{x:Static resource:AppResource.Titlemainlist}">
+             Title="{x:Static resource:AppResource.title_main_list}">
     <ContentPage.ToolbarItems>
         <ToolbarItem IconImageSource="ic_exit_to_app.png"
                      Priority="1"
@@ -19,18 +19,18 @@
         <ListView x:Name="MyListView" 
                   Margin="15" 
                   Grid.Row="1" 
-                  ItemsSource="{Binding ProfileList}"
-                  SelectedItem="{Binding Path=ProfileModel}"
+                  ItemsSource="{Binding ProfileViewModelList}"
+                  SelectedItem="{Binding Path=ProfileViewModel}"
                   HasUnevenRows="True" 
                   IsVisible="{Binding IsVisableListView}">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
                         <ViewCell.ContextActions>
-                            <MenuItem Text="{x:Static resource:AppResource.Edit}"
+                            <MenuItem Text="{x:Static resource:AppResource.edit}"
                                       Command="{Binding Path=BindingContext.UpdateCommand, Source={x:Reference Name=MyListView}}"
                                       CommandParameter="{Binding .}"/>
-                            <MenuItem Text="{x:Static resource:AppResource.Delete}"
+                            <MenuItem Text="{x:Static resource:AppResource.delete}"
                                       Command="{Binding Path=BindingContext.RemoveCommand, Source={x:Reference Name=MyListView}}"
                                       CommandParameter="{Binding .}"/>
                         </ViewCell.ContextActions>
@@ -57,7 +57,7 @@
                Grid.Row="1" 
                FontSize="28" 
                TextColor="Brown" 
-               Text="{x:Static resource:AppResource.Noprofilesadded}"/>
+               Text="{x:Static resource:AppResource.no_profiles_added}"/>
         <Button Grid.Row="1"
                 Text="+"
                 BorderColor="CadetBlue" 

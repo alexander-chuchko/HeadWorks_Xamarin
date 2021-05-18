@@ -31,7 +31,7 @@ namespace ProfileBook.Service.Repository
         {
             return await _database.Value.DeleteAsync(entity);
         }
-        public async Task<List<T>> GetAllAsync<T>() where T : IEntityBase, new()
+        public async Task<IEnumerable<T>> GetAllAsync<T>() where T : IEntityBase, new()
         {
             return await _database.Value.Table<T>().ToListAsync();
         }

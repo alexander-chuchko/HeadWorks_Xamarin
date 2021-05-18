@@ -1,9 +1,9 @@
-﻿using Prism;
+﻿using Acr.UserDialogs;
+using Prism;
 using Prism.Ioc;
 using Prism.Plugin.Popups;
 using Prism.Unity;
 using ProfileBook.Dialogs;
-using ProfileBook.Resource;
 using ProfileBook.Service;
 using ProfileBook.Service.Authorization;
 using ProfileBook.Service.Localization;
@@ -15,8 +15,6 @@ using ProfileBook.Service.User;
 using ProfileBook.Services.Repository;
 using ProfileBook.View;
 using ProfileBook.ViewModel;
-using System.Globalization;
-using System.Threading;
 using Xamarin.Forms;
 
 namespace ProfileBook
@@ -46,12 +44,14 @@ namespace ProfileBook
             containerRegistry.RegisterPopupDialogService();
             containerRegistry.RegisterInstance<IRepository>(Container.Resolve<Repository>());
             containerRegistry.RegisterInstance<ISettingsManager>(Container.Resolve<SettingsManager>());
-            containerRegistry.RegisterInstance<IAuthenticationService>(Container.Resolve<AuthenticationService>());
-            containerRegistry.RegisterInstance<IAuthorizationService>(Container.Resolve<AuthorizationService>());
+
+            containerRegistry.RegisterInstance(UserDialogs.Instance);
             containerRegistry.RegisterInstance<IUserService>(Container.Resolve<UserService>());
+            containerRegistry.RegisterInstance<IAuthenticationService>(Container.Resolve<AuthenticationService>());
             containerRegistry.RegisterInstance<IProfileService>(Container.Resolve<ProfileService>());
             containerRegistry.RegisterInstance<IThemService>(Container.Resolve<ThemService>());
             containerRegistry.RegisterInstance<ILocalizationService>(Container.Resolve<LocalizationService>());
+            containerRegistry.RegisterInstance<IAuthorizationService>(Container.Resolve<AuthorizationService>());
             //Registration
             containerRegistry.RegisterForNavigation<NavigationPage>();
             containerRegistry.RegisterForNavigation<MainPage, MainPageViewModel>();
@@ -65,9 +65,8 @@ namespace ProfileBook
         {
             InitializeComponent();
             //Кладем первую страницу в стек навигации
-            //var result=await NavigationService.NavigateAsync("NavigationPage/MainPage");
-
             var result = await NavigationService.NavigateAsync($"{nameof(NavigationPage)}/{nameof(MainPage)}");
+
             //var result = await NavigationService.NavigateAsync($"{nameof(Settings)}");
             //var result = await NavigationService.NavigateAsync($"{nameof(MainPage)}"));
             //var result = await NavigationService.NavigateAsync(($"{ nameof(SignUp)}"));

@@ -1,12 +1,14 @@
 ﻿using Prism.Commands;
 using Prism.Navigation;
+using Prism.Services;
 using ProfileBook.Helpers;
 using ProfileBook.Model;
+using ProfileBook.Resource;
 using ProfileBook.Service;
 using ProfileBook.Service.User;
-using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Xamarin.Forms;
 
 namespace ProfileBook.ViewModel
 {
@@ -19,10 +21,10 @@ namespace ProfileBook.ViewModel
         private bool _isEnabled;
         private readonly IAuthenticationService _authenticationService;
         private readonly IUserService _userService;
-        private ObservableCollection<UserModel> _userList;
+        private readonly IPageDialogService _pageDialogService;
         private UserModel _userModel;
         #endregion
-        public SingUpViewModel(INavigationService navigationService, IAuthenticationService authenticationService, IUserService userService): base(navigationService)
+        public SingUpViewModel(INavigationService navigationService, IAuthenticationService authenticationService, IUserService userService, IPageDialogService pageDialogService) : base(navigationService)
         {
             IsEnabled = false;
             Login = string.Empty;
@@ -30,6 +32,7 @@ namespace ProfileBook.ViewModel
             ConfirmPassword = string.Empty;
             _authenticationService = authenticationService;
             _userService = userService;
+            _pageDialogService = pageDialogService;
             SignUpCommand = new DelegateCommand(ExecuteNavigationToSignUp, CanExecuteNavigationToSignUp).ObservesProperty(() => IsEnabled); 
         }
         #region---PublicProperties---
@@ -54,11 +57,6 @@ namespace ProfileBook.ViewModel
             get{ return _isEnabled;}
             set{ SetProperty(ref _isEnabled, value);}
         }
-        public ObservableCollection<UserModel> UserList
-        {
-            get{ return _userList;}
-            set{ _userList = value;}
-        }
         public UserModel UserModel
         {
             set{ _userModel = value;}
@@ -69,56 +67,47 @@ namespace ProfileBook.ViewModel
         private async void ExecuteGoBack()
         {
             var parametr = new NavigationParameters();
-            parametr.Add("NewUser", UserModel);
-            await _navigationService.NavigateAsync("/MainPage", parametr);
+            parametr.Add(ListOfNames.newUser, UserModel);
+            await _navigationService.NavigateAsync(($"/{ nameof(NavigationPage)}/{ nameof(MainPage)}"), parametr);
         }
-        private void CreateUserModel()
-        {
-            UserModel = new UserModel()
-            {
-                Login = Login,
-                Password = Password
-            };
-        }
-
         //Authentication methods
-        private bool IsValidLogin()
+        private async Task<bool> IsValidLogin()
         {
             var validationResult = true;
             if (!Validation.IsValidatedLogin(Login))
             {
                 validationResult = false;
-                ListOfMessages.ShowRequirementsToLogin();
+               await _pageDialogService.DisplayAlertAsync(AppResource.requirements_to_login, AppResource.invalid_data_entered, "OK");
             }  
             return validationResult;
         }
-        private bool IsLinesMatch()
+        private async Task<bool> IsLinesMatch()
         {
             var comparisonResult = true; ;
             if(!Validation.CompareStrings(Password, ConfirmPassword))
             {
                 comparisonResult = false;
-                ListOfMessages.ShowRequirementsForPasswordAndConfirmPassword();
+               await _pageDialogService.DisplayAlertAsync(AppResource.requirements_for_password_and_confirm_password, AppResource.invalid_data_entered, "OK");
             }
             return comparisonResult;
         }
-        private bool IsValidPassword()
+        private async Task<bool> IsValidPassword()
         {
             var validationResult = true;
             if (!Validation.IsValidatedPassword(Password))
             {
                 validationResult = false;
-                ListOfMessages.ShowRequirementsToLogin();
+               await _pageDialogService.DisplayAlertAsync(AppResource.requirements_to_login, AppResource.invalid_data_entered, "OK");
             }
             return validationResult;
         }
-        private bool IsLoginUnique()
+        private async Task<bool> IsLoginUnique()
         {
             var resultAuthentication = true;
-            if(!_authenticationService.IsLoginUniqe(UserList, Login))
+            if(!await _authenticationService.IsLoginUniqeAsync(Login))
             {
                 resultAuthentication = false;
-                ListOfMessages.ShowThisLoginIsAlreadyTaken(); 
+                await _pageDialogService.DisplayAlertAsync(AppResource.this_login_is_already_taken, AppResource.invalid_data_entered, "OK");
             }
             return resultAuthentication;
         }
@@ -128,6 +117,14 @@ namespace ProfileBook.ViewModel
             Password = string.Empty;
             ConfirmPassword = string.Empty;
         }
+        private void CreateUserModel()
+        {
+            UserModel = new UserModel()
+            {
+                Login = Login,
+                Password = Password
+            };
+        }
         private async Task AddUserModel()
         {
             CreateUserModel();
@@ -135,7 +132,7 @@ namespace ProfileBook.ViewModel
         }
         private async void ExecuteNavigationToSignUp()
         {
-            if(IsValidLogin()&& IsLinesMatch()&& IsValidPassword()&& IsLoginUnique())
+            if(await IsValidLogin()&& await IsLinesMatch()&& await IsValidPassword()&& await IsLoginUnique())
             {
                 await AddUserModel();
                 ExecuteGoBack();
@@ -148,16 +145,6 @@ namespace ProfileBook.ViewModel
         private bool CanExecuteNavigationToSignUp()
         {
             return IsEnabled;
-        }
-        #endregion
-        #region---Overriding---
-        public override async Task InitializeAsync(INavigationParameters parameters)
-        {
-            var userList = await _userService.GetAllUserModelAsync();
-            if(userList!=null)
-            {
-                UserList = new ObservableCollection<UserModel>(userList);
-            }
         }
         #endregion
     }

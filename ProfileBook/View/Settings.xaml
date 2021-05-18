@@ -4,42 +4,46 @@
              xmlns:resource="clr-namespace:ProfileBook.Resource"
              x:Class="ProfileBook.View.Settings"
              BackgroundColor="{DynamicResource PageBackgroundColor}"
-             Title="{x:Static resource:AppResource.Titlesettings}">
+             Title="{x:Static resource:AppResource.title_settings}">
     <ContentPage.Content>
         <Grid RowDefinitions="auto, auto, auto, auto" Padding="20">
             <Grid Grid.Row="0" Padding="15">
                 <StackLayout>
-                    <Label Text="{x:Static resource:AppResource.Selectsortingoption}"
+                    <Label Text="{x:Static resource:AppResource.select_sorting_option}"
                            FontSize="22"
                            Style="{StaticResource LabelStyle}"/>
-                    <RadioButton Content="{x:Static resource:AppResource.Bythename}"
-                                 IsChecked="{Binding IsCheckedName}"
+                    <RadioButton Content="{x:Static resource:AppResource.by_the_name}"
+                                 IsChecked="{Binding IsCheckedName, Mode=TwoWay}"
                                  Style="{StaticResource RadioButton}"/>
-                    <RadioButton Content="{x:Static resource:AppResource.Bythenickname}"
-                                 IsChecked="{Binding IsCheckedNickName}"
+                    <RadioButton Content="{x:Static resource:AppResource.by_the_nick_name}"
+                                 IsChecked="{Binding IsCheckedNickName, Mode=TwoWay}"
                                  Style="{StaticResource RadioButton}"/>
-                    <RadioButton Content="{x:Static resource:AppResource.Bydateaddedtothedatabase}"
-                                 IsChecked="{Binding IsCheckedDataAddedToTheDB}"
+                    <RadioButton Content="{x:Static resource:AppResource.by_date_added_to_the_database}"
+                                 IsChecked="{Binding IsCheckedDataAddedToTheDB, Mode=TwoWay}"
                                  Style="{StaticResource RadioButton}"/>
                 </StackLayout>
             </Grid>
-            <Grid  Grid.Row="1" ColumnDefinitions="*,100" Padding="15">
+            <Grid  Grid.Row="1"
+                   ColumnDefinitions="*,100"
+                   Padding="15">
                 <StackLayout Orientation="Horizontal">
                     <Label Grid.Column="0"
-                           Text="{x:Static resource:AppResource.Enabledarktheme}"
+                           Text="{x:Static resource:AppResource.enable_dark_theme}"
                            FontSize="22"
                            Style="{StaticResource LabelStyle}"/>
                     <CheckBox Grid.Column="1"
                           IsChecked="{Binding Path= IsCheckedTheme}"/>
                 </StackLayout>
             </Grid>
-            <Grid Grid.Row="2" Padding="15">
+            <Grid Grid.Row="2"
+                  Padding="15">
                 <StackLayout>
-                    <Label Text="{x:Static resource:AppResource.Changethelanguage}"
+                    <Label Text="{x:Static resource:AppResource.change_the_language}"
                        Grid.Column="0"
                        FontSize="22"
                        Style="{StaticResource LabelStyle}"/>
-                    <Picker SelectedItem="{Binding SelectedLanguage}" Title="{Binding CurrentLanguage}">
+                    <Picker SelectedItem="{Binding SelectedLanguage}"
+                            Title="{Binding CurrentLanguage}">
                         <Picker.Items>
                             <x:String>English</x:String>
                             <x:String>Deutsch</x:String>
@@ -49,8 +53,10 @@
                     </Picker>
                 </StackLayout>
             </Grid>
-            <Grid Grid.Row="3" Padding="15">
-                <Button Text="{x:Static resource:AppResource.Save}"
+            <Grid Grid.Row="3"
+                  Padding="15">
+                <Button Text="{x:Static resource:AppResource.save}"
+                        TextTransform="Uppercase"
                         VerticalOptions="End"
                         Command="{Binding Path=SaveCommand}"
                         Grid.Column="0"
@@ -58,7 +64,8 @@
                         Margin="5"
                         Style="{StaticResource ButtonStyle}"/>
                 <Button Grid.Column="1" 
-                        Text="{x:Static resource:AppResource.Cancel}" 
+                        Text="{x:Static resource:AppResource.cancel}"
+                        TextTransform="Uppercase"
                         BorderWidth="2"
                         Margin="5"
                         Command="{Binding Path=CancelCommand}"

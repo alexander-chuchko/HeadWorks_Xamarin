@@ -2,6 +2,7 @@
 using Prism.Mvvm;
 using Prism.Navigation;
 using Prism.Services.Dialogs;
+using ProfileBook.Helpers;
 using ProfileBook.Model;
 using System;
 
@@ -24,24 +25,26 @@ namespace ProfileBook.Dialogs
         
         public event Action<IDialogParameters> RequestClose;
 
-        public bool CanCloseDialog() => true;
+        public bool CanCloseDialog()
+        {
+            return true;
+        }
         public void OnDialogClosed()
         {
-            //throw new NotImplementedException();
         }
         public void OnDialogOpened(IDialogParameters parameters)
         {
-            PathImage = parameters.GetValue<string>("path");
+            PathImage = parameters.GetValue<string>(ListOfNames.pathSelectedPicture);
         }
         public ProfileModel ProfileModel
         {
-            set => SetProperty(ref _profileModel, value);
-            get => _profileModel;
+            set { SetProperty(ref _profileModel, value); }
+            get { return _profileModel; }
         }
         public string PathImage
         {
-            set => SetProperty(ref _pathImage, value);
-            get => _pathImage;
+            set { SetProperty(ref _pathImage, value); }
+            get { return _pathImage; }
         }
     }
 }

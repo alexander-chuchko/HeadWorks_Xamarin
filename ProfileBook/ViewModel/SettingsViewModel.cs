@@ -1,24 +1,16 @@
-﻿using Prism.Mvvm;
-using Prism.Navigation;
+﻿using Prism.Navigation;
 using ProfileBook.Enum;
-using ProfileBook.Resource;
 using ProfileBook.Service.Authorization;
 using ProfileBook.Service.Localization;
 using ProfileBook.Service.Profile;
 using ProfileBook.Service.Theme;
-using ProfileBook.Styles;
 using ProfileBook.View;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Globalization;
-using System.Linq;
-using System.Threading;
 using System.Windows.Input;
 using Xamarin.Forms;
 
 namespace ProfileBook.ViewModel
 {
-    public class SettingsViewModel: BindableBase
+    public class SettingsViewModel: BaseViewModel
     {
         private bool _isCheckedName;
         private bool _isCheckedNickName;
@@ -26,34 +18,27 @@ namespace ProfileBook.ViewModel
         private bool _isCheckedTheme;
         private string _selectedLanguage;
         private string _currentLanguage;
-
         private readonly IAuthorizationService _authorizationService;
         private readonly ILocalizationService _localizationService;
-        private readonly INavigationService _navigationService;
         private readonly IProfileService _profileService;
         private readonly IThemService _themService;
-        public SettingsViewModel(INavigationService navigationService, IAuthorizationService authorizationService, IProfileService profileService, IThemService themService, ILocalizationService localizationService)
+        public SettingsViewModel(INavigationService navigationService, IAuthorizationService authorizationService, IProfileService profileService, IThemService themService, ILocalizationService localizationService):base(navigationService)
         {
             _authorizationService = authorizationService;
-            _navigationService = navigationService;
             _profileService = profileService;
             _themService=themService;
             _localizationService = localizationService;
             SaveCommand = new Command(SaveAllSettings);
             CancelCommand = new Command(CancelSettings);
-            IsCheckedName = _profileService.GetValueToSortByName();
-            IsCheckedNickName = _profileService.GetValueSortByNickName();
-            IsCheckedDataAddedToTheDB = _profileService.GetValueSortByDateAddedToDatabase();
-            IsCheckedTheme = _themService.GetValueDarkTheme();
-            CurrentLanguage = _localizationService.GetValueLanguage();
+            DisplaySavedPageSettings();
         }
         #region---PublicProperties---
         public ICommand SaveCommand { get; set; }
         public ICommand CancelCommand { get; set; }
         public string SelectedLanguage
         {
-            set { SetProperty(ref _selectedLanguage, value);}
-            get { return _selectedLanguage;}
+            set { SetProperty(ref _selectedLanguage, value); }
+            get { return _selectedLanguage; }
         }
         public string CurrentLanguage
         {
@@ -85,34 +70,53 @@ namespace ProfileBook.ViewModel
             await _navigationService.GoBackAsync();
         }
         #endregion
+
         #region---Methods---
         private void SaveAllSettings()
         {
-            _profileService.DeleteAllSortSettings();
             //Save Settings For Sorting
             SaveSortSettings();
             //Save Settings For Changed Language
             SaveLanguageSettings();
-            //Save settings for DarkThem
+            //Save settings for Them
             SaveThemeSettings();
+
             GoBackMainList();
+        }
+        private void DisplaySavedPageSettings()
+        {
+            IsCheckedTheme = _themService.GetValueDarkTheme();
+            CurrentLanguage = _localizationService.GetValueLanguage();
+            EnumSet.SortingType sortingType= _profileService.GetValueToSort();
+            switch (sortingType)
+            {
+                case EnumSet.SortingType.SortByName:
+                    IsCheckedName = true;
+                    break;
+                case EnumSet.SortingType.SortByNickName:
+                    IsCheckedNickName = true;
+                    break;
+                case EnumSet.SortingType.SortByDateAddedToDatabase:
+                    IsCheckedDataAddedToTheDB = true;
+                    break;
+            }
         }
         private void SaveSortSettings()
         {
-            if (IsCheckedName&&_profileService.GetValueToSortByName()!= IsCheckedName)
+            if(IsCheckedName|| IsCheckedNickName|| IsCheckedDataAddedToTheDB)
             {
-                _profileService.DeleteAllSortSettings();
-                _profileService.SetValueToSortByName(IsCheckedName);
-            }
-            else if (IsCheckedNickName&&_profileService.GetValueSortByNickName()!= IsCheckedNickName)
-            {
-                _profileService.DeleteAllSortSettings();
-                _profileService.SetValueToSortByNickName(IsCheckedNickName);
-            }
-            else if (IsCheckedDataAddedToTheDB&&_profileService.GetValueSortByDateAddedToDatabase()!= IsCheckedDataAddedToTheDB)
-            {
-                _profileService.DeleteAllSortSettings();
-                _profileService.SetValueToSortByDateAddedToDatabase(IsCheckedDataAddedToTheDB);
+                if (IsCheckedName && _profileService.GetValueToSort() != EnumSet.SortingType.SortByName)
+                {
+                    _profileService.SetValueToSort(EnumSet.SortingType.SortByName);
+                }
+                else if (IsCheckedNickName && _profileService.GetValueToSort() != EnumSet.SortingType.SortByNickName)
+                {
+                    _profileService.SetValueToSort(EnumSet.SortingType.SortByNickName);
+                }
+                else if (IsCheckedDataAddedToTheDB && _profileService.GetValueToSort() != EnumSet.SortingType.SortByDateAddedToDatabase)
+                {
+                    _profileService.SetValueToSort(EnumSet.SortingType.SortByDateAddedToDatabase);
+                }
             }
         }
         private void SaveThemeSettings()
@@ -121,58 +125,27 @@ namespace ProfileBook.ViewModel
             {
                 if (_isCheckedTheme)
                 {
-                    PerformThemeChange(EnumSet.Theme.Dark);
-                    _themService.SetValueValueDarkTheme(IsCheckedTheme);
+                    _themService.PerformThemeChange(EnumSet.Theme.Dark);
+                    _themService.SetValueDarkTheme(IsCheckedTheme);
                 }
                 else
                 {
-                    PerformThemeChange(EnumSet.Theme.Light);
-                    _themService.RemoveThemeDark();
+                    _themService.PerformThemeChange(EnumSet.Theme.Light);
+                    _themService.SetDefaultTheme();
                 }
             }
         }
         private void SaveLanguageSettings()
         {
-            if (_selectedLanguage != null && _selectedLanguage != _localizationService.GetValueLanguage())
+            if (SelectedLanguage != null && SelectedLanguage != _localizationService.GetValueLanguage())
             {
-                var result = CultureInfo.GetCultures(CultureTypes.NeutralCultures).ToList().First(x => x.NativeName.Contains(_selectedLanguage.ToString()));
-                CultureInfo language = new CultureInfo(result.Name);
-                Thread.CurrentThread.CurrentUICulture = language;
-                AppResource.Culture = language;
-                _localizationService.SetValueLanguage(_selectedLanguage);
+                _localizationService.ChangeApplicationLanguage(SelectedLanguage);
+                _localizationService.SetValueLanguage(SelectedLanguage);
             }
         }
         private async void GoBackMainList()
         {
             await _navigationService.NavigateAsync(($"/{ nameof(NavigationPage)}/{ nameof(MainList)}"));
-        }
-        private void PerformThemeChange(EnumSet.Theme theme)
-        {
-            ICollection<ResourceDictionary> mergedDictionaries = Application.Current.Resources.MergedDictionaries;
-            if (mergedDictionaries != null)
-            {
-                mergedDictionaries.Clear();
-                switch (theme)
-                {
-                    case EnumSet.Theme.Dark:
-                        mergedDictionaries.Add(new DarkTheme());
-                        break;
-                    case EnumSet.Theme.Light:
-                    default:
-                        mergedDictionaries.Add(new LightTheme());
-                        break;
-                }
-            }
-        }
-        #endregion
-
-        #region---Overriding---
-        protected override void OnPropertyChanged(PropertyChangedEventArgs args)
-        {
-            base.OnPropertyChanged(args);
-            if(args.PropertyName == nameof(IsCheckedTheme))
-            {
-            }
         }
         #endregion
     }

@@ -1,4 +1,5 @@
-﻿using Xamarin.Essentials;
+﻿using ProfileBook.Helpers;
+using Xamarin.Essentials;
 
 namespace ProfileBook.Service.Settings
 {
@@ -15,44 +16,22 @@ namespace ProfileBook.Service.Settings
                 Preferences.Set(nameof(Id), value);
             } 
         }
-        public bool IsSortByName
+        public int SortingType
         {
-            get
+            get 
             {
-                return Preferences.Get(nameof(IsSortByName), false);
+                return Preferences.Get(nameof(SortingType), 0);
             }
             set
             {
-                Preferences.Set(nameof(IsSortByName), value);
-            }
-        }
-        public bool IsSortByNickName
-        {
-            get
-            {
-                return Preferences.Get(nameof(IsSortByNickName), false);
-            }
-            set
-            {
-                Preferences.Set(nameof(IsSortByNickName), value);
-            }
-        }
-        public bool IsSortByDateAddedToDatabase
-        {
-            get
-            {
-                return Preferences.Get(nameof(IsSortByDateAddedToDatabase), false);
-            }
-            set
-            {
-                Preferences.Set(nameof(IsSortByDateAddedToDatabase), value);
+                Preferences.Set(nameof(SortingType), value);
             }
         }
         public bool IsDarkTheme
         {
             get
             {
-              return Preferences.Get(nameof(IsDarkTheme), false);
+                return Preferences.Get(nameof(IsDarkTheme), false);
             }
             set
             {
@@ -63,30 +42,12 @@ namespace ProfileBook.Service.Settings
         {
             get
             {
-                return Preferences.Get(nameof(SelectedLanguage), "English");
+                return Preferences.Get(nameof(SelectedLanguage), ListOfNames.english);
             }
             set
             {
                 Preferences.Set(nameof(SelectedLanguage), value);
             }
-        }
-        public void RemoveCurrentId()
-        {
-            Preferences.Remove(nameof(Id));
-        }
-        public void RemoveDarkTheme()
-        {
-            Preferences.Remove(nameof(IsDarkTheme));
-        }
-        public void RemoveLanguage()
-        {
-            Preferences.Remove(nameof(SelectedLanguage));
-        }
-        public void DeleteAllSortSettings()
-        {
-            Preferences.Remove(nameof(IsSortByName));
-            Preferences.Remove(nameof(IsSortByNickName));
-            Preferences.Remove(nameof(IsSortByDateAddedToDatabase));
         }
     }
 }

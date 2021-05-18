@@ -4,7 +4,7 @@
              xmlns:resource="clr-namespace:ProfileBook.Resource"
              x:Class="ProfileBook.View.AddEditProfilePage"
              BackgroundColor="{DynamicResource PageBackgroundColor}"
-             Title="{x:Static resource:AppResource.Titleaddprofile}">
+             Title="{x:Static resource:AppResource.title_add_profile}">
     <ContentPage.ToolbarItems>
         <ToolbarItem IconImageSource="ic_save.png"
                      Priority="1"
@@ -34,19 +34,19 @@
             </Image.GestureRecognizers>
         </Image>
         <Entry  Grid.Row="1"
-               Placeholder="{x:Static resource:AppResource.Nickname}"
+               Placeholder="{x:Static resource:AppResource.nickname}"
                Grid.Column="0"
                Text="{Binding Path= NickName}"
                 Style="{StaticResource EntryStyle}">
         </Entry>
         <Entry Grid.Row="2" 
-               Placeholder="{x:Static resource:AppResource.Name}" 
+               Placeholder="{x:Static resource:AppResource.name}" 
                Grid.Column="0" 
                Text="{Binding Path= Name}"
                Style="{StaticResource EntryStyle}">
         </Entry>
         <Editor Grid.Row="3"
-                Placeholder="{x:Static resource:AppResource.Description}"
+                Placeholder="{x:Static resource:AppResource.description}"
                 MaxLength="120"
                 Grid.Column="0"
                 Text="{Binding Path= Description}"

@@ -14,10 +14,12 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Essentials;
 using Xamarin.Forms;
+using ProfileBook.Extension;
+using Prism.Services;
 
 namespace ProfileBook.ViewModel
 {
-    public class AddEditProfileViewModel: BindableBase, INavigatedAware
+    public class AddEditProfileViewModel: BaseViewModel, INavigatedAware
     {
         #region---PrivateFields---
         private string _nickName;
@@ -25,19 +27,19 @@ namespace ProfileBook.ViewModel
         private string _description;
         private string pathPicture;
         private bool _isEnable;
-        private ProfileModel _profileUser;
+        private ProfileViewModel _profileViewModel;
         private readonly IAuthorizationService _authorizationService;
         private readonly IProfileService _profileService;
-        private readonly INavigationService _navigationService;
+        private readonly IPageDialogService _pageDialogService;
         #endregion
-        public AddEditProfileViewModel(INavigationService navigationService, IAuthorizationService authorizationService, IProfileService profileService):base()
+        public AddEditProfileViewModel(INavigationService navigationService, IAuthorizationService authorizationService, IProfileService profileService, IPageDialogService pageDialogService) :base(navigationService)
         {
             Name = string.Empty;
             NickName = string.Empty;
             IsEnable = false;
-            _navigationService = navigationService;
             _authorizationService = authorizationService;
             _profileService = profileService;
+            _pageDialogService = pageDialogService;
             SaveCommand = new Command(SaveProfileModel);
              TapCommand = new Command(TouchedPicture);
             OpenGallery = SelectImage;
@@ -54,10 +56,10 @@ namespace ProfileBook.ViewModel
             get{return _isEnable;}
             set { SetProperty(ref _isEnable, value); }
         }
-        public ProfileModel ProfileUser
+        public ProfileViewModel ProfileViewModel
         {
-            get { return _profileUser; }
-            set { SetProperty(ref _profileUser, value); }
+            get { return _profileViewModel; }
+            set { SetProperty(ref _profileViewModel, value); }
         }
         public string NickName
         {
@@ -85,33 +87,33 @@ namespace ProfileBook.ViewModel
         {
             await _navigationService.NavigateAsync(($"/{ nameof(NavigationPage)}/{ nameof(MainList)}"));
         }
-       private void TouchedPicture()
+        private void TouchedPicture()
        {
             IUserDialogs userDialogs = UserDialogs.Instance;
             ActionSheetConfig config = new ActionSheetConfig();
             List<ActionSheetOption> Options = new List<ActionSheetOption>();
-            Options.Add(new ActionSheetOption(AppResource.Pickatgallery, OpenGallery, "folder_image.png"));
-            Options.Add(new ActionSheetOption(AppResource.Takephotowithcamera, TakePhoto, "camera.png"));
-            ActionSheetOption cancel = new ActionSheetOption(AppResource.Cancel, null, null);
+            Options.Add(new ActionSheetOption(AppResource.pick_at_gallery, OpenGallery, ListOfNames.pictureForFolder));
+            Options.Add(new ActionSheetOption(AppResource.take_photo_with_camera, TakePhoto, ListOfNames.pictureForCamera));
+            ActionSheetOption cancel = new ActionSheetOption(AppResource.cancel.ToUpper(), null, null);
             config.Options = Options;
             config.Cancel = cancel;
             userDialogs.ActionSheet(config);
         }
-        private bool IsFieldsFilled()
+        private async Task<bool> IsFieldsFilled()
         {
             var resultFilling = true;
             if (!Validation.IsInformationInNameAndNickName(Name, NickName))
             {
                 resultFilling = false;
-                ListOfMessages.ShowInformationIsMissingInTheFieldsNameAndNickName();
+               await _pageDialogService.DisplayAlertAsync(AppResource.information_is_missing_in_the_fields_name_and_nick_name, AppResource.invalid_data_entered, "OK");
             }
             return resultFilling;
         }
         private async void SaveProfileModel()
         {
-            if (IsFieldsFilled())
+            if (await IsFieldsFilled())
             {
-                if (ProfileUser != null)
+                if (ProfileViewModel != null)
                 {
                     await UpdateProfileModel();
                 }
@@ -124,14 +126,19 @@ namespace ProfileBook.ViewModel
         }
         private async Task UpdateProfileModel()
         {
-            ProfileUser.ImageSource = PathPicture;
-            ProfileUser.Name = Name;
-            ProfileUser.NickName = NickName;
-            await _profileService.UpdateProfileModelAsync(ProfileUser);
+            ProfileViewModel.ImageSource = PathPicture;
+            ProfileViewModel.Name = Name;
+            ProfileViewModel.NickName = NickName;
+            ProfileViewModel.Description = Description;
+            var profileModel = ProfileViewModel.ToProfileModel();
+            if(profileModel!=null)
+            {
+                await _profileService.UpdateProfileModelAsync(profileModel);
+            }
         }
         private async Task AddProfileModel()
         {
-            ProfileModel profileModel = new ProfileModel()
+            ProfileViewModel profileViewModel = new ProfileViewModel()
             {
                 UserId = _authorizationService.GetIdCurrentUser(),
                 Description = Description,
@@ -140,13 +147,17 @@ namespace ProfileBook.ViewModel
                 Name = Name,
                 NickName = NickName
             };
-            await _profileService.InsertProfileModelAsync(profileModel);
+            var profileModel = profileViewModel.ToProfileModel();
+            if(profileModel!=null)
+            {
+                await _profileService.InsertProfileModelAsync(profileModel);
+            }
         }
         private async void SelectImage()
         {
             var result = await MediaPicker.PickPhotoAsync(new MediaPickerOptions
             {
-                Title =AppResource.Pleasepickaphoto
+                Title =AppResource.please_pick_a_photo
             });
             if(result!=null)
             {
@@ -169,24 +180,26 @@ namespace ProfileBook.ViewModel
         }
         #endregion
         #region--Iterface INavigatedAware implementation-- 
-        public void OnNavigatedFrom(INavigationParameters parameters) { }
         public void OnNavigatedTo(INavigationParameters parameters)
         {
-            if (parameters.Count != 0)
+            if (parameters.TryGetValue<ProfileViewModel>(ListOfNames.profileUser, out ProfileViewModel profileViewModel))
             {
-                ProfileUser = parameters.GetValue<ProfileModel>("ProfileUser");
-                if (ProfileUser != null)
+                ProfileViewModel = parameters.GetValue<ProfileViewModel>(ListOfNames.profileUser);
+                if (ProfileViewModel != null)
                 {
-                    Description = ProfileUser.Description;
-                    PathPicture = ProfileUser.ImageSource;
-                    NickName = ProfileUser.NickName;
-                    Name = ProfileUser.Name;
+                    Description = ProfileViewModel.Description;
+                    PathPicture = ProfileViewModel.ImageSource;
+                    NickName = ProfileViewModel.NickName;
+                    Name = ProfileViewModel.Name;
                 }
             }
             else
             {
-                PathPicture = "pic_profile.png";
+                PathPicture = ListOfNames.basePicture;
             }
+        }
+        public void OnNavigatedFrom(INavigationParameters parameters)
+        {
         }
         #endregion
     }

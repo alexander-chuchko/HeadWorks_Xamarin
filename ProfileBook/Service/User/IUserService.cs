@@ -9,6 +9,6 @@ namespace ProfileBook.Service.User
         Task UpdateUserModelAsync(UserModel userModel);
         Task InsertUserModelAsync(UserModel userModel);
         Task RemoveUserModelAsync(UserModel userModel);
-        Task<List<UserModel>> GetAllUserModelAsync();
+        Task<IEnumerable<UserModel>> GetAllUserModelAsync();
     }
 }

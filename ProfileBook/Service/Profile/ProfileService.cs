@@ -1,4 +1,5 @@
 ﻿using Acr.UserDialogs;
+using ProfileBook.Enum;
 using ProfileBook.Model;
 using ProfileBook.Service.Settings;
 using ProfileBook.Services.Repository;
@@ -17,9 +18,9 @@ namespace ProfileBook.Service.Profile
             _repository = repository;
             _settingsManager = settingsManager;
         }
-        public async Task<List<ProfileModel>> GetAllProfileModelAsync()
+        public async Task<IEnumerable<ProfileModel>> GetAllProfileModelAsync()
         {
-            List<ProfileModel> userModels = null;
+            IEnumerable<ProfileModel> userModels = null;
             try
             {
                 userModels = await _repository.GetAllAsync<ProfileModel>();
@@ -30,7 +31,6 @@ namespace ProfileBook.Service.Profile
             }
             return userModels;
         }
-
         public async Task InsertProfileModelAsync(ProfileModel profileModel)
         {
             try
@@ -70,36 +70,18 @@ namespace ProfileBook.Service.Profile
                 UserDialogs.Instance.Alert(ex.Message);
             }
         }
-        /*--Methods for setting the SortByName flag--*/
-        public bool GetValueToSortByName()
+        /*--Methods for setting the Sort flag--*/
+        public EnumSet.SortingType GetValueToSort()
         {
-            return _settingsManager.IsSortByName;
+            return (EnumSet.SortingType)_settingsManager.SortingType;
         }
-        public void SetValueToSortByName(bool value)
+        public void SetValueToSort(EnumSet.SortingType sortingType)
         {
-            _settingsManager.IsSortByName = value;
+            _settingsManager.SortingType = (int)sortingType;
         }
-        /*--Methods for setting the SortByNickName flag--*/
-        public bool GetValueSortByNickName()
+        public void SetDefaultValueToSort()
         {
-            return _settingsManager.IsSortByNickName;
-        }
-        public void SetValueToSortByNickName(bool value)
-        {
-            _settingsManager.IsSortByNickName = value;
-        }
-        /*--Methods for setting the SortByDateAddedToDatabase flag--*/
-        public bool GetValueSortByDateAddedToDatabase()
-        {
-            return _settingsManager.IsSortByDateAddedToDatabase;
-        }
-        public void SetValueToSortByDateAddedToDatabase(bool value)
-        {
-            _settingsManager.IsSortByDateAddedToDatabase = value;
-        }
-        public void DeleteAllSortSettings()
-        {
-            _settingsManager.DeleteAllSortSettings();
+            _settingsManager.SortingType = (int)EnumSet.SortingType.SortDefault;
         }
     }
 }

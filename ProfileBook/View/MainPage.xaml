@@ -4,7 +4,8 @@
              x:Class="ProfileBook.MainPage"
              xmlns:local="clr-namespace:ProfileBook.Converter"
              xmlns:resource="clr-namespace:ProfileBook.Resource"
-             Title="{x:Static resource:AppResource.Titlemainpage}">
+             BackgroundColor="{DynamicResource PageBackgroundColor}"
+             Title="{x:Static resource:AppResource.title_sign_in}">
     <ContentPage.Resources>
         <ResourceDictionary>
             <local:MultiTriggerConverter x:Key="dataHasBeenEntered"/>
@@ -12,14 +13,15 @@
     </ContentPage.Resources>
     <Grid RowDefinitions="0.75*,0.25*">
         <Grid Grid.Row="0">
-            <StackLayout VerticalOptions="Center"  Padding="30">
+            <StackLayout VerticalOptions="Center"
+                         Padding="30">
             <Entry x:Name="LoginSignIn"
-                   Placeholder="{x:Static resource:AppResource.Login}"
+                   Placeholder="{x:Static resource:AppResource.login}"
                    Text="{Binding Path= Login}"
                    ClearButtonVisibility="WhileEditing">
             </Entry>
             <Entry x:Name="PasswordSignIn"
-                   Placeholder="{x:Static resource:AppResource.Password}" 
+                   Placeholder="{x:Static resource:AppResource.password}" 
                    IsPassword="True"
                    Text="{Binding Path= Password}"
                    ClearButtonVisibility="WhileEditing">
@@ -27,17 +29,18 @@
             </StackLayout>
         </Grid>
         <Grid Grid.Row="1">
-            <StackLayout VerticalOptions="Start"  Padding="30">
-                <Button x:Name="Button1" 
-                    Text="{x:Static resource:AppResource.Signin}" 
-                    TextColor="Black" 
-                    BackgroundColor="Orange" 
-                    CornerRadius="5"  
-                    FontSize="18"  
-                    BorderWidth="3" 
-                    BorderColor="Black"
-                    IsEnabled="{Binding IsEnabled}"
-                    Command="{Binding Path=NavigateToListView}">
+            <StackLayout VerticalOptions="Start"
+                         Padding="30">
+                <Button Text="{x:Static resource:AppResource.sign_in}"
+                        TextTransform="Uppercase"   
+                        TextColor="Black" 
+                        BackgroundColor="Orange" 
+                        CornerRadius="5"  
+                        FontSize="18"  
+                        BorderWidth="3" 
+                        BorderColor="Black"
+                        IsEnabled="{Binding IsEnabled}"
+                        Command="{Binding Path=NavigateToListView}">
                     <Button.Triggers>
                         <MultiTrigger TargetType="Button">
                             <MultiTrigger.Conditions>
@@ -56,13 +59,14 @@
                         </MultiTrigger>
                     </Button.Triggers>
                 </Button>
-                <Label x:Name="LabelSingUp" 
-                   HorizontalTextAlignment="Center"
-                   Margin="10">
+                <Label HorizontalTextAlignment="Center"
+                       Margin="10"
+                       TextColor="Blue"
+                       FontSize="18"
+                       TextTransform="Uppercase">
                     <Label.FormattedText>
                         <FormattedString>
-                            <Span Text="{x:Static resource:AppResource.Signup}"
-                                  TextColor="Blue" FontSize="18">
+                            <Span Text="{x:Static resource:AppResource.sign_up}">
                                 <Span.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding Path=NavigationToSingUp}">
                                     </TapGestureRecognizer>

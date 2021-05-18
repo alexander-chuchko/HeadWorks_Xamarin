@@ -1,4 +1,5 @@
-﻿using ProfileBook.Model;
+﻿using ProfileBook.Enum;
+using ProfileBook.Model;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -9,13 +10,9 @@ namespace ProfileBook.Service.Profile
         Task UpdateProfileModelAsync(ProfileModel profileModel);
         Task InsertProfileModelAsync(ProfileModel profileModel);
         Task RemoveProfileModelAsync(ProfileModel profileModel);
-        Task<List<ProfileModel>> GetAllProfileModelAsync();
-        bool GetValueToSortByName();
-        void SetValueToSortByName(bool value);
-        bool GetValueSortByNickName();
-        void SetValueToSortByNickName(bool value);
-        bool GetValueSortByDateAddedToDatabase();
-        void SetValueToSortByDateAddedToDatabase(bool value);
-        void DeleteAllSortSettings();
+        Task<IEnumerable<ProfileModel>> GetAllProfileModelAsync();
+        EnumSet.SortingType GetValueToSort();
+        void SetValueToSort(EnumSet.SortingType sortingType);
+        void SetDefaultValueToSort();
     }
 }

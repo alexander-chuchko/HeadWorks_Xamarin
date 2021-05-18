@@ -117,127 +117,124 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Add" xml:space="preserve">
-    <value>ADD</value>
-  </data>
-  <data name="Bydateaddedtothedatabase" xml:space="preserve">
+  <data name="by_date_added_to_the_database" xml:space="preserve">
     <value>By date added to the database</value>
   </data>
-  <data name="Bythename" xml:space="preserve">
+  <data name="by_the_name" xml:space="preserve">
     <value>By the name</value>
   </data>
-  <data name="Bythenickname" xml:space="preserve">
+  <data name="by_the_nick_name" xml:space="preserve">
     <value>By the Nick Name</value>
   </data>
-  <data name="Cancel" xml:space="preserve">
-    <value>CANCEL</value>
+  <data name="cancel" xml:space="preserve">
+    <value>Cancel</value>
   </data>
-  <data name="Changethelanguage" xml:space="preserve">
+  <data name="change_the_language" xml:space="preserve">
     <value>Change the language:</value>
   </data>
-  <data name="Confirmpassword" xml:space="preserve">
+  <data name="confirm_password" xml:space="preserve">
     <value>Confirm Password </value>
   </data>
-  <data name="De" xml:space="preserve">
+  <data name="de" xml:space="preserve">
     <value>German</value>
   </data>
-  <data name="Delete" xml:space="preserve">
-    <value>DELETE</value>
+  <data name="delete" xml:space="preserve">
+    <value>Delete</value>
   </data>
-  <data name="Description" xml:space="preserve">
+  <data name="description" xml:space="preserve">
     <value>Description</value>
   </data>
-  <data name="Edit" xml:space="preserve">
-    <value>EDIT</value>
+  <data name="edit" xml:space="preserve">
+    <value>Edit</value>
   </data>
-  <data name="En" xml:space="preserve">
+  <data name="en" xml:space="preserve">
     <value>English</value>
   </data>
-  <data name="Enabledarktheme" xml:space="preserve">
+  <data name="enable_dark_theme" xml:space="preserve">
     <value>Enable dark theme </value>
   </data>
-  <data name="Fr" xml:space="preserve">
+  <data name="fr" xml:space="preserve">
     <value>French</value>
   </data>
-  <data name="Informationismissinginthefieldsnameandnickname" xml:space="preserve">
+  <data name="information_is_missing_in_the_fields_name_and_nick_name" xml:space="preserve">
     <value>Name and NickName fields must be filled!</value>
   </data>
-  <data name="Invaliddataentered" xml:space="preserve">
+  <data name="invalid_data_entered" xml:space="preserve">
     <value>Invalid data entered</value>
   </data>
-  <data name="Invalidloginorpassword" xml:space="preserve">
+  <data name="invalid_login_or_password" xml:space="preserve">
     <value>Invalid login or password!</value>
   </data>
-  <data name="Login" xml:space="preserve">
+  <data name="login" xml:space="preserve">
     <value>Login</value>
   </data>
-  <data name="Name" xml:space="preserve">
+  <data name="name" xml:space="preserve">
     <value>Name</value>
   </data>
-  <data name="Nickname" xml:space="preserve">
+  <data name="nickname" xml:space="preserve">
     <value>NickName</value>
   </data>
-  <data name="Noprofilesadded" xml:space="preserve">
+  <data name="no_profiles_added" xml:space="preserve">
     <value>No profiles added</value>
   </data>
-  <data name="Password" xml:space="preserve">
+  <data name="password" xml:space="preserve">
     <value>Password</value>
   </data>
-  <data name="Passwordorusernamedoesnotexist" xml:space="preserve">
+  <data name="password_or_user_name_does_not_exist" xml:space="preserve">
     <value>Password and login do not exist in the database!</value>
   </data>
-  <data name="Pickatgallery" xml:space="preserve">
+  <data name="pick_at_gallery" xml:space="preserve">
     <value>Pick at gallery</value>
   </data>
-  <data name="Pl" xml:space="preserve">
+  <data name="pl" xml:space="preserve">
     <value>Polish</value>
   </data>
-  <data name="Pleasepickaphoto" xml:space="preserve">
+  <data name="please_pick_a_photo" xml:space="preserve">
     <value>Please pick a photo</value>
   </data>
-  <data name="RequirementsForPasswordAndConfirmPassword" xml:space="preserve">
+  <data name="requirements_for_password_and_confirm_password" xml:space="preserve">
     <value>Password must be at least 8 and no more than 16 characters and contain at least one uppercase letter, one lowercase letter and one number</value>
   </data>
-  <data name="RequirementsToLogin" xml:space="preserve">
+  <data name="requirements_to_login" xml:space="preserve">
     <value>Login must be at least 4 and no more than 16 characters and not start with numbers!</value>
   </data>
-  <data name="RequirementsToPassword" xml:space="preserve">
+  <data name="requirements_to_password" xml:space="preserve">
     <value>Password must be at least 8 and no more than 16 characters and contain at least one uppercase letter, one lowercase letter and one number!</value>
   </data>
-  <data name="Save" xml:space="preserve">
-    <value>SAVE</value>
+  <data name="save" xml:space="preserve">
+    <value>Save</value>
   </data>
-  <data name="Selectsortingoption" xml:space="preserve">
+  <data name="select_sorting_option" xml:space="preserve">
     <value>Select sorting option:</value>
   </data>
-  <data name="Signin" xml:space="preserve">
-    <value>SIGIN IN</value>
+  <data name="sign_in" xml:space="preserve">
+    <value>Sign in</value>
   </data>
-  <data name="Signup" xml:space="preserve">
+  <data name="sign_up" xml:space="preserve">
     <value>SIGN UP</value>
   </data>
-  <data name="Takephotowithcamera" xml:space="preserve">
+  <data name="take_photo_with_camera" xml:space="preserve">
     <value>Take photo with camera</value>
   </data>
-  <data name="Thisloginisalreadytaken" xml:space="preserve">
+  <data name="this_login_is_already_taken" xml:space="preserve">
     <value>This login is already taken!</value>
   </data>
-  <data name="Titleaddprofile" xml:space="preserve">
+  <data name="title_add_profile" xml:space="preserve">
     <value>Add Profile</value>
   </data>
-  <data name="Titlemainlist" xml:space="preserve">
+  <data name="title_main_list" xml:space="preserve">
     <value>Main List</value>
   </data>
-  <data name="Titlemainpage" xml:space="preserve">
-    <value>Main Page</value>
-  </data>
-  <data name="Titlesettings" xml:space="preserve">
+  <data name="title_settings" xml:space="preserve">
     <value>Settings</value>
   </data>
-  <data name="Titlesignup" xml:space="preserve">
+  <data name="title_sign_in" xml:space="preserve">
+    <value>SignIn</value>
+  </data>
+  <data name="title_sign_up" xml:space="preserve">
     <value>Sign Up</value>
   </data>
-  <data name="Youreallywanttodeletethisprofile" xml:space="preserve">
+  <data name="you_really_want_to_delete_this_profile" xml:space="preserve">
     <value>You really want to delete this profile?</value>
   </data>
 </root>

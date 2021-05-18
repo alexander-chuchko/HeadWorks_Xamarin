@@ -8,5 +8,12 @@ namespace ProfileBook.Enum
             Light,
             Dark
         }
+        public enum SortingType
+        {
+            SortDefault,
+            SortByName,
+            SortByNickName,
+            SortByDateAddedToDatabase
+        }
     }
 }
