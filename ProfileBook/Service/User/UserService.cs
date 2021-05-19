@@ -10,12 +10,10 @@ namespace ProfileBook.Service.User
 {
     public class UserService: IUserService
     {
-        private readonly INavigationService _navigationService;
         private readonly IRepository _repository;
 
-        public UserService(INavigationService navigationService, IRepository repository)
+        public UserService(IRepository repository)
         {
-            _navigationService = navigationService;
             _repository = repository;
         }
         public async Task<IEnumerable<UserModel>> GetAllUserModelAsync()

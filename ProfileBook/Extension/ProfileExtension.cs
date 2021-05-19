@@ -1,8 +1,5 @@
 ﻿using ProfileBook.Model;
 using ProfileBook.ViewModel;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace ProfileBook.Extension
 {

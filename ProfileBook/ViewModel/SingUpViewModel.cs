@@ -71,7 +71,7 @@ namespace ProfileBook.ViewModel
             await _navigationService.NavigateAsync(($"/{ nameof(NavigationPage)}/{ nameof(MainPage)}"), parametr);
         }
         //Authentication methods
-        private async Task<bool> IsValidLogin()
+        private async Task<bool> IsValidLoginAsync()
         {
             var validationResult = true;
             if (!Validation.IsValidatedLogin(Login))
@@ -81,7 +81,7 @@ namespace ProfileBook.ViewModel
             }  
             return validationResult;
         }
-        private async Task<bool> IsLinesMatch()
+        private async Task<bool> IsLinesMatchAsync()
         {
             var comparisonResult = true; ;
             if(!Validation.CompareStrings(Password, ConfirmPassword))
@@ -91,7 +91,7 @@ namespace ProfileBook.ViewModel
             }
             return comparisonResult;
         }
-        private async Task<bool> IsValidPassword()
+        private async Task<bool> IsValidPasswordAsync()
         {
             var validationResult = true;
             if (!Validation.IsValidatedPassword(Password))
@@ -101,7 +101,7 @@ namespace ProfileBook.ViewModel
             }
             return validationResult;
         }
-        private async Task<bool> IsLoginUnique()
+        private async Task<bool> IsLoginUniqueAsync()
         {
             var resultAuthentication = true;
             if(!await _authenticationService.IsLoginUniqeAsync(Login))
@@ -125,16 +125,16 @@ namespace ProfileBook.ViewModel
                 Password = Password
             };
         }
-        private async Task AddUserModel()
+        private async Task AddUserModelAsync()
         {
             CreateUserModel();
             await _userService.InsertUserModelAsync(UserModel);
         }
         private async void ExecuteNavigationToSignUp()
         {
-            if(await IsValidLogin()&& await IsLinesMatch()&& await IsValidPassword()&& await IsLoginUnique())
+            if(await IsValidLoginAsync()&& await IsLinesMatchAsync()&& await IsValidPasswordAsync()&& await IsLoginUniqueAsync())
             {
-                await AddUserModel();
+                await AddUserModelAsync();
                 ExecuteGoBack();
             }
             else
