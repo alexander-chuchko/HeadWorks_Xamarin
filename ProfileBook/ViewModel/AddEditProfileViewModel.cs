@@ -1,8 +1,6 @@
 ﻿using Acr.UserDialogs;
-using Prism.Mvvm;
 using Prism.Navigation;
 using ProfileBook.Helpers;
-using ProfileBook.Model;
 using ProfileBook.Resource;
 using ProfileBook.Service.Authorization;
 using ProfileBook.Service.Profile;
@@ -162,7 +160,6 @@ namespace ProfileBook.ViewModel
             if(result!=null)
             {
                 var stream = await result.OpenReadAsync();
-                //PictureSource = ImageSource.FromStream(() => stream);
                 PathPicture = result.FullPath;
             }
         }
