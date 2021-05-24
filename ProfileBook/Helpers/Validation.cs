@@ -9,7 +9,7 @@ namespace ProfileBook
         static Validation()
         {
             patternForLogin = new Regex(@"(^[^0-9]{4,16})");
-            patternForPassword = new Regex(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,16}");
+            patternForPassword = new Regex(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z!#$%&()*+,./:;<=>?@^_{|}[\]~\d]{8,16}");
         }
         public static bool IsValidatedLogin(string login)
         {
