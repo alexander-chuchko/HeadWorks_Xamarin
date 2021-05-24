@@ -19,6 +19,7 @@ using ProfileBook.Helpers;
 using ProfileBook.Dialogs;
 using ProfileBook.Enum;
 using System.Collections.Generic;
+using ProfileBook.Model.Pfofile;
 
 namespace ProfileBook.ViewModel
 {
@@ -81,11 +82,11 @@ namespace ProfileBook.ViewModel
         #region---Methods---
         private async void ExecuteGoToAddProfileUser()
         {
-            await _navigationService.NavigateAsync(($"{ nameof(AddEditProfilePage)}"));
+            await _navigationService.NavigateAsync(($"{ nameof(AddEditProfileView)}"));
         }
         private async void ExecuteGoToSettingsPage()
         {
-            await _navigationService.NavigateAsync($"{ nameof(Settings)}");
+            await _navigationService.NavigateAsync($"{ nameof(SettingsView)}");
         }
         private async void UpdateModel(object selectObject)
         {
@@ -94,17 +95,17 @@ namespace ProfileBook.ViewModel
             {
                 var parametr = new NavigationParameters();
                 parametr.Add(ListOfNames.profileUser, profilVieweModel);
-                await _navigationService.NavigateAsync(($"{ nameof(AddEditProfilePage)}"), parametr);
+                await _navigationService.NavigateAsync(($"{ nameof(AddEditProfileView)}"), parametr);
             }
         }
         private void DeletingCurrentUserSettings() //When logging out, delete all user settings
         {
-            _authorizationService.SettingDefaultSettings();
+            _authorizationService.Unauthorize();
         }
         private async void ExecuteGoBack()
         {
             DeletingCurrentUserSettings();
-            await _navigationService.NavigateAsync($"/{ nameof(NavigationPage)}/{ nameof(MainPage)}");
+            await _navigationService.NavigateAsync($"/{ nameof(NavigationPage)}/{ nameof(SignInView)}");
         }
         private async void RemoveModel(object selectObject)
         {
@@ -121,8 +122,11 @@ namespace ProfileBook.ViewModel
                 if (result)
                 {
                     var profileModel = profileViewModel.ToProfileModel();
-                    await _profileService.RemoveProfileModelAsync(profileModel);
-                    ProfileViewModelList.Remove(profileViewModel);
+                    bool resultOfAction= await _profileService.DeleteProfileModelToStorageAsync(profileModel);
+                    if(resultOfAction)
+                    {
+                        ProfileViewModelList.Remove(profileViewModel);
+                    }
                     if(ProfileViewModelList.Count==0)
                     {
                         ToggleVisibility(true, false);
@@ -159,34 +163,30 @@ namespace ProfileBook.ViewModel
         #region---Overriding---
         public async Task InitializeAsync(INavigationParameters parameters)
         {
-            var listOfProfileModel = await _profileService.GetAllProfileModelAsync();
-            if(listOfProfileModel!=null&&listOfProfileModel.ToList().Count!=0)
+            var listProfileModelsOfCurrentUser = await _profileService.GetProfileListAsync();
+            if (listProfileModelsOfCurrentUser.ToList().Count == 0 || listProfileModelsOfCurrentUser == null)
             {
-                var resultsOfSelectingProfilesById = listOfProfileModel.Where(x => x.UserId == _authorizationService.GetIdCurrentUser()).ToList();
-                if (resultsOfSelectingProfilesById.Count == 0)
+                ToggleVisibility(true, false);
+            }
+            else
+            {
+                ToggleVisibility(false, true);
+                var profileViewModelList = ConvertingProfileModelToProfileViewModel(listProfileModelsOfCurrentUser);
+                if (_profileService.GetValueToSort() == EnumSet.SortingType.SortByName)
                 {
-                    ToggleVisibility(true, false);
+                    ProfileViewModelList.AddRange(profileViewModelList.OrderBy(x => x.Name).ToList());
+                }
+                else if (_profileService.GetValueToSort() == EnumSet.SortingType.SortByNickName)
+                {
+                    ProfileViewModelList.AddRange(profileViewModelList.OrderBy(x => x.NickName).ToList());
+                }
+                else if (_profileService.GetValueToSort() == EnumSet.SortingType.SortByDateAddedToDatabase)
+                {
+                    ProfileViewModelList.AddRange(profileViewModelList.OrderBy(x => x.MomentOfRegistration).ToList());
                 }
                 else
                 {
-                    ToggleVisibility(false, true);
-                    var profileViewModelList = ConvertingProfileModelToProfileViewModel(resultsOfSelectingProfilesById);
-                    if (_profileService.GetValueToSort() == EnumSet.SortingType.SortByName)
-                    {
-                        ProfileViewModelList.AddRange(profileViewModelList.OrderBy(x => x.Name).ToList());
-                    }
-                    else if (_profileService.GetValueToSort() == EnumSet.SortingType.SortByNickName)
-                    {
-                        ProfileViewModelList.AddRange(profileViewModelList.OrderBy(x => x.NickName).ToList());
-                    }
-                    else if (_profileService.GetValueToSort() == EnumSet.SortingType.SortByDateAddedToDatabase)
-                    {
-                        ProfileViewModelList.AddRange(profileViewModelList.OrderBy(x => x.MomentOfRegistration).ToList());
-                    }
-                    else
-                    {
-                        ProfileViewModelList.AddRange(profileViewModelList);
-                    }
+                    ProfileViewModelList.AddRange(profileViewModelList);
                 }
             }
         }

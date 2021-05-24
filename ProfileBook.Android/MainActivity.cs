@@ -29,6 +29,7 @@ namespace ProfileBook.Droid
         {
             public void RegisterTypes(IContainerRegistry containerRegistry)
             {
+
             }
         }
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)

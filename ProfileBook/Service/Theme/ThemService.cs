@@ -8,24 +8,18 @@ namespace ProfileBook.Service.Theme
 {
     public class ThemService :IThemService
     {
-        private ISettingsManager _settingsManager;
+        private readonly ISettingsManager _settingsManager;
         public ThemService(ISettingsManager settingsManager)
         {
             _settingsManager = settingsManager;
         }
-        public bool GetValueDarkTheme()
+        public EnumSet.Theme GetValueTheme()
         {
-            return _settingsManager.IsDarkTheme;
+            return (EnumSet.Theme)_settingsManager.ThemType;
         }
-        public void SetValueDarkTheme(bool value)
+        public void SetValueTheme(EnumSet.Theme themType)
         {
-            _settingsManager.IsDarkTheme = value;
-        }
-        public void SetDefaultTheme()
-        {
-            //RemoveThemeDark();
-            SetValueDarkTheme(false);
-            PerformThemeChange(EnumSet.Theme.Light);
+            _settingsManager.ThemType = (int)themType;
         }
         public void PerformThemeChange(EnumSet.Theme theme)
         {

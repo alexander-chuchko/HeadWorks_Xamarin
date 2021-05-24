@@ -1,11 +1,11 @@
-﻿
-namespace ProfileBook.Service.Settings
+﻿namespace ProfileBook.Service.Settings
 {
     public interface ISettingsManager
     {
-        int Id { get; set; }
-        bool IsDarkTheme { get; set; }
-        string SelectedLanguage { get; set; }
+        int AuthorizedUserID { get; set; }
         int SortingType { get; set; }
+        int ThemType { get; set; }
+        string SelectedLanguage { get; set; }
+        void ClearData();
     }
 }

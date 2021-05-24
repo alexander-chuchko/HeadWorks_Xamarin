@@ -1,7 +1,7 @@
 ﻿using Prism.Mvvm;
 using System;
 
-namespace ProfileBook.ViewModel
+namespace ProfileBook.Model.Pfofile
 {
     public class ProfileViewModel : BindableBase
     {

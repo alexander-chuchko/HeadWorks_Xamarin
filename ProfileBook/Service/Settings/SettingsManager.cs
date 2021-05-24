@@ -5,49 +5,33 @@ namespace ProfileBook.Service.Settings
 {
     class SettingsManager : ISettingsManager
     {
-        public int Id 
+        public int AuthorizedUserID 
         {
-            get 
-            { 
-                return Preferences.Get(nameof(Id), 0);
-            }
-            set 
-            {
-                Preferences.Set(nameof(Id), value);
-            } 
+            get => Preferences.Get(nameof(AuthorizedUserID), 0);
+            set => Preferences.Set(nameof(AuthorizedUserID), value);
         }
+
         public int SortingType
         {
-            get 
-            {
-                return Preferences.Get(nameof(SortingType), 0);
-            }
-            set
-            {
-                Preferences.Set(nameof(SortingType), value);
-            }
+            get => Preferences.Get(nameof(SortingType), 0);
+            set => Preferences.Set(nameof(SortingType), value);
         }
-        public bool IsDarkTheme
-        {
-            get
-            {
-                return Preferences.Get(nameof(IsDarkTheme), false);
-            }
-            set
-            {
-                Preferences.Set(nameof(IsDarkTheme), value);
-            }
-        }
+
         public string SelectedLanguage
         {
-            get
-            {
-                return Preferences.Get(nameof(SelectedLanguage), ListOfNames.english);
-            }
-            set
-            {
-                Preferences.Set(nameof(SelectedLanguage), value);
-            }
+            get =>Preferences.Get(nameof(SelectedLanguage), ListOfNames.english);
+            set => Preferences.Set(nameof(SelectedLanguage), value);
+        }
+
+        public int ThemType
+        {
+            get => Preferences.Get(nameof(ThemType), 0);
+            set => Preferences.Set(nameof(ThemType), value);
+        }
+
+        public void ClearData()
+        {
+            Preferences.Clear();
         }
     }
 }

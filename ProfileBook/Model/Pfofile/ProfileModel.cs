@@ -1,7 +1,7 @@
 ﻿using SQLite;
 using System;
 
-namespace ProfileBook.Model
+namespace ProfileBook.Model.Pfofile
 {
     [Table(nameof(ProfileModel))]
     public class ProfileModel:EntityBase

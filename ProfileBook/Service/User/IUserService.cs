@@ -6,9 +6,9 @@ namespace ProfileBook.Service.User
 {
     public interface IUserService
     {
-        Task UpdateUserModelAsync(UserModel userModel);
-        Task InsertUserModelAsync(UserModel userModel);
-        Task RemoveUserModelAsync(UserModel userModel);
+        Task<bool> UpdateUserModelAsync(UserModel userModel);
+        Task<bool> SaveUserModelAsync(UserModel userModel);
+        Task<bool> DeleteUserModelAsync(UserModel userModel);
         Task<IEnumerable<UserModel>> GetAllUserModelAsync();
     }
 }

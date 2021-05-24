@@ -1,67 +1,89 @@
 ﻿using Acr.UserDialogs;
 using ProfileBook.Enum;
-using ProfileBook.Model;
 using ProfileBook.Service.Settings;
 using ProfileBook.Services.Repository;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Linq;
+using ProfileBook.Model.Pfofile;
 
 namespace ProfileBook.Service.Profile
 {
     public class ProfileService : IProfileService
     {
-        private IRepository _repository;
-        private ISettingsManager _settingsManager;
+        private readonly IRepository _repository;
+        private readonly ISettingsManager _settingsManager;
         public ProfileService(IRepository repository, ISettingsManager settingsManager)
         {
             _repository = repository;
             _settingsManager = settingsManager;
         }
-        public async Task<IEnumerable<ProfileModel>> GetAllProfileModelAsync()
+        public async Task<IEnumerable<ProfileModel>> GetProfileListAsync()
         {
-            IEnumerable<ProfileModel> userModels = null;
+            IEnumerable<ProfileModel> userModelsById = null;
             try
             {
-                userModels = await _repository.GetAllAsync<ProfileModel>();
+                var resultOfGettingAllProfiles = await _repository.GetAllAsync<ProfileModel>();
+                userModelsById = resultOfGettingAllProfiles .Where(x => x.UserId == _settingsManager.AuthorizedUserID).ToList();
             }
             catch (Exception ex)
             {
                 UserDialogs.Instance.Alert(ex.Message);
             }
-            return userModels;
+            return userModelsById;
         }
-        public async Task InsertProfileModelAsync(ProfileModel profileModel)
+        public async Task<bool> SaveOrUpdateProfileModelToStorageAsync(ProfileModel profileModel)
         {
+            bool resultOfAction = false;
             try
             {
-                await _repository.InsertAsync<ProfileModel>(profileModel);
-            }
-            catch (Exception ex)
-            {
-                UserDialogs.Instance.Alert(ex.Message);
-            }
-        }
-        public async Task RemoveProfileModelAsync(ProfileModel profileModel)
-        {
-            try
-            {
-                if (profileModel != null)
+                if(profileModel!=null)
                 {
-                    await _repository.DeleteAsync(profileModel);
+                    if (profileModel.UserId == 0)
+                    {
+                        profileModel.UserId = _settingsManager.AuthorizedUserID;
+                        await _repository.InsertAsync<ProfileModel>(profileModel);
+                        resultOfAction = true;
+                    }
+                    else
+                    {
+                        await _repository.UpdateAsync<ProfileModel>(profileModel);
+                        resultOfAction = true;
+                    }
                 }
             }
             catch (Exception ex)
             {
                 UserDialogs.Instance.Alert(ex.Message);
             }
+            return resultOfAction;
         }
-        public async Task UpdateProfileModelAsync(ProfileModel profileModel)
+        public async Task<bool> DeleteProfileModelToStorageAsync(ProfileModel profileModel)
         {
+            bool resultOfAction = false;
             try
             {
                 if (profileModel != null)
                 {
+                    await _repository.DeleteAsync(profileModel);
+                    resultOfAction = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                UserDialogs.Instance.Alert(ex.Message);
+            }
+            return resultOfAction;
+        }
+        public async Task<bool> UpdateProfileModelToStorageAsync(ProfileModel profileModel)
+        {
+            bool resultOfAction = false;
+            try
+            {
+                if (profileModel != null)
+                {
+                    resultOfAction = true;
                     await _repository.UpdateAsync<ProfileModel>(profileModel);
                 }
             }
@@ -69,6 +91,7 @@ namespace ProfileBook.Service.Profile
             {
                 UserDialogs.Instance.Alert(ex.Message);
             }
+            return resultOfAction;
         }
         /*--Methods for setting the Sort flag--*/
         public EnumSet.SortingType GetValueToSort()
@@ -78,10 +101,6 @@ namespace ProfileBook.Service.Profile
         public void SetValueToSort(EnumSet.SortingType sortingType)
         {
             _settingsManager.SortingType = (int)sortingType;
-        }
-        public void SetDefaultValueToSort()
-        {
-            _settingsManager.SortingType = (int)EnumSet.SortingType.SortDefault;
         }
     }
 }

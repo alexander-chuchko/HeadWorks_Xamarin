@@ -1,13 +1,11 @@
-﻿
-using ProfileBook.Enum;
+﻿using ProfileBook.Enum;
 
 namespace ProfileBook.Service.Theme
 {
     public interface IThemService
     {
-        bool GetValueDarkTheme();
-        void SetValueDarkTheme(bool value);
-        void SetDefaultTheme();
         void PerformThemeChange(EnumSet.Theme theme);
+        EnumSet.Theme GetValueTheme();
+        void SetValueTheme(EnumSet.Theme themType);
     }
 }

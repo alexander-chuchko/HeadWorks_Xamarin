@@ -46,19 +46,19 @@
     <EmbeddedResource Update="Styles\LightTheme.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="View\AddEditProfile.xaml">
+    <EmbeddedResource Update="View\AddEditProfileView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="View\MainList.xaml">
+    <EmbeddedResource Update="View\MainListView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Dialogs\PopupsContent.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="View\Settings.xaml">
+    <EmbeddedResource Update="View\SettingsView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="View\SignUp.xaml">
+    <EmbeddedResource Update="View\SignUpView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
   </ItemGroup>
@@ -75,8 +75,20 @@
     <Compile Update="Styles\DarkTheme.xaml.cs">
       <DependentUpon>DarkTheme.xaml</DependentUpon>
     </Compile>
-    <Compile Update="View\AddEditProfile.xaml.cs">
-      <DependentUpon>AddEditProfile.xaml</DependentUpon>
+    <Compile Update="View\AddEditProfileView.xaml.cs">
+      <DependentUpon>AddEditProfileView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="View\MainListView.xaml.cs">
+      <DependentUpon>MainListView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="View\SettingsView.xaml.cs">
+      <DependentUpon>SettingsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="View\SignInView.xaml.cs">
+      <DependentUpon>SignInView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="View\SignUpView.xaml.cs">
+      <DependentUpon>SignUpView.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
 </Project>

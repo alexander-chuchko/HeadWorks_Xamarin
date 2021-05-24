@@ -3,7 +3,7 @@ using Prism.Mvvm;
 using Prism.Navigation;
 using Prism.Services.Dialogs;
 using ProfileBook.Helpers;
-using ProfileBook.Model;
+using ProfileBook.Model.Pfofile;
 using System;
 
 namespace ProfileBook.Dialogs

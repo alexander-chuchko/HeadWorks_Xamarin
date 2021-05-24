@@ -14,6 +14,7 @@ using Xamarin.Essentials;
 using Xamarin.Forms;
 using ProfileBook.Extension;
 using Prism.Services;
+using ProfileBook.Model.Pfofile;
 
 namespace ProfileBook.ViewModel
 {
@@ -38,7 +39,7 @@ namespace ProfileBook.ViewModel
             _authorizationService = authorizationService;
             _profileService = profileService;
             _pageDialogService = pageDialogService;
-            SaveCommand = new Command(SaveProfileModel);
+            SaveCommand = new Command(SaveOrUpdateProfileModel);
              TapCommand = new Command(TouchedPicture);
             OpenGallery = SelectImage;
             TakePhoto = TakingPictures;
@@ -83,7 +84,7 @@ namespace ProfileBook.ViewModel
         #region---Methods---
         private async void ExecuteNavigateToNavigationToMainList()
         {
-            await _navigationService.NavigateAsync(($"/{ nameof(NavigationPage)}/{ nameof(MainList)}"));
+            await _navigationService.NavigateAsync(($"/{ nameof(NavigationPage)}/{ nameof(MainListView)}"));
         }
         private void TouchedPicture()
        {
@@ -97,33 +98,41 @@ namespace ProfileBook.ViewModel
             config.Cancel = cancel;
             userDialogs.ActionSheet(config);
         }
-        private async Task<bool> IsFieldsFilled()
+        private bool IsFieldsFilled()
         {
-            var resultFilling = true;
+            bool resultFilling = true;
             if (!Validation.IsInformationInNameAndNickName(Name, NickName))
             {
-                resultFilling = false;
-               await _pageDialogService.DisplayAlertAsync(AppResource.information_is_missing_in_the_fields_name_and_nick_name, AppResource.invalid_data_entered, "OK");
+                resultFilling = false;  
             }
             return resultFilling;
         }
-        private async void SaveProfileModel()
+        private async void SaveOrUpdateProfileModel()
         {
-            if (await IsFieldsFilled())
+            if (IsFieldsFilled())
             {
+                bool resultOfAction = false;
                 if (ProfileViewModel != null)
                 {
-                    await UpdateProfileModel();
+                    resultOfAction = await UpdateProfileModel();
                 }
                 else
                 {
-                    await AddProfileModel();
+                    resultOfAction= await AddProfileModel();
                 }
-                ExecuteNavigateToNavigationToMainList();
+                if(resultOfAction)
+                {
+                    ExecuteNavigateToNavigationToMainList();
+                } 
+            }
+            else
+            {
+                await _pageDialogService.DisplayAlertAsync(AppResource.information_is_missing_in_the_fields_name_and_nick_name, AppResource.invalid_data_entered, "OK");
             }
         }
-        private async Task UpdateProfileModel()
+        private async Task<bool> UpdateProfileModel()
         {
+            bool resultOfAction = false;
             ProfileViewModel.ImageSource = PathPicture;
             ProfileViewModel.Name = Name;
             ProfileViewModel.NickName = NickName;
@@ -131,14 +140,16 @@ namespace ProfileBook.ViewModel
             var profileModel = ProfileViewModel.ToProfileModel();
             if(profileModel!=null)
             {
-                await _profileService.UpdateProfileModelAsync(profileModel);
+                resultOfAction= await _profileService.SaveOrUpdateProfileModelToStorageAsync(profileModel);
             }
+            return resultOfAction;
         }
-        private async Task AddProfileModel()
+        private async Task<bool> AddProfileModel()
         {
+            bool resultOfAction = false;
             ProfileViewModel profileViewModel = new ProfileViewModel()
             {
-                UserId = _authorizationService.GetIdCurrentUser(),
+                //UserId = _authorizationService.GetIdCurrentUser(),
                 Description = Description,
                 ImageSource = PathPicture,
                 MomentOfRegistration = DateTime.Now,
@@ -148,8 +159,9 @@ namespace ProfileBook.ViewModel
             var profileModel = profileViewModel.ToProfileModel();
             if(profileModel!=null)
             {
-                await _profileService.InsertProfileModelAsync(profileModel);
+                resultOfAction = await _profileService.SaveOrUpdateProfileModelToStorageAsync(profileModel);
             }
+            return resultOfAction;
         }
         private async void SelectImage()
         {
@@ -159,7 +171,7 @@ namespace ProfileBook.ViewModel
             });
             if(result!=null)
             {
-                var stream = await result.OpenReadAsync();
+                //var stream = await result.OpenReadAsync();
                 PathPicture = result.FullPath;
             }
         }

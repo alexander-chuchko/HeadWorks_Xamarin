@@ -1,64 +1,60 @@
 ﻿using ProfileBook.Model;
+using ProfileBook.Service.Settings;
 using ProfileBook.Service.User;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace ProfileBook.Service
 {
     public class AuthenticationService: IAuthenticationService
     {
-        private int _id;
         private readonly IUserService _userService;
-        private IEnumerable<UserModel> _userList;
-        public AuthenticationService(IUserService userService)
+        private readonly ISettingsManager _settingsManager;
+        public AuthenticationService(IUserService userService, ISettingsManager settingsManager)
         {
+            _settingsManager = settingsManager;
             _userService = userService;
         }
-        public int Id
-        {
-            set { _id = value; }
-            get { return _id; }
-        }
-        //Method for checking for uniqueness
-        public async Task<bool> IsLoginUniqeAsync(string login)
+        public async Task<UserModel> SignUpAsync(string login, string password)
         {
             var uniquenessCheckResult = true;
-            await GetAllUserModel();
-            if (_userList!=null)
+            UserModel userModel = null;
+            var userList = await _userService.GetAllUserModelAsync();
+            if (userList != null)
             {
-                foreach (var user in _userList)
+                foreach (var user in userList)
                 {
-                    if (string.Compare(user.Login, login, true)==0)
+                    if (string.Compare(user.Login, login, true) == 0)
                     {
                         uniquenessCheckResult = false;
                     }
                 }
             }
-            return uniquenessCheckResult;
+            if(uniquenessCheckResult)
+            {
+                userModel = new UserModel()
+                {
+                    Login = login,
+                    Password = password
+                };
+            }
+            return userModel;
         }
-        //Method for checking if the username and password match with the database
-        public async Task<bool> IsRelevantLoginAndPasswordAsync(string login, string password)
+        public async Task<bool> SignInAsync(string login, string password)
         {
             var relevanceСheckResult = false;
-            await GetAllUserModel();
-            if(_userList!=null)
+            var listOfUserModels = await _userService.GetAllUserModelAsync();
+            if (listOfUserModels != null)
             {
-                //проверяем существуют вообще логины
-                foreach (var user in _userList)
+                foreach (var userModel in listOfUserModels)
                 {
-                    if (user.Login == login&&user.Password== password)
+                    if (userModel.Login == login && userModel.Password == password)
                     {
-                        //Set in property id user
-                        Id = user.Id;
-                        relevanceСheckResult=true;
+                        _settingsManager.AuthorizedUserID = userModel.Id;
+                        relevanceСheckResult = true;
                     }
                 }
             }
             return relevanceСheckResult;
-        }
-        public async Task GetAllUserModel()
-        {
-            _userList = await _userService.GetAllUserModelAsync();
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using ProfileBook.Model;
 using ProfileBook.Model.Interface;
+using ProfileBook.Model.Pfofile;
 using ProfileBook.Services.Repository;
 using SQLite;
 using System;

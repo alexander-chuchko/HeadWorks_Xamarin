@@ -1,18 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
 
-namespace ProfileBook.View
+namespace ProfileBook
 {
-    [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class MainList : ContentPage
+    public partial class SignInView : ContentPage
     {
-        public MainList()
+        public SignInView()
         {
             InitializeComponent();
         }

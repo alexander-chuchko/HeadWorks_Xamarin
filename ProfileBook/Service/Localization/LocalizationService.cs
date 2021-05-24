@@ -1,5 +1,4 @@
-﻿using ProfileBook.Helpers;
-using ProfileBook.Resource;
+﻿using ProfileBook.Resource;
 using ProfileBook.Service.Settings;
 using System.Globalization;
 using System.Linq;
@@ -9,7 +8,7 @@ namespace ProfileBook.Service.Localization
 {
     public class LocalizationService : ILocalizationService
     {
-        private ISettingsManager _settingsManager;
+        private readonly ISettingsManager _settingsManager;
         public LocalizationService(ISettingsManager settingsManager)
         {
             _settingsManager = settingsManager;
@@ -21,14 +20,6 @@ namespace ProfileBook.Service.Localization
         public string GetValueLanguage()
         {
             return _settingsManager.SelectedLanguage;
-        }
-        public void SetDefaultLanguage()
-        {
-            if (ListOfNames.english!= GetValueLanguage())
-            {
-                SetValueLanguage(ListOfNames.english);
-                ChangeApplicationLanguage(ListOfNames.english);
-            }
         }
         public void ChangeApplicationLanguage(string selectedLanguage)
         {

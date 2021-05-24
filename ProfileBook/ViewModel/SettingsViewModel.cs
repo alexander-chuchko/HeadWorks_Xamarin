@@ -85,9 +85,7 @@ namespace ProfileBook.ViewModel
         }
         private void DisplaySavedPageSettings()
         {
-            IsCheckedTheme = _themService.GetValueDarkTheme();
-            CurrentLanguage = _localizationService.GetValueLanguage();
-            EnumSet.SortingType sortingType= _profileService.GetValueToSort();
+            EnumSet.SortingType sortingType = _profileService.GetValueToSort();
             switch (sortingType)
             {
                 case EnumSet.SortingType.SortByName:
@@ -100,6 +98,18 @@ namespace ProfileBook.ViewModel
                     IsCheckedDataAddedToTheDB = true;
                     break;
             }
+
+            EnumSet.Theme themeType = _themService.GetValueTheme();
+            switch (themeType)
+            {
+                case EnumSet.Theme.Light:
+                    IsCheckedTheme = false;
+                    break;
+                case EnumSet.Theme.Dark:
+                    IsCheckedTheme = true;
+                    break;
+            }
+            CurrentLanguage = _localizationService.GetValueLanguage();
         }
         private void SaveSortSettings()
         {
@@ -121,17 +131,20 @@ namespace ProfileBook.ViewModel
         }
         private void SaveThemeSettings()
         {
-            if (_isCheckedTheme != _themService.GetValueDarkTheme())
+            if(IsCheckedTheme)
             {
-                if (_isCheckedTheme)
+                if(_themService.GetValueTheme() != EnumSet.Theme.Dark)
                 {
                     _themService.PerformThemeChange(EnumSet.Theme.Dark);
-                    _themService.SetValueDarkTheme(IsCheckedTheme);
+                    _themService.SetValueTheme(EnumSet.Theme.Dark);
                 }
-                else
+            }
+            else
+            {
+                if (_themService.GetValueTheme() != EnumSet.Theme.Light)
                 {
                     _themService.PerformThemeChange(EnumSet.Theme.Light);
-                    _themService.SetDefaultTheme();
+                    _themService.SetValueTheme(EnumSet.Theme.Light);
                 }
             }
         }
@@ -145,7 +158,7 @@ namespace ProfileBook.ViewModel
         }
         private async void GoBackMainList()
         {
-            await _navigationService.NavigateAsync(($"/{ nameof(NavigationPage)}/{ nameof(MainList)}"));
+            await _navigationService.NavigateAsync(($"/{ nameof(NavigationPage)}/{ nameof(MainListView)}"));
         }
         #endregion
     }

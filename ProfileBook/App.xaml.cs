@@ -4,6 +4,8 @@ using Prism.Ioc;
 using Prism.Plugin.Popups;
 using Prism.Unity;
 using ProfileBook.Dialogs;
+using ProfileBook.Enum;
+using ProfileBook.Helpers;
 using ProfileBook.Service;
 using ProfileBook.Service.Authorization;
 using ProfileBook.Service.Localization;
@@ -21,11 +23,20 @@ namespace ProfileBook
 {
     public partial class App : PrismApplication
     {
-        public App():this(null)
-        {  
+        private IAuthorizationService _authorizationService;
+        private IThemService _themService;
+        private ILocalizationService _localizationService;
+
+        IAuthorizationService AuthorizationService =>_authorizationService ??(_authorizationService= Container.Resolve<IAuthorizationService>());
+        IThemService ThemService => _themService ?? (_themService = Container.Resolve<IThemService>());
+        ILocalizationService LocalizationService => _localizationService ?? (_localizationService = Container.Resolve<ILocalizationService>());
+
+        public App() :this(null)
+        {
+            
         }
         public App(IPlatformInitializer initializer) :base(initializer)
-        {  
+        {   
         }
         #region---Overrides---
         protected override void OnStart()
@@ -54,31 +65,34 @@ namespace ProfileBook
             containerRegistry.RegisterInstance<IAuthorizationService>(Container.Resolve<AuthorizationService>());
             //Registration
             containerRegistry.RegisterForNavigation<NavigationPage>();
-            containerRegistry.RegisterForNavigation<MainPage, MainPageViewModel>();
-            containerRegistry.RegisterForNavigation<SignUp, SingUpViewModel>();
-            containerRegistry.RegisterForNavigation<MainList, MainListViewModel>();
-            containerRegistry.RegisterForNavigation<AddEditProfilePage, AddEditProfileViewModel>();
-            containerRegistry.RegisterForNavigation<Settings, SettingsViewModel>();
+            containerRegistry.RegisterForNavigation<SignInView, SignInViewModel>();
+            containerRegistry.RegisterForNavigation<SignUpView, SingUpViewModel>();
+            containerRegistry.RegisterForNavigation<MainListView, MainListViewModel>();
+            containerRegistry.RegisterForNavigation<AddEditProfileView, AddEditProfileViewModel>();
+            containerRegistry.RegisterForNavigation<SettingsView, SettingsViewModel>();
             containerRegistry.RegisterDialog<PopupsContent, PopupsContentViewModel>();
         }
         protected override async void OnInitialized()
         {
             InitializeComponent();
-            //Кладем первую страницу в стек навигации
-            var result = await NavigationService.NavigateAsync($"{nameof(NavigationPage)}/{nameof(MainPage)}");
 
-            //var result = await NavigationService.NavigateAsync($"{nameof(Settings)}");
-            //var result = await NavigationService.NavigateAsync($"{nameof(MainPage)}"));
-            //var result = await NavigationService.NavigateAsync(($"{ nameof(SignUp)}"));
-            //var result = await NavigationService.NavigateAsync(($"{nameof(NavigationPage)}/{ nameof(MainList)}"));
-            //var result = await NavigationService.NavigateAsync(($"{nameof(NavigationPage)}/{ nameof(AddEditProfilePage)}"));
-            //var result = await NavigationService.NavigateAsync(($"{ nameof(NavigationPage)}/{ nameof(MainList)}"));
-            if (!result.Success)
+            if (AuthorizationService.IsAuthorized)
             {
-                System.Diagnostics.Debugger.Break();
+                if(ThemService.GetValueTheme()!=EnumSet.Theme.Light)
+                {
+                    ThemService.PerformThemeChange(ThemService.GetValueTheme());
+                }
+                if(LocalizationService.GetValueLanguage()!=ListOfNames.english)
+                {
+                    LocalizationService.ChangeApplicationLanguage(LocalizationService.GetValueLanguage());
+                }
+                await NavigationService.NavigateAsync(($"/{ nameof(NavigationPage)}/{ nameof(MainListView)}"));
+            }
+            else
+            {
+                await NavigationService.NavigateAsync($"{nameof(NavigationPage)}/{nameof(SignInView)}");
             }
             #endregion
         }
-
     }
 }

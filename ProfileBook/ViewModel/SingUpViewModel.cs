@@ -6,7 +6,6 @@ using ProfileBook.Model;
 using ProfileBook.Resource;
 using ProfileBook.Service;
 using ProfileBook.Service.User;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -68,48 +67,7 @@ namespace ProfileBook.ViewModel
         {
             var parametr = new NavigationParameters();
             parametr.Add(ListOfNames.newUser, UserModel);
-            await _navigationService.NavigateAsync(($"/{ nameof(NavigationPage)}/{ nameof(MainPage)}"), parametr);
-        }
-        //Authentication methods
-        private async Task<bool> IsValidLoginAsync()
-        {
-            var validationResult = true;
-            if (!Validation.IsValidatedLogin(Login))
-            {
-                validationResult = false;
-               await _pageDialogService.DisplayAlertAsync(AppResource.requirements_to_login, AppResource.invalid_data_entered, "OK");
-            }  
-            return validationResult;
-        }
-        private async Task<bool> IsLinesMatchAsync()
-        {
-            var comparisonResult = true; ;
-            if(!Validation.CompareStrings(Password, ConfirmPassword))
-            {
-                comparisonResult = false;
-               await _pageDialogService.DisplayAlertAsync(AppResource.requirements_for_password_and_confirm_password, AppResource.invalid_data_entered, "OK");
-            }
-            return comparisonResult;
-        }
-        private async Task<bool> IsValidPasswordAsync()
-        {
-            var validationResult = true;
-            if (!Validation.IsValidatedPassword(Password))
-            {
-                validationResult = false;
-               await _pageDialogService.DisplayAlertAsync(AppResource.requirements_to_login, AppResource.invalid_data_entered, "OK");
-            }
-            return validationResult;
-        }
-        private async Task<bool> IsLoginUniqueAsync()
-        {
-            var resultAuthentication = true;
-            if(!await _authenticationService.IsLoginUniqeAsync(Login))
-            {
-                resultAuthentication = false;
-                await _pageDialogService.DisplayAlertAsync(AppResource.this_login_is_already_taken, AppResource.invalid_data_entered, "OK");
-            }
-            return resultAuthentication;
+            await _navigationService.NavigateAsync(($"/{ nameof(NavigationPage)}/{ nameof(SignInView)}"), parametr);
         }
         private void ClearFields()
         {
@@ -117,27 +75,44 @@ namespace ProfileBook.ViewModel
             Password = string.Empty;
             ConfirmPassword = string.Empty;
         }
-        private void CreateUserModel()
-        {
-            UserModel = new UserModel()
-            {
-                Login = Login,
-                Password = Password
-            };
-        }
-        private async Task AddUserModelAsync()
-        {
-            CreateUserModel();
-            await _userService.InsertUserModelAsync(UserModel);
-        }
         private async void ExecuteNavigationToSignUp()
         {
-            if(await IsValidLoginAsync()&& await IsLinesMatchAsync()&& await IsValidPasswordAsync()&& await IsLoginUniqueAsync())
+            var result = true;
+            if(!Validation.IsValidatedLogin(Login) && result)
             {
-                await AddUserModelAsync();
-                ExecuteGoBack();
+                result = false;
+                await _pageDialogService.DisplayAlertAsync(AppResource.requirements_to_login, AppResource.invalid_data_entered, "OK");
             }
-            else
+
+            if(result && !Validation.CompareStrings(Password, ConfirmPassword))
+            {
+                result = false;
+                await _pageDialogService.DisplayAlertAsync(AppResource.requirements_for_password_and_confirm_password, AppResource.invalid_data_entered, "OK");
+            }
+
+            if(result&&!Validation.IsValidatedPassword(Password))
+            {
+                result = false;
+                await _pageDialogService.DisplayAlertAsync(AppResource.requirements_to_password, AppResource.invalid_data_entered, "OK");
+            }
+
+            if (result)
+            {
+                UserModel = await _authenticationService.SignUpAsync(Login, Password);
+                if (UserModel != null)
+                {
+                    var resultOfAction= await _userService.SaveUserModelAsync(UserModel);
+                    if(resultOfAction)
+                    {
+                        ExecuteGoBack();
+                    }
+                }
+                else
+                {
+                    await _pageDialogService.DisplayAlertAsync(AppResource.this_login_is_already_taken, AppResource.invalid_data_entered, "OK");
+                }
+            }
+            if(!result)
             {
                 ClearFields();
             }

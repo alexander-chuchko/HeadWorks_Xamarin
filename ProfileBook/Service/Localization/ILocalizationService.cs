@@ -5,7 +5,6 @@ namespace ProfileBook.Service.Localization
     {
         string GetValueLanguage();
         void SetValueLanguage(string value);
-        void SetDefaultLanguage();
         void ChangeApplicationLanguage(string selectedLanguage);
     }
 }

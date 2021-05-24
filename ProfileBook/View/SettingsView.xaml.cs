@@ -4,9 +4,9 @@ using Xamarin.Forms.Xaml;
 namespace ProfileBook.View
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class Settings : ContentPage
+    public partial class SettingsView : ContentPage
     {
-        public Settings()
+        public SettingsView()
         {
             InitializeComponent();
         }

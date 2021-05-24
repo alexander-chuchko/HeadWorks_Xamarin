@@ -1,5 +1,5 @@
 ﻿using ProfileBook.Model;
-using ProfileBook.ViewModel;
+using ProfileBook.Model.Pfofile;
 
 namespace ProfileBook.Extension
 {

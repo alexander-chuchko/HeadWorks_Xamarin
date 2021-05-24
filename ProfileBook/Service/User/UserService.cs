@@ -1,5 +1,4 @@
 ﻿using Acr.UserDialogs;
-using Prism.Navigation;
 using ProfileBook.Model;
 using ProfileBook.Services.Repository;
 using System;
@@ -29,44 +28,53 @@ namespace ProfileBook.Service.User
             }
             return userModels;
         }
-        public async Task RemoveUserModelAsync(UserModel userModel)
+        public async Task<bool> DeleteUserModelAsync(UserModel userModel)
         {
+            bool resultOfAction = false;
             try
             {
                 if (userModel != null)
                 {
                     await _repository.DeleteAsync(userModel);
+                    resultOfAction = true;
                 }
             }
             catch(Exception ex)
             {
                 UserDialogs.Instance.Alert(ex.Message);
             }
+            return resultOfAction;
         }
-        public async Task InsertUserModelAsync(UserModel userModel)
+        public async Task<bool> SaveUserModelAsync(UserModel userModel)
         {
+            bool resultOfAction = false;
             try
             {
                 await _repository.InsertAsync<UserModel>(userModel);
+                resultOfAction = true;
             }
             catch(Exception ex)
             {
                 UserDialogs.Instance.Alert(ex.Message);
             }
+            return resultOfAction;
         }
-        public async Task UpdateUserModelAsync(UserModel userModel)
+        public async Task<bool> UpdateUserModelAsync(UserModel userModel)
         {
+            bool resultOfAction = false;
             try
             {
                 if(userModel!=null)
                 {
                     await _repository.UpdateAsync<UserModel>(userModel);
+                    resultOfAction = true;
                 } 
             }
             catch(Exception ex)
             {
                 UserDialogs.Instance.Alert(ex.Message);
             }
+            return resultOfAction;
         }
     }
 }
